@@ -13,22 +13,25 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\codeFiles">
+      <UniqueIdentifier>{519c510e-cd17-461f-9771-a9b14088b0cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="smuut ton conteniuos.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="smuut ton nonZero.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="smuut ton tangent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\codeFiles</Filter>
     </ClCompile>
     <ClCompile Include="DTMF.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\codeFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files\codeFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="smuut ton conteniuos.cpp">
+      <Filter>Source Files\codeFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="smuut ton nonZero.cpp">
+      <Filter>Source Files\codeFiles</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
