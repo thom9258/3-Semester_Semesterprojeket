@@ -17,7 +17,7 @@ constexpr auto G4 = 392;
 constexpr auto A4 = 440;
 constexpr auto B4 = 493.88;
 
-int mmmmain() { //smooth så længe der ikke er stop
+int conten() { //smooth så længe der ikke er stop
 
 	//float TUNES[] = { F4, A4, G4, G4, E4, G4, F4, F4, D4, F4, E4, E4, C4, D4, A3, A3};	//asgors theme
 	//float TUNES[] = { C4, G4, F4, C4, E4, 0, E4, F4,0, C4, F4, C4, E4,0, E4, F4, C4, G4, F4, C4, E4, 0, E4, F4,0, C4, F4, A4, G4, 0, F4, G4 }; //undertale theme

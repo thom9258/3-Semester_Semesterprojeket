@@ -24,7 +24,7 @@ std::vector<float> D = { 1633, 941 };
 
 
 
-int main() {
+int mainHoe() {
 	std::vector<std::vector<float>> TUNES = { D };
 	std::string filename;
 
