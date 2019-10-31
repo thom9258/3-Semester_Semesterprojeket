@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClausTest.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="DTMF.cpp" />
     <ClCompile Include="smuut ton conteniuos.cpp" />
@@ -87,7 +88,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\claus\source\repos\thom9258\3-Semester_Semesterprojeket\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-main-d.lib;sfml-audio-d.lib;sfml-system-d.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-d.lib;sfml-main-d.lib;sfml-graphics-d.lib;sfml-system-d.lib;sfml-window-d.lib;openal32.lib;opengl32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;winmm.lib;comdlg32.lib;advapi32.lib;shell32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -100,7 +101,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\claus\source\repos\thom9258\3-Semester_Semesterprojeket\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-main-d.lib;sfml-audio-d.lib;sfml-system-d.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-audio-d.lib;sfml-main-d.lib;sfml-graphics-d.lib;sfml-system-d.lib;sfml-window-d.lib;openal32.lib;opengl32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;winmm.lib;comdlg32.lib;advapi32.lib;shell32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
