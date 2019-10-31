@@ -4,7 +4,7 @@
 #include <thread>
 #include <vector>
 #include <algorithm>  
-#define M_PI 3.1415926535
+#define const M_PI 3.1415926535
 
 float goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data) {
 	int k, i;
