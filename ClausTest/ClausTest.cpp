@@ -25,6 +25,7 @@ std::vector<int> HAVELAAGE = { 1447, 941 };
 std::vector<int> D = { 1633, 941 };
 
 bool liveRecord = false;
+bool mainEnd = false;
 
 float goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data) {
 	int k, i;
@@ -59,10 +60,13 @@ float goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, 
 int record()
 {
 	sf::SoundBufferRecorder recorder;
-	while (true)
+	while (!mainEnd)
 	{
+		while (!liveRecord)
+			;//wait
+		std::cout << "here:" << liveRecord << std::endl;
 		if (liveRecord) {
-			std::cout << "Begin live recording in 1 second" << std::endl;
+			std::cout << "Begin live recording in 1 second:"<< liveRecord << std::endl;
 			//Check if recorder is available
 			if (!sf::SoundBufferRecorder::isAvailable())
 			{
@@ -71,11 +75,16 @@ int record()
 			}
 			recorder.start();
 			sf::sleep(sf::seconds(1));
+			std::cout << "done waiting" << std::endl;
+			std::cout << liveRecord << std::endl;
 		}
 		else
 			if (sf::SoundBufferRecorder::isAvailable())
 				recorder.stop();
+		std::cout << "before loop" << std::endl;
+		std::cout << liveRecord << std::endl;
 		while (liveRecord) {
+			std::cout << "inside loop" << std::endl;
 			//get live recording
 			sf::sleep(sf::milliseconds(1000));
 			recorder.stop();
@@ -191,13 +200,11 @@ int main() {
 			//close
 			if (event.type == sf::Event::Closed) {
 				window.close();
-				break;
 			}
 
 			//Press ESC to close window
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 				window.close();
-				break;
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
@@ -209,6 +216,7 @@ int main() {
 			}
 		}
 	}
-
+	mainEnd = true;
+	t1.join();
 	return 0;
 }
