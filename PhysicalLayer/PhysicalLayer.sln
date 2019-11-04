@@ -1,9 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicalLayer", "PhysicalLayer\PhysicalLayer.vcxproj", "{F089C259-4430-41C1-BD13-A707F2855C02}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicalLayer", "PhysicalLayer.vcxproj", "{F089C259-4430-41C1-BD13-A707F2855C02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
