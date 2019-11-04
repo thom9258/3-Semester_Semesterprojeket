@@ -21,8 +21,8 @@
 void PhysicalLayer::sendBitString(int bitString) {
 	int nipple = bitString;
 	int k;
-	double arr[2];
-	std::vector<double*> TUNES = std::vector<double*>();
+	std::array<double, 2> arr;
+	std::vector<std::array<double, 2>> TUNES;
 	int i = 0;
 	while (!nipple == 0) {
 		k = nipple & 0b1111;
@@ -57,11 +57,12 @@ void PhysicalLayer::sendBitString(int bitString) {
 			break;
 		}
 		TUNES.push_back(arr);
-		double* ptr = TUNES.front();
 		nipple = nipple >> 4;
+		i++;
 	}
 	std::cout << "playing sound " << TUNES[0][0] << " and " << TUNES[0][1] << "\n";
 	std::cout << "playing sound " << TUNES[1][0] << " and " << TUNES[1][1] << "\n";
+	std::cout << i << std::endl;
 
 
 	//PLAY SOUND
