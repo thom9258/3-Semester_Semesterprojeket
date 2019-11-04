@@ -1,6 +1,7 @@
 #include "PhysicalLayer.h"
 #include <iostream>;
 #include <array>
+#include <bitset>
 #define M_PI 3.1415926535
 
 //Sender
@@ -26,8 +27,11 @@ void PhysicalLayer::sendBitString(int bitString) {
 	int i = 0;
 	while (!nipple == 0) {
 		k = nipple & 0b1111;
+		std::cout << "AND with 0b1111: " << std::bitset<4>(k) << std::endl;
+		std::cout << "AND with 0b0011: " << std::bitset<4>(k & 0b0011) << std::endl;
+		std::cout << "AND with 0b1100: " << std::bitset<4>(k & 0b1100) << std::endl;
 
-		switch (k | 0b0011) {
+		switch (k & 0b0011) {
 		case 0b0000:
 			arr[0] = 1209;
 			break;
@@ -42,17 +46,17 @@ void PhysicalLayer::sendBitString(int bitString) {
 			break;
 		}
 
-		switch (k >> 2) {
-		case 0b00:
+		switch (k & 0b1100) {
+		case 0b0000:
 			arr[1] = 697;
 			break;
-		case 0b01:
+		case 0b0100:
 			arr[1] = 770;
 			break;
-		case 0b10:
+		case 0b1000:
 			arr[1] = 852;
 			break;
-		case 0b11:
+		case 0b1100:
 			arr[1] = 941;
 			break;
 		}
@@ -60,9 +64,9 @@ void PhysicalLayer::sendBitString(int bitString) {
 		nipple = nipple >> 4;
 		i++;
 	}
-	std::cout << "playing sound " << TUNES[0][0] << " and " << TUNES[0][1] << "\n";
+	/*std::cout << "playing sound " << TUNES[0][0] << " and " << TUNES[0][1] << "\n";
 	std::cout << "playing sound " << TUNES[1][0] << " and " << TUNES[1][1] << "\n";
-	std::cout << i << std::endl;
+	std::cout << i << std::endl;*/
 
 
 	//PLAY SOUND

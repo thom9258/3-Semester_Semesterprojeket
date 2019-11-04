@@ -13,7 +13,7 @@ int main() {
 
 	t1.join();*/
 
-//	PhysicalLayer::sendBitString(0b11110011);
+	PhysicalLayer::sendBitString(0b1100);
 
 
 	return 0;
