@@ -12,9 +12,15 @@ int main() {
 	/*std::thread t1(record);
 
 	t1.join();*/
+	
+	while (true) {
+		PhysicalLayer::listenStartBit();
+	}
 
-	PhysicalLayer::sendStartBit(0b0000);
-	PhysicalLayer::sendBitString(0b0011);
+
+	//PhysicalLayer::sendStartBit(0b0000);
+	/*std::vector<int> fuckmikkelogthomas{ 0,0,0,0,1,1,1,0,1,0,1,0 };
+	PhysicalLayer::sendBitString(fuckmikkelogthomas);*/
 
 	return 0;
 }
