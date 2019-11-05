@@ -26,4 +26,8 @@ int main()
     divider(input);
     
     return 0;
+    
+    for(int i=0; i<10; i++){
+        std::cout << "Testing Github";
+    }
 }
