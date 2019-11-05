@@ -1,6 +1,3 @@
-#ifndef Binary_hpp
-#define Binary_hpp
-
 #include <stdio.h>
 #include <vector>
 #include <initializer_list>
@@ -18,5 +15,3 @@ private:
     std::vector<int> data;
     
 };
-
-#endif /* Binary_hpp */
