@@ -26,4 +26,5 @@ int main()
     divider(input);
     
     return 0;
+    
 }
