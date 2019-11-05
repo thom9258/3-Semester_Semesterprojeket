@@ -18,18 +18,18 @@
 //	}
 //}
 
-//Receiver
 void PhysicalLayer::sendBitString(int bitString) {
 	int nipple = bitString;
 	int k;
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
 	int i = 0;
+
 	while (!nipple == 0) {
 		k = nipple & 0b1111;
-		std::cout << "AND with 0b1111: " << std::bitset<4>(k) << std::endl;
+		/*std::cout << "AND with 0b1111: " << std::bitset<4>(k) << std::endl;
 		std::cout << "AND with 0b0011: " << std::bitset<4>(k & 0b0011) << std::endl;
-		std::cout << "AND with 0b1100: " << std::bitset<4>(k & 0b1100) << std::endl;
+		std::cout << "AND with 0b1100: " << std::bitset<4>(k & 0b1100) << std::endl;*/
 
 		switch (k & 0b0011) {
 		case 0b0000:
@@ -60,10 +60,12 @@ void PhysicalLayer::sendBitString(int bitString) {
 			arr[1] = 941;
 			break;
 		}
+
 		TUNES.push_back(arr);
 		nipple = nipple >> 4;
 		i++;
 	}
+	
 	/*std::cout << "playing sound " << TUNES[0][0] << " and " << TUNES[0][1] << "\n";
 	std::cout << "playing sound " << TUNES[1][0] << " and " << TUNES[1][1] << "\n";
 	std::cout << i << std::endl;*/
@@ -117,11 +119,92 @@ void PhysicalLayer::sendBitString(int bitString) {
 	std::cout << "Spiller jeg?" << std::endl;
 	sf::sleep(sf::seconds((toneCount / BPS)));
 
-	//if (!FILE.openFromFile("DTMF.wave", SAMPLES, 1))
-	//	std::cout << "could not save to file\n";
-	//else
-	//	FILE.write(raw, SAMPLES);
 }
+
+void PhysicalLayer::sendStartBit(int startBit) {
+	//PLAY SOUND
+	int k = startBit;
+	std::array<double, 2> arr;
+	std::vector<std::array<double, 2>> TUNES;
+	switch (k & 0b0011) {
+	case 0b0000:
+		arr[0] = 1209;
+		break;
+	case 0b0001:
+		arr[0] = 1336;
+		break;
+	case 0b0010:
+		arr[0] = 1477;
+		break;
+	case 0b0011:
+		arr[0] = 1633;
+		break;
+	}
+
+	switch (k & 0b1100) {
+	case 0b0000:
+		arr[1] = 697;
+		break;
+	case 0b0100:
+		arr[1] = 770;
+		break;
+	case 0b1000:
+		arr[1] = 852;
+		break;
+	case 0b1100:
+		arr[1] = 941;
+		break;
+	}
+	TUNES.push_back(arr);
+
+	const unsigned toneCount = TUNES.size();
+
+	float BPS = 1;
+	const unsigned SAMPLES = 44100;
+	unsigned SAMPLE_RATE = (SAMPLES / toneCount) * BPS;
+	int samplePerTone = SAMPLES / toneCount;
+
+	unsigned AMPLITUDE = 5000;
+	sf::Int16 raw[SAMPLES];
+	double incrementX;
+	double incrementY;
+	double x = 0, y = 0;		//sine funktion variable  
+	sf::SoundBuffer Buffer;		//define sound buffer
+	sf::Sound Sound;			//define Sound output
+	//sf::OutputSoundFile FILE;	//define file
+	x = 0;
+	y = 0;
+	const double TWO_PI = 6.28318;
+	for (int j = 0; j < toneCount; j++)
+	{
+		unsigned start = (samplePerTone)*j;
+		unsigned slut = (j + 1) * (samplePerTone);
+
+		//generate sine function
+		for (unsigned i = start; i < slut; i++) { // loop for every sample
+			raw[i] = AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI);
+			x += TUNES[j][0] / SAMPLE_RATE;
+			y += TUNES[j][1] / SAMPLE_RATE;
+
+		}
+
+		//load sound to bufffer
+
+		std::cout << "playing sound " << TUNES[j][0] << " and " << TUNES[j][1] << "\n";
+
+	}
+	if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
+		std::cerr << "Loading failed!" << std::endl;
+	}
+
+	//output sound
+	Sound.setBuffer(Buffer);
+	Sound.play();
+	std::cout << "Spiller jeg?" << std::endl;
+	sf::sleep(sf::seconds((toneCount / BPS)));
+};
+
+//Receiver
 //
 //bool PhysicalLayer::listenStartBit() {
 //	int sleepTime = 1;

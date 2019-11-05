@@ -17,6 +17,8 @@ public:
 	//bool listenStartBit();
 	//int listenToSound();
 	void static sendBitString(int bitString);
+	void static sendStartBit(int startBit);
+
 
 
 private:
