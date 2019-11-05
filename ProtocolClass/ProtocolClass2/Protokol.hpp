@@ -11,30 +11,25 @@ public:
     
     Protokol(std::string input) : fullsentence(input){};
     
-    std::string getString()
-    {
-        return fullsentence;
-    };
+    //Get the first 16 letters
+        std::string getF16()
+        {
+            return first_16;
+        }
     
-    void printdivider()
-    {
-        std::string first_16;
-        
-        if (fullsentence.length() > 16) {
-            first_16 = fullsentence.substr(0,16);
-            std::cout << first_16;
-        }
-        else{
-            std::cout << fullsentence << std::endl;
-        }
-    };
+    //Get the full sentence(the first 16 will be erased each time)
+    
+        std::string getFS()
+        {
+            return fullsentence;
+        };
     
     std::string divider()
     {
-        std::string first_16;
         
         if (fullsentence.length() > 16) {
             first_16 = fullsentence.substr(0,16);
+            fullsentence = fullsentence.erase(0,16);
             return first_16;
         }
         else{
@@ -46,9 +41,12 @@ public:
     
     
     
+    
+        
 private:
     std::vector<int> frame;
     std::string fullsentence;
+    std::string first_16;
 };
 
 #endif /* Protokol_hpp */
