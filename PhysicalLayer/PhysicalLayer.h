@@ -10,8 +10,8 @@ class PhysicalLayer
 public:
 	//Sender
 	//bool static readyToSend();
-	void static sendBitString(std::vector<int> bitString);
-	void static sendStartBit(int startBit);
+	void static sendBitString(std::vector<int> bitString, float BPS = 1);
+	void static sendStartBit(int startBit, float BPS = 1);
 
 
 	////Receiver

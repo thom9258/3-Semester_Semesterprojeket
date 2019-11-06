@@ -22,7 +22,7 @@
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendBitString(std::vector<int> bitString) {
+void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS = 1) {
 	std::vector<int> nipples;
 	for (int i = 0; i < bitString.size(); i+=4) {	
 		int temp = 0;
@@ -82,8 +82,8 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString) {
 	//PLAY SOUND
 	const unsigned toneCount = TUNES.size();
 
-	float BPS = 3;
-	const unsigned SAMPLES = 65535;
+	float BPS = 1;
+	const unsigned SAMPLES = 44100;
 	unsigned SAMPLE_RATE = (SAMPLES / toneCount) * BPS;
 	int samplePerTone = SAMPLES / toneCount;
 
@@ -106,8 +106,7 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString) {
 
 		//generate sine function
 		for (unsigned i = start; i < slut; i++) { // loop for every sample
-			double windowfunction = 0.5 * (1 - cos(2 * M_PI * i / (slut-start)));
-			raw[i] = windowfunction * AMPLITUDE * (sin(x * TWO_PI) + sin(y * TWO_PI));
+			raw[i] = AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI);
 			x += TUNES[j][0] / SAMPLE_RATE;
 			y += TUNES[j][1] / SAMPLE_RATE;
 
@@ -132,7 +131,7 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString) {
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendStartBit(int startBit) {
+void PhysicalLayer::sendStartBit(int startBit, float BPS = 1) {
 	//PLAY SOUND
 	int k = startBit;
 	std::array<double, 2> arr;
@@ -170,7 +169,6 @@ void PhysicalLayer::sendStartBit(int startBit) {
 
 	const unsigned toneCount = TUNES.size();
 
-	float BPS = 1;
 	const unsigned SAMPLES = 44100;
 	unsigned SAMPLE_RATE = (SAMPLES / toneCount) * BPS;
 	int samplePerTone = SAMPLES / toneCount;
@@ -221,10 +219,10 @@ void PhysicalLayer::sendStartBit(int startBit) {
 //--------------------------------------------------------------------------------------
 
 
-bool PhysicalLayer::listenStartBit() {
+bool PhysicalLayer::listenStartBit(int sleepTime = 2) {
 	sf::SoundBufferRecorder recorder;
 
-	float sleepTime = 1.25;
+	int sleepTime = 2;
 
 	recorder.start();
 	sf::sleep(sf::seconds(sleepTime));
@@ -238,7 +236,7 @@ bool PhysicalLayer::listenStartBit() {
 	float* p;
 	int frequencies[2];
 	
-	p = PhysicalLayer::findHighestFreq(count, SAMPLE_RATE, samples, recorder);
+	/*p = PhysicalLayer::findHighestFreq(count, SAMPLE_RATE, samples, recorder);
 	for (int i = 0; i < 2; i++) {
 		frequencies[i] = *(p + i);
 	}
@@ -251,7 +249,8 @@ bool PhysicalLayer::listenStartBit() {
 	else {
 		std::cout << "false" << std::endl;
 		return false;
-	}
+	}*/
+	return false;
 }
 
 //--------------------------------------------------------------------------------------
