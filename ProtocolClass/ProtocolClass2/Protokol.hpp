@@ -81,7 +81,36 @@ public:
         return sf;
     };
     
+    int getUL()
+    {
+        return ul;
+    }
     
+    std::string senderCRC(std::string message)
+    {
+
+    std::string encresult="";
+
+        encresult += message;
+        
+        std::string CRC = "100000111";
+
+        int n = CRC.length();
+
+        for(int i = 1; i<=n-1; i++){
+            encresult += '0';
+        }
+        for(int i = 0; i <= encresult.length()-n; ){
+            for (int k=0; k<n; k++)
+                encresult[i+k] = encresult[i+k]==CRC[k]? '0' : '1';
+                for( ; i < encresult.length() && encresult[i] != '1'; i++);
+
+        }
+
+        std::string final = message + encresult.substr(encresult.length()-n+1);
+        
+        return final;
+    }
     
     
 private:

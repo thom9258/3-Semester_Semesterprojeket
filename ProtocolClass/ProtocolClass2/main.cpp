@@ -13,20 +13,25 @@ int main()
     
     std::string input2 = p1.getFS();
     
-    int a = 0;
+    int sf = 0;
+    int ul;
     
-    while (a != 1) {
-            p1.divider();
-        p1.numbering();
-        std::cout << p1.getFS() << std::endl;
-        std::cout << p1.getF16() << std::endl;
-        std::cout << p1.numbering() << std::endl;
-        std::cout << p1.getFramecounter() << std::endl;
-        a = p1.getSF();
-        std::cout << a << std::endl;
+    while (sf != 1) {
+        p1.divider();
+        Binary b1(p1.numbering());
+//        std::cout << p1.getFS() << std::endl;
+//        std::cout << p1.getF16() << std::endl;
+//        std::cout << p1.numbering() << std::endl;
+//        std::cout << p1.getFramecounter() << std::endl;
+        p1.flagDetermine();
+        sf = p1.getSF();
+        ul = p1.getUL();
+        Binary b2({0,0,ul,sf});
+        b1 = b1.BinaryAppend(b1, b2);
+        //INSERT FIRST_16 APPEND HERE
+        
+        std::cout << b1 << std::endl;
     }
 
-    
-    
     return 0;
 }
