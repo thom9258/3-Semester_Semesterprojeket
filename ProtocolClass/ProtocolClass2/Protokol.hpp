@@ -76,7 +76,10 @@ public:
         return framecounter;
     };
     
-    
+    int getSF()
+    {
+        return sf;
+    };
     
     
     
