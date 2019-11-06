@@ -18,6 +18,7 @@ int main()
     std::cout << p1.getFS() << std::endl;
     std::cout << p1.getF16() << std::endl;
     std::cout << p1.numbering() << std::endl;
+    std::cout << p1.getFramecounter() << std::endl;
     
     
     return 0;

@@ -30,11 +30,13 @@ public:
         if (fullsentence.length() > 16) {
             first_16 = fullsentence.substr(0,16);
             fullsentence = fullsentence.erase(0,16);
+            framecounter++;
             return first_16;
         }
         else{
             first_16 = fullsentence;
             fullsentence.clear();
+            framecounter++;
             return first_16;
             
         }
@@ -60,9 +62,19 @@ public:
         else{
             sf = 0;
         }
+        if (framecounter % 2 == 0) {
+            ul = 0;
+        }
+        else {
+            ul = 1;
+        }
         
     }
     
+    int getFramecounter()
+    {
+        return framecounter;
+    };
     
     
     
@@ -75,7 +87,8 @@ private:
     std::string first_16;
     int NumOfChar;
     //lige = 0, ulige = 1
-    int sf, ul;
+    int framecounter = 0;
+    int sf = 0, ul = 0;
 };
 
 #endif /* Protokol_hpp */
