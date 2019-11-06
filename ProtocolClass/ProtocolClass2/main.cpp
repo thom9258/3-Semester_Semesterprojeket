@@ -29,7 +29,7 @@ int main()
         Binary b2({0,0,ul,sf});
         b1 = b1.BinaryAppend(b1, b2);
         //INSERT FIRST_16 APPEND HERE
-        
+
         std::cout << b1 << std::endl;
     }
 
