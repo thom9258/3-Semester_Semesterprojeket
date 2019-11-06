@@ -7,6 +7,8 @@
 class Protokol {
     
 public:
+
+
     std::string divider(std::string input);
     
     

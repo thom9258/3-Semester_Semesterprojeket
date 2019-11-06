@@ -4,21 +4,35 @@
 #include <vector>
 #include <initializer_list>
 #include <math.h>
+#include<cassert>
+#include<algorithm>
 
 using namespace std;
 
 class Binary
 {
 public:
+	// vector constructor
+	Binary(vector<int> vec) : data(vec), binLength(vec.size()) {};
 
-
-
-	// filler constructor
-	Binary(int size) : binLength(size)
+	Binary(int input) : binLength(4)
 	{
-		for (int i = 0; i != binLength; i++)
+		if (input < 16)
 		{
-			data.push_back(0);
+			int remainder;
+			vector<int> revData;
+			for (int i = 0; i != 4; i++)
+			{
+				data.push_back((input >> i) & 1);
+			}
+			//
+			//for (int i = 4; i > 1; i--) 
+			//{
+			//	data.push_back(revData[i]);
+			//}
+		}
+		else {
+			assert("number is over 16!");
 		}
 	};
 
@@ -97,13 +111,14 @@ public:
 		return data;
 	}
 
+
 	//setter functions
 	void SetLength(int length) {
 		binLength = length;
 	}
 
 private:
-	std::vector<int> data;
+	vector<int> data;
 	int binLength = 0;
 
 };
