@@ -2,6 +2,7 @@
 
 #include<iostream>
 #include <vector>
+#include <string>
 #include <initializer_list>
 #include <math.h>
 #include<cassert>
@@ -12,14 +13,14 @@ using namespace std;
 class Binary
 {
 public:
+
+	Binary(void) : binLength(0) {};
 	// vector constructor
 	Binary(vector<int> vec) : data(vec), binLength(vec.size()) {};
 
 
 	// constructor for integers 1 -> 16
 
-	// 1 er altså 0000 og 16 er altså 1111
-	// der skal derfor plusses 1 på modtager siden
 	Binary(int input) : binLength(4)
 	{
 		input--;
@@ -34,6 +35,8 @@ public:
 		else {
 			assert("number is over 16!");
 		}
+		// 1 er altså 0000 og 16 er altså 1111
+		// der skal derfor plusses 1 på modtager siden
 	};
 
 
@@ -53,9 +56,27 @@ public:
 
 
 	// defined constructor taking ASCII characters as char
-	Binary(char ch) : binLength(7)
+	Binary(string strch) :binLength((strch.length() + 1) * 8)
 	{
-		int intch = (int)ch - '0';
+
+
+		char curChar;
+		for (int i = 0; i < strch.length(); i++)
+		{
+			vector<int> resVec;
+			curChar = strch[i];
+			int intch = (int)curChar - '0';
+			data.push_back(0);
+			for (int i = 0; i != 7; i++)
+			{
+				data.push_back((intch >> i) & 1);
+			}
+			reverse(data.begin(), data.end());
+
+
+		}
+
+		/*int intch = (int)ch - '0';
 
 
 		for (int n = 7; n != 0; n--)
@@ -69,11 +90,10 @@ public:
 				intch -= pow(2, n) - 1;
 				data.push_back(1);
 			}
-		}
+		}*/
 
 
 	};
-
 
 
 	// appends a binary number onto another binary number
