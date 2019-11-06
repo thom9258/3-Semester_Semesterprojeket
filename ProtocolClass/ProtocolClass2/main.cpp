@@ -2,29 +2,31 @@
 #include <string>
 #include "Protokol.hpp"
 #include "Binary.hpp"
-
-int divider(std::string input)
-{
-    std::string first_16;
-    if (input.length() > 16) {
-       first_16 = input.substr(0,16);
-        std::cout << first_16;
-    }
-    else{
-        std::cout << input;
-    }
-    return 0;
-}
-
 int main()
 {
     std::string input;
+    
     std::cout << "Input the transmitted sentence" << std::endl;
     std::getline(std::cin, input);
-    std::cout << input.length() << std::endl;
     
-    divider(input);
+    Protokol p1(input);
+    
+    std::string input2 = p1.getFS();
+    
+    int a = 0;
+    
+    while (a != 1) {
+            p1.divider();
+        p1.numbering();
+        std::cout << p1.getFS() << std::endl;
+        std::cout << p1.getF16() << std::endl;
+        std::cout << p1.numbering() << std::endl;
+        std::cout << p1.getFramecounter() << std::endl;
+        a = p1.getSF();
+        std::cout << a << std::endl;
+    }
+
+    
     
     return 0;
-    
 }
