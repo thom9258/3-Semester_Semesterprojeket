@@ -12,17 +12,19 @@ int main() {
 	/*std::thread t1(record);
 
 	t1.join();*/
-	int i = 0;
-	while (i < 2) {
-		if (PhysicalLayer::listenStartBit() == true) {
-			i++;
-		}
-	}
+	//int i = 0;
+	//while (i < 2) {
+	//	if (PhysicalLayer::listenStartBit() == true) {
+	//		i++;
+	//	}
+	//}
 
+	PhysicalLayer::listenToSound();
 
+	//std::vector<int> fuckmikkelogthomas{0,0,1,1};
+	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//PhysicalLayer::sendStartBit(0b0000);
-	/*std::vector<int> fuckmikkelogthomas{ 0,0,0,0,1,1,1,0,1,0,1,0 };
-	PhysicalLayer::sendBitString(fuckmikkelogthomas);*/
+	
 
 	return 0;
 }
