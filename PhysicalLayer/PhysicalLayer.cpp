@@ -16,8 +16,8 @@
 //		return true;
 //	}
 //}
-//--------------------------------------------------------------------------------------
 
+//--------------------------------------------------------------------------------------
 
 void PhysicalLayer::sendBitString(std::vector<int> bitString) {
 	std::vector<int> nipples;
@@ -129,88 +129,88 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString) {
 
 //--------------------------------------------------------------------------------------
 
-//void PhysicalLayer::sendStartBit(int startBit) {
-//	//PLAY SOUND
-//	int k = startBit;
-//	std::array<double, 2> arr;
-//	std::vector<std::array<double, 2>> TUNES;
-//	switch (k & 0b0011) {
-//	case 0b0000:
-//		arr[0] = 1209;
-//		break;
-//	case 0b0001:
-//		arr[0] = 1336;
-//		break;
-//	case 0b0010:
-//		arr[0] = 1477;
-//		break;
-//	case 0b0011:
-//		arr[0] = 1633;
-//		break;
-//	}
-//
-//	switch (k & 0b1100) {
-//	case 0b0000:
-//		arr[1] = 697;
-//		break;
-//	case 0b0100:
-//		arr[1] = 770;
-//		break;
-//	case 0b1000:
-//		arr[1] = 852;
-//		break;
-//	case 0b1100:
-//		arr[1] = 941;
-//		break;
-//	}
-//	TUNES.push_back(arr);
-//
-//	const unsigned toneCount = TUNES.size();
-//
-//	float BPS = 1;
-//	const unsigned SAMPLES = 44100;
-//	unsigned SAMPLE_RATE = (SAMPLES / toneCount) * BPS;
-//	int samplePerTone = SAMPLES / toneCount;
-//
-//	unsigned AMPLITUDE = 5000;
-//	sf::Int16 raw[SAMPLES];
-//	double incrementX;
-//	double incrementY;
-//	double x = 0, y = 0;		//sine funktion variable  
-//	sf::SoundBuffer Buffer;		//define sound buffer
-//	sf::Sound Sound;			//define Sound output
-//	//sf::OutputSoundFile FILE;	//define file
-//	x = 0;
-//	y = 0;
-//	const double TWO_PI = 6.28318;
-//	for (int j = 0; j < toneCount; j++)
-//	{
-//		unsigned start = (samplePerTone)*j;
-//		unsigned slut = (j + 1) * (samplePerTone);
-//
-//		//generate sine function
-//		for (unsigned i = start; i < slut; i++) { // loop for every sample
-//			raw[i] = AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI);
-//			x += TUNES[j][0] / SAMPLE_RATE;
-//			y += TUNES[j][1] / SAMPLE_RATE;
-//
-//		}
-//
-//		//load sound to bufffer
-//
-//		std::cout << "playing sound " << TUNES[j][0] << " and " << TUNES[j][1] << "\n";
-//
-//	}
-//	if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
-//		std::cerr << "Loading failed!" << std::endl;
-//	}
-//
-//	//output sound
-//	Sound.setBuffer(Buffer);
-//	Sound.play();
-//	std::cout << "Spiller jeg?" << std::endl;
-//	sf::sleep(sf::seconds((toneCount / BPS)));
-//};
+void PhysicalLayer::sendStartBit(int startBit) {
+	//PLAY SOUND
+	int k = startBit;
+	std::array<double, 2> arr;
+	std::vector<std::array<double, 2>> TUNES;
+	switch (k & 0b0011) {
+	case 0b0000:
+		arr[0] = 1209;
+		break;
+	case 0b0001:
+		arr[0] = 1336;
+		break;
+	case 0b0010:
+		arr[0] = 1477;
+		break;
+	case 0b0011:
+		arr[0] = 1633;
+		break;
+	}
+
+	switch (k & 0b1100) {
+	case 0b0000:
+		arr[1] = 697;
+		break;
+	case 0b0100:
+		arr[1] = 770;
+		break;
+	case 0b1000:
+		arr[1] = 852;
+		break;
+	case 0b1100:
+		arr[1] = 941;
+		break;
+	}
+	TUNES.push_back(arr);
+
+	const unsigned toneCount = TUNES.size();
+
+	float BPS = 1;
+	const unsigned SAMPLES = 44100;
+	unsigned SAMPLE_RATE = (SAMPLES / toneCount) * BPS;
+	int samplePerTone = SAMPLES / toneCount;
+
+	unsigned AMPLITUDE = 5000;
+	sf::Int16 raw[SAMPLES];
+	double incrementX;
+	double incrementY;
+	double x = 0, y = 0;		//sine funktion variable  
+	sf::SoundBuffer Buffer;		//define sound buffer
+	sf::Sound Sound;			//define Sound output
+	//sf::OutputSoundFile FILE;	//define file
+	x = 0;
+	y = 0;
+	const double TWO_PI = 6.28318;
+	for (int j = 0; j < toneCount; j++)
+	{
+		unsigned start = (samplePerTone)*j;
+		unsigned slut = (j + 1) * (samplePerTone);
+
+		//generate sine function
+		for (unsigned i = start; i < slut; i++) { // loop for every sample
+			raw[i] = AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI);
+			x += TUNES[j][0] / SAMPLE_RATE;
+			y += TUNES[j][1] / SAMPLE_RATE;
+
+		}
+
+		//load sound to bufffer
+
+		std::cout << "playing sound " << TUNES[j][0] << " and " << TUNES[j][1] << "\n";
+
+	}
+	if (!Buffer.loadFromSamples(raw, SAMPLES, 1, SAMPLE_RATE)) {
+		std::cerr << "Loading failed!" << std::endl;
+	}
+
+	//output sound
+	Sound.setBuffer(Buffer);
+	Sound.play();
+	std::cout << "Spiller jeg?" << std::endl;
+	sf::sleep(sf::seconds((toneCount / BPS)));
+};
 
 
 //--------------------------------------------------------------------------------------
@@ -234,13 +234,14 @@ bool PhysicalLayer::listenStartBit() {
 
 	float* p;
 	int frequencies[2];
-
+	
 	p = PhysicalLayer::findHighestFreq(count, SAMPLE_RATE, samples, recorder);
 	for (int i = 0; i < 2; i++) {
 		frequencies[i] = *(p + i);
 	}
-	//std::cout << "Freq7: " << frequencies[0] << "& Freq6: " << frequencies[1] << std::endl;
-	if (frequencies[0] == 440 && frequencies[1] == 1209) {
+	std::cout << frequencies[0] << "  " << frequencies[1] << std::endl;
+
+	if (frequencies[0] == 697 && frequencies[1] == 1209) {
 		std::cout << "true" << std::endl;
 		return true;
 	}
@@ -250,6 +251,7 @@ bool PhysicalLayer::listenStartBit() {
 	}
 }
 
+//--------------------------------------------------------------------------------------
 
 //
 //int PhysicalLayer::listenToSound() {
@@ -276,6 +278,7 @@ bool PhysicalLayer::listenStartBit() {
 //	}
 //}
 
+//--------------------------------------------------------------------------------------
 
 float* PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data, sf::SoundBufferRecorder& recorder) {
 	const sf::SoundBuffer& buffer = recorder.getBuffer();
@@ -291,6 +294,8 @@ float* PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE
 		magnitudes2[i] = goertzel_mag(count, DTMFfreq[i], SAMPLE_RATE, samples);
 	}
 
+	std::sort(magnitudes, magnitudes + 8);
+
 	float max1, max2;
 	max1 = magnitudes[6];
 	max2 = magnitudes[7];
@@ -305,41 +310,15 @@ float* PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE
 			pos2 = i;
 		}
 	}
-	std::cout << pos1 << "  " << pos2 << std::endl;
-
 
 	//Here we make a sorted array of the corresponding DTMF frequency from the position of the highest magnitudes
 	float sortFreq[] = { DTMFfreq[pos2], DTMFfreq[pos1] };
 	std::sort(sortFreq, sortFreq + 2);
 
-	for (int i = 0; i < 8; i++) {
-		std::cout << "Frequency:" << DTMFfreq[i] << ":" << " ";
-		std::cout << "Goertzel mag:" << goertzel_mag(count, DTMFfreq[i], SAMPLE_RATE, samples) << std::endl;
-		magnitudes[i] = goertzel_mag(count, DTMFfreq[i], SAMPLE_RATE, samples);
-		magnitudes2[i] = goertzel_mag(count, DTMFfreq[i], SAMPLE_RATE, samples);
-
-	}
-
 	return sortFreq;
-
-	//std::sort(magnitudes, magnitudes + 8);
-
-	////We only want the two highest magnitudes so here we define them as max1 and max2
-	//float maxSortValues[8];
-	//float max;
-	//int pos;
-	//for (int i = 0; i < 8; i++) {
-	//	max = magnitudes[i];
-	//	for (int j = 0; j < 8; j++) {
-	//		if (magnitudes2[j] == max) {
-	//			pos = j;
-	//		}
-	//	}
-	//	maxSortValues[i] = DTMFfreq[pos];
-	//}
-
-	//return maxSortValues;
 }
+
+//--------------------------------------------------------------------------------------
 
 ////Maybe delete????? Hvornår er vi klar til at modtage?
 //bool PhysicalLayer::readyToReceive() {
@@ -351,7 +330,7 @@ float* PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE
 //	}
 //}
 
-//
+//--------------------------------------------------------------------------------------
 
 float PhysicalLayer::goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data) {
 	int k, i;

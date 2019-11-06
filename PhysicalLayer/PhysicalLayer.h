@@ -11,7 +11,7 @@ public:
 	//Sender
 	//bool static readyToSend();
 	void static sendBitString(std::vector<int> bitString);
-	//void static sendStartBit(int startBit);
+	void static sendStartBit(int startBit);
 
 
 	////Receiver
@@ -47,7 +47,5 @@ private:
 	std::vector<double> NUL = { 1336, 941 };
 	std::vector<double> HAVELAAGE = { 1447, 941 };
 	std::vector<double> D = { 1633, 941 };
-	
-	//
 };
 

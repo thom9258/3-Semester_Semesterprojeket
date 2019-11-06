@@ -12,9 +12,11 @@ int main() {
 	/*std::thread t1(record);
 
 	t1.join();*/
-	
-	while (true) {
-		PhysicalLayer::listenStartBit();
+	int i = 0;
+	while (i < 2) {
+		if (PhysicalLayer::listenStartBit() == true) {
+			i++;
+		}
 	}
 
 
