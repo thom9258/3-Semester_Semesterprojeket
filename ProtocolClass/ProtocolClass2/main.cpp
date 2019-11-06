@@ -16,12 +16,13 @@ int main()
     int a = 0;
     
     while (a != 1) {
-            p1.divider();
+        p1.divider();
         p1.numbering();
         std::cout << p1.getFS() << std::endl;
         std::cout << p1.getF16() << std::endl;
         std::cout << p1.numbering() << std::endl;
         std::cout << p1.getFramecounter() << std::endl;
+        p1.flagDetermine();
         a = p1.getSF();
         std::cout << a << std::endl;
     }
