@@ -81,6 +81,11 @@ public:
         return sf;
     };
     
+    int getUL()
+    {
+        return ul;
+    }
+    
     
     
     
