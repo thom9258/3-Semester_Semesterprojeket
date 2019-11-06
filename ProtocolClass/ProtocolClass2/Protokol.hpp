@@ -33,20 +33,49 @@ public:
             return first_16;
         }
         else{
-            return fullsentence;
+            first_16 = fullsentence;
+            fullsentence.clear();
+            return first_16;
+            
         }
     };
     
+    int numbering()
+    {
+        NumOfChar = first_16.length();
+        return NumOfChar;
+    };
     
+    void getNumbering()
+    {
+        std::cout << NumOfChar;
+    }
     
-    
-    
-    
+    void flagDetermine()
+    {
+        //Slut flag tjek
+        if(fullsentence.length() == 0){
+            sf = 1;
+        }
+        else{
+            sf = 0;
+        }
         
+    }
+    
+    
+    
+    
+    
+    
+    
 private:
     std::vector<int> frame;
     std::string fullsentence;
     std::string first_16;
+    int NumOfChar;
+    //lige = 0, ulige = 1
+    int sf, ul;
 };
 
 #endif /* Protokol_hpp */
