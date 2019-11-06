@@ -15,21 +15,21 @@ public:
 	// vector constructor
 	Binary(vector<int> vec) : data(vec), binLength(vec.size()) {};
 
+
+	// constructor for integers 1 -> 16
+
+	// 1 er altså 0000 og 16 er altså 1111
+	// der skal derfor plusses 1 på modtager siden
 	Binary(int input) : binLength(4)
 	{
+		input--;
 		if (input < 16)
 		{
-			int remainder;
-			vector<int> revData;
 			for (int i = 0; i != 4; i++)
 			{
 				data.push_back((input >> i) & 1);
 			}
-			//
-			//for (int i = 4; i > 1; i--) 
-			//{
-			//	data.push_back(revData[i]);
-			//}
+			reverse(data.begin(), data.end());
 		}
 		else {
 			assert("number is over 16!");
