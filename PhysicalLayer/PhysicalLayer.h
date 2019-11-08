@@ -29,7 +29,7 @@ private:
 	float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data);
 	float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, std::vector<int> data); //gør den compatibel med vector
 
-	float static* findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data, sf::SoundBufferRecorder& buffer);
+	float static* findHighestFreq(std::size_t numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data);
 	std::vector<int> static findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, std::vector<int> data); //uhm... ved ikke hvorfor den ovenover har de argumenter så lave min egen
 	
 	//Receiver & Sender variables
