@@ -16,7 +16,7 @@ public:
 
 	////Receiver
 	//bool readyToReceive();
-	bool static listenStartBit();
+	bool static listenStartBit(int sleepTime = 2);
 	int static listenToSound();
 
 

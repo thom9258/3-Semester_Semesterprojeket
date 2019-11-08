@@ -1,5 +1,5 @@
 #include "PhysicalLayer.h"
-#include <iostream>;
+#include <iostream>
 #include <array>
 #include <bitset>
 #include <chrono>     
@@ -22,7 +22,7 @@
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS = 1) {
+void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	std::vector<int> nipples;
 	for (int i = 0; i < bitString.size(); i+=4) {	
 		int temp = 0;
@@ -81,24 +81,22 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS = 1) {
 
 	//PLAY SOUND
 	const unsigned toneCount = TUNES.size();
-
-	float BPS = 1;
 	const unsigned SAMPLES = 44100;
 	unsigned SAMPLE_RATE = (SAMPLES / toneCount) * BPS;
 	int samplePerTone = SAMPLES / toneCount;
 
 	unsigned AMPLITUDE = 5000;
 	sf::Int16 raw[SAMPLES];
-	double incrementX;
-	double incrementY;
-	double x = 0, y = 0;		//sine funktion variable  
+	float incrementX;
+	float incrementY;
+	float x = 0, y = 0;		//sine funktion variable  
 	sf::SoundBuffer Buffer;		//define sound buffer
 	sf::Sound Sound;			//define Sound output
 	//sf::OutputSoundFile FILE;	//define file
 	x = 0;
 	y = 0;
 	const double TWO_PI = 6.28318;
-	for (int j = 0; j < toneCount; j++)
+	for (unsigned int j = 0; j < toneCount; j++)
 	{
 		unsigned start = (samplePerTone)*j;
 		unsigned slut = (j + 1) * (samplePerTone);
@@ -131,7 +129,7 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS = 1) {
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendStartBit(int startBit, float BPS = 1) {
+void PhysicalLayer::sendStartBit(int startBit, float BPS) {
 	//PLAY SOUND
 	int k = startBit;
 	std::array<double, 2> arr;
@@ -219,10 +217,8 @@ void PhysicalLayer::sendStartBit(int startBit, float BPS = 1) {
 //--------------------------------------------------------------------------------------
 
 
-bool PhysicalLayer::listenStartBit(int sleepTime = 2) {
+bool PhysicalLayer::listenStartBit(int sleepTime) {
 	sf::SoundBufferRecorder recorder;
-
-	int sleepTime = 2;
 
 	recorder.start();
 	sf::sleep(sf::seconds(sleepTime));
