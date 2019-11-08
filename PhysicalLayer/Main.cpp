@@ -24,9 +24,10 @@ int main() {
 	//std::vector<int> fuckmikkelogthomas{0,0,1,1};
 	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//PhysicalLayer::sendStartBit(0b0000);
-	std::vector<int> fuckmikkelogthomas{ 0,0,0,0,1,1,1,0,1,0,1,0 };
-	PhysicalLayer::sendBitString(fuckmikkelogthomas, 2);
+	//std::vector<int> fuckmikkelogthomas{ 0,0,0,0,1,1,1,0,1,0,1,0 };
+	//PhysicalLayer::sendBitString(fuckmikkelogthomas, 2);
+	while(true)
+		PhysicalLayer::listenStartBit(2);
 
-	//PhysicalLayer::listenStartBit();
 	return 0;
 }
