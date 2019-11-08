@@ -216,6 +216,9 @@ void PhysicalLayer::sendStartBit(int startBit, float BPS) {
 //---------------------------------------Receiver---------------------------------------
 //--------------------------------------------------------------------------------------
 
+bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount) {
+	
+}
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
 	bool retVal;

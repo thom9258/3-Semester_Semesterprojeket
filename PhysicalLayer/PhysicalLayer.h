@@ -5,7 +5,7 @@
 #include <SFML/Audio.hpp>
 
 
-class PhysicalLayer
+class PhysicalLayer: public sf::SoundRecorder, sf::SoundStream
 {
 public:
 	//Sender
@@ -19,7 +19,7 @@ public:
 	bool static listenStartBit(int sleepTime = 1);
 	int static listenToSound();
 
-
+	
 private:
 	std::size_t count;
 	unsigned const SAMPLE_RATE = 44100;
@@ -49,5 +49,11 @@ private:
 	std::vector<double> NUL = { 1336, 941 };
 	std::vector<double> HAVELAAGE = { 1447, 941 };
 	std::vector<double> D = { 1633, 941 };
+
+
+
+
+protected:
+	virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
 };
 
