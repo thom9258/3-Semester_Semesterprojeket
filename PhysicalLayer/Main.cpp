@@ -33,8 +33,6 @@ int main() {
 	cat.start();
 
 	cat.listenStartBit();
-	while (true)
-		;
 	cat.stop();
 	return 0;
 }

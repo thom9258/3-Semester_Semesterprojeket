@@ -7,7 +7,7 @@
 #include <SFML/Audio.hpp>
 
 #define M_PI 3.1415926535
-#define SUBSAMPLE 600
+#define SUBSAMPLE 3600
 
 //--------------------------------------------------------------------------------------
 //----------------------------------------Sender----------------------------------------
@@ -238,7 +238,7 @@ bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleC
 }
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
-
+	bool previousResult = false;
 	float* p;
 	int frequencies[2];
 	std::vector<float> samples;
@@ -254,14 +254,15 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 			frequencies[i] = samples[i];
 		}
 		samples.clear();
-		std::cout << frequencies[1] << "  " << frequencies[0] << std::endl;
-		if (frequencies[0] == 697 && frequencies[1] == 1209) {
+		std::cout << frequencies[1] << "  " << frequencies[0] << "\n";
+		if (frequencies[0] == 697 && frequencies[1] == 1209 && previousResult) {
 			std::cout << "true" << std::endl;
 			return true;
 		}
-		else {
-			std::cout << "false" << std::endl;
-		}
+		else if (frequencies[0] == 697 && frequencies[1] == 1209)
+			previousResult = true;
+		else
+			previousResult = false;
 	}
 	return true;
 }
