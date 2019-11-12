@@ -86,8 +86,19 @@ public:
         return ul;
     }
     
-    std::string senderCRC(std::string message)
+    std::string senderCRC(std::vector<int> input)
     {
+        std::string message;
+        
+        for(int i = 0; i < input.size(); i++)
+        {
+            if(input[i] == 1){
+                message.push_back('1');
+            }
+            else{
+                message.push_back('0');
+            }
+        }
 
     std::string encresult="";
 
@@ -107,14 +118,19 @@ public:
 
         }
 
-        std::string final = message + encresult.substr(encresult.length()-n+1);
+        CRCremainder = encresult.substr(encresult.length()-n+1);
         
-        return final;
+        return CRCremainder;
     }
+    
+    std::string getCRC(){
+        return CRCremainder;
+    };
     
     
     
 private:
+    std::string CRCremainder;
     std::vector<int> frame;
     std::string fullsentence;
     std::string first_16;

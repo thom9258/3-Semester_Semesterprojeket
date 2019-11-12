@@ -57,10 +57,23 @@ public:
 	Binary(Binary& bin) : binLength(bin.binLength), data(bin.data) {};
 
 
-	// defined constructor tadasdasking a string of 1 and 0 as char
+	// asdasdsddefined constructor tadasdasking a string of 1 and 0 as char
 	Binary(string strBin)
 	{
-		istringstream iss(strBin);
+		for (int i = 0; i < strBin.size(); i++) 
+		{
+			if (strBin[i] == '1') 
+			{
+				data.push_back(1);
+			}
+			else
+			{
+				data.push_back(0);
+			}
+			binLength = data.size();
+		}
+
+	/*	istringstream iss(strBin);
 		vector<int> resVec;
 		int number;
 		while (iss >> number)
@@ -68,7 +81,7 @@ public:
 			resVec.push_back(number);
 		}
 		data = resVec;
-		binLength = resVec.size();
+		binLength = resVec.size();*/
 	};
 
 	// converts a character into a binary value with padding (to get the size to be 8 bits long)
@@ -117,7 +130,7 @@ public:
 	{
 		for (int i = 0; i < input.GetLength(); i++)
 		{
-			out << input.GetData()[i]; // bug here, vector sometimes out of scope
+			out << input.GetData()[i];
 		}
 		return out;
 	}
