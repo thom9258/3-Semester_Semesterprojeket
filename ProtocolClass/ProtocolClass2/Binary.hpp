@@ -89,21 +89,25 @@ public:
 	// converts a character into a binary value with padding (to get the size to be 8 bits long)
 	Binary(char character)
 	{
-		//>= 48 eller <=57
-
 		int integ = int(character);
 		string bin = "";
-		while (integ > 0) // converts integer into binary
+
+		int i = integ;
+		while (i > 0) // converts integer into binary
 		{
-			(integ % 2) ? bin.push_back('1') : // if sentence that needs reformatting
+			(i % 2) ? bin.push_back('1') : // if sentence that needs reformatting
 				bin.push_back('0');
-			integ /= 2;
+			i /= 2;
 		}
 		reverse(bin.begin(), bin.end());
 
 		data = strToVec(bin);
+
 		data.insert(data.begin(), 0);
-		if (integ <= 64) { data.insert(data.begin(), 0); }
+
+		if (integ <= 0) {
+			data.insert(data.begin(), 0);
+		}
 
 		binLength = data.size();
 	}
