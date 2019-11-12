@@ -18,7 +18,7 @@ int main()
     
     while (sf != 1) {
         p1.divider();
-        Binary b1(p1.numbering());
+        Binary FullFrame(p1.numbering());
 //        std::cout << p1.getFS() << std::endl;
 //        std::cout << p1.getF16() << std::endl;
 //        std::cout << p1.numbering() << std::endl;
@@ -26,12 +26,19 @@ int main()
         p1.flagDetermine();
         sf = p1.getSF();
         ul = p1.getUL();
-        Binary b2({0,0,ul,sf});
-        b1 = b1.BinaryAppend(b1, b2);
-		Binary b3(p1.getF16());
-		b1 = b1.BinaryAppend(b1, b3);
+        Binary flag({0,0,ul,sf});
+        FullFrame = FullFrame.BinaryAppend(FullFrame, flag);
         
-        std::cout << b1 << std::endl;
+        for(int i = 0; i < p1.getF16().length(); i++)
+        {
+            Binary singleChar(p1.getF16()[i]);
+            FullFrame = FullFrame.BinaryAppend(FullFrame, singleChar);
+            
+        }
+        
+        
+        
+        std::cout << FullFrame << std::endl;
     }
 
     return 0;
