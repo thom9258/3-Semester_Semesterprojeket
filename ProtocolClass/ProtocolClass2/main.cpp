@@ -28,9 +28,9 @@ int main()
         ul = p1.getUL();
         Binary b2({0,0,ul,sf});
         b1 = b1.BinaryAppend(b1, b2);
-        Binary b3(p1.getF16());
-        b1 = b1.BinaryAppend(b1, b3);
-
+		Binary b3(p1.getF16());
+		b1 = b1.BinaryAppend(b1, b3);
+        
         std::cout << b1 << std::endl;
     }
 

@@ -7,20 +7,22 @@
 #include <math.h>
 #include<cassert>
 #include<algorithm>
+#include<sstream>
 
 using namespace std;
 
 class Binary
 {
 public:
-
+	// default constructor for non input
 	Binary(void) : binLength(0) {};
+
+
 	// vector constructor
 	Binary(vector<int> vec) : data(vec), binLength(vec.size()) {};
 
 
 	// constructor for integers 1 -> 16
-
 	Binary(int input) : binLength(4)
 	{
 		input--;
@@ -40,7 +42,7 @@ public:
 	};
 
 
-	// defined constructor as initlist
+	// defined constructor as initializer list
 	Binary(initializer_list<int> base)
 		: binLength(base.size())
 	{
@@ -56,44 +58,52 @@ public:
 
 
 	// defined constructor taking ASCII characters as char
-	Binary(string strch) :binLength((strch.length() + 1) * 8)
+	Binary(string strch)
 	{
+		//for (int i = 0; i <= strch.length(); i++)
+		//{
+		//	int curVal = int(strch[i]);
+
+		//	string bin = "";
+
+		//	while (curVal > 0) 
+		//	{
+		//		(curVal % 2) ? bin.push_back('1') :
+		//			bin.push_back('0');
+		//		curVal /= 2;
+		//	}
+		//	reverse(bin.begin(), bin.end());
+
+		//	data = strToVec(bin);
+		//	binLength = data.size();
 
 
-		char curChar;
-		for (int i = 0; i < strch.length(); i++)
-		{
-			vector<int> resVec;
-			curChar = strch[i];
-			int intch = (int)curChar - '0';
-			data.push_back(0);
-			for (int i = 0; i != 7; i++)
-			{
-				data.push_back((intch >> i) & 1);
-			}
-			reverse(data.begin(), data.end());
 
+		//	for (int i = 0; i < data.size(); i++) { // prints the binary number
+		//		cout << data[i];
+		//	}
 
-		}
-
-		/*int intch = (int)ch - '0';
-
-
-		for (int n = 7; n != 0; n--)
-		{
-			if (intch < pow(2, n) - 1)
-			{
-				data.push_back(0);
-			}
-			else
-			{
-				intch -= pow(2, n) - 1;
-				data.push_back(1);
-			}
-		}*/
-
-
+		//}
 	};
+
+	// converts a character into a binary value with padding (to get the size to be 8 bits long)
+	Binary(char character)
+	{
+		int integ = int(character);
+		string bin = "";
+		while (integ > 0) // converts integer into binary
+		{
+			(integ % 2) ? bin.push_back('1') : // if sentence that needs reformatting
+				bin.push_back('0');
+			integ /= 2;
+		}
+		reverse(bin.begin(), bin.end());
+
+		data = strToVec(bin);
+		data.insert(data.begin(), 0);
+		binLength = data.size();
+	}
+
 
 
 	// appends a binary number onto another binary number
@@ -119,6 +129,18 @@ public:
 		return out;
 	}
 
+	// turns strings into vectors
+	vector<int> strToVec(string str)
+	{
+		istringstream iss(str);
+		vector<int> resVec;
+		int number;
+		while (iss >> number)
+		{
+			resVec.push_back(number);
+		}
+		return resVec;
+	}
 
 	// getter functions 
 	int GetLength(void)
@@ -138,7 +160,9 @@ public:
 	}
 
 private:
+	//variable containing the binary "vector" in a format of integers of 0 and 1
 	vector<int> data;
+	// length of the above vector
 	int binLength = 0;
 
 };

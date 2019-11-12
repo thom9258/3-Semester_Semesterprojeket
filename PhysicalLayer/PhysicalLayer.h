@@ -2,12 +2,16 @@
 #include <thread>
 #include <vector>
 #include <algorithm> 
+#include <iostream>
 #include <SFML/Audio.hpp>
 
 
-class PhysicalLayer
+class PhysicalLayer : public sf::SoundRecorder
 {
 public:
+	PhysicalLayer();
+	~PhysicalLayer();
+	
 	//Sender
 	//bool static readyToSend();
 	void static sendBitString(std::vector<int> bitString, float BPS = 1);
@@ -16,9 +20,17 @@ public:
 
 	////Receiver
 	//bool readyToReceive();
-	bool static listenStartBit(int sleepTime = 2);
-	int static listenToSound();
+	bool listenStartBit(int sleepTime = 1000);
+	//int static listenToSound();
+	
+	//inheretance fra SFML 
+	virtual bool OnStart() { std::cout << bufferCount << std::endl;  return true; }
 
+	virtual bool onProcessSamples(const int16_t* samples, std::size_t sampleCount);
+
+	virtual void OnStop() {}
+	
+	
 
 private:
 	std::size_t count;
@@ -27,8 +39,11 @@ private:
 	//bool sending, receiving;
 	//	//Receiver methods
 	float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data);
-	float static* findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data);
-	//
+	float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, std::vector<float> data); //gør den compatibel med vector
+
+	float static* findHighestFreq(std::size_t numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data);
+	std::vector<float> static findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, std::vector<float> data); //uhm... ved ikke hvorfor den ovenover har de argumenter så lave min egen
+	
 	//Receiver & Sender variables
 	std::vector<double> EN = { 1209, 697 };
 	std::vector<double> TO = { 1336, 697 };
@@ -46,5 +61,10 @@ private:
 	std::vector<double> NUL = { 1336, 941 };
 	std::vector<double> HAVELAAGE = { 1447, 941 };
 	std::vector<double> D = { 1633, 941 };
+
+protected:
+	unsigned short bufferCount;
+	unsigned char buffer[0xFFFF];
+	bool listen;
 };
 
