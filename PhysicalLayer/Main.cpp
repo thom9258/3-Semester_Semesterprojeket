@@ -24,15 +24,15 @@ int main() {
 	//std::vector<int> fuckmikkelogthomas{0,0,1,1};
 	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//PhysicalLayer::sendStartBit(0b0000);
-	/*std::vector<int> fuckmikkelogthomas{ 0,0,0,0,1,1,1,0,1,0,1,0 };
-	PhysicalLayer::sendBitString(fuckmikkelogthomas);*/
+	//std::vector<int> fuckmikkelogthomas{ 0,0,0,0,1,1,1,0,1,0,1,0 };
+	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//while(true)
 
 	// Usage
 	PhysicalLayer cat;
 	cat.start();
-
-	cat.listenStartBit();
+	cat.sendStartBit(0b0000);
+	//cat.listenStartBit();
 
 	return 0;
 }
