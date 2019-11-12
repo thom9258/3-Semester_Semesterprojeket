@@ -35,7 +35,6 @@ int main()
             
         }
         
-        
         std::cout << FullFrame << std::endl;
     }
 
