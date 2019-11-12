@@ -16,7 +16,7 @@ public:
 
 	////Receiver
 	//bool readyToReceive();
-	bool static listenStartBit();
+	bool static listenStartBit(int sleepTime = 2);
 	int static listenToSound();
 
 
@@ -27,7 +27,7 @@ private:
 	//bool sending, receiving;
 	//	//Receiver methods
 	float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data);
-	float static* findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data, sf::SoundBufferRecorder& buffer);
+	float static* findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data);
 	//
 	//Receiver & Sender variables
 	std::vector<double> EN = { 1209, 697 };

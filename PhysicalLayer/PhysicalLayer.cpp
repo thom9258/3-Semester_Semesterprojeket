@@ -219,10 +219,8 @@ void PhysicalLayer::sendStartBit(int startBit, float BPS = 1) {
 //--------------------------------------------------------------------------------------
 
 
-bool PhysicalLayer::listenStartBit(int sleepTime = 2) {
+bool PhysicalLayer::listenStartBit(int sleepTime) {
 	sf::SoundBufferRecorder recorder;
-
-	int sleepTime = 2;
 
 	recorder.start();
 	sf::sleep(sf::seconds(sleepTime));
@@ -290,7 +288,7 @@ int PhysicalLayer::listenToSound() {
 		float* p;
 		int frequencies[2];
 
-		p = PhysicalLayer::findHighestFreq(count, SAMPLE_RATE, samples, recorder);
+		p = PhysicalLayer::findHighestFreq(count, SAMPLE_RATE, samples);
 		for (int i = 0; i < 2; i++) {
 			frequencies[i] = *(p + i);
 		}
@@ -307,11 +305,8 @@ int PhysicalLayer::listenToSound() {
 
 //--------------------------------------------------------------------------------------
 
-float* PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data, sf::SoundBufferRecorder& recorder) {
-	const sf::SoundBuffer& buffer = recorder.getBuffer();
-	unsigned int SAMPLE_RATE = recorder.getSampleRate();
-	const sf::Int16* samples = buffer.getSamples();
-	std::size_t count = buffer.getSampleCount();
+float* PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data) {
+	
 
 	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
 	float magnitudes[8], magnitudes2[8];
@@ -324,8 +319,8 @@ float* PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE
 	//}
 
 	for (int i = 0; i < 8; i++) {
-		magnitudes[i] = goertzel_mag(count, DTMFfreq[i], SAMPLE_RATE, samples);
-		magnitudes2[i] = goertzel_mag(count, DTMFfreq[i], SAMPLE_RATE, samples);
+		magnitudes[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
+		magnitudes2[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
 	}
 
 	std::sort(magnitudes, magnitudes + 8);
