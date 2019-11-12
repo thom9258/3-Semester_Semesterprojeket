@@ -24,6 +24,7 @@ public:
             return fullsentence;
         };
     
+    // Divides the sentence, and saves the first 16 characters in one variable.
     std::string divider()
     {
         
