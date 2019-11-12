@@ -57,7 +57,7 @@ public:
 	Binary(Binary& bin) : binLength(bin.binLength), data(bin.data) {};
 
 
-	// defined constructor tadasdasking a string of 1 and 0 as char
+	// asdasdsddefined constructor tadasdasking a string of 1 and 0 as char
 	Binary(string strBin)
 	{
 		istringstream iss(strBin);
