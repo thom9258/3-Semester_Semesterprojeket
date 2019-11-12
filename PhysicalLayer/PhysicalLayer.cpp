@@ -1,8 +1,10 @@
 #include "PhysicalLayer.h"
-#include <iostream>;
+#include <iostream>
 #include <array>
 #include <bitset>
-#include <chrono>
+#include <chrono>     
+#include <ctime> 
+
 #define M_PI 3.1415926535
 
 //--------------------------------------------------------------------------------------
@@ -20,14 +22,13 @@
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS = 1) {
+void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	std::vector<int> nipples;
-	std::reverse(bitString.begin(), bitString.end());
 	for (int i = 0; i < bitString.size(); i+=4) {	
 		int temp = 0;
 		for (int j = 0; j < 4; j++) {
-			temp += bitString[j + i];
 			temp = temp << 1;
+			temp += bitString[j + i];
 		}
 		nipples.push_back(temp);
 	}
@@ -80,24 +81,22 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS = 1) {
 
 	//PLAY SOUND
 	const unsigned toneCount = TUNES.size();
-
-	
 	const unsigned SAMPLES = 44100;
 	unsigned SAMPLE_RATE = (SAMPLES / toneCount) * BPS;
 	int samplePerTone = SAMPLES / toneCount;
 
 	unsigned AMPLITUDE = 5000;
 	sf::Int16 raw[SAMPLES];
-	double incrementX;
-	double incrementY;
-	double x = 0, y = 0;		//sine funktion variable  
+	float incrementX;
+	float incrementY;
+	float x = 0, y = 0;		//sine funktion variable  
 	sf::SoundBuffer Buffer;		//define sound buffer
 	sf::Sound Sound;			//define Sound output
 	//sf::OutputSoundFile FILE;	//define file
 	x = 0;
 	y = 0;
 	const double TWO_PI = 6.28318;
-	for (int j = 0; j < toneCount; j++)
+	for (unsigned int j = 0; j < toneCount; j++)
 	{
 		unsigned start = (samplePerTone)*j;
 		unsigned slut = (j + 1) * (samplePerTone);
@@ -105,8 +104,7 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS = 1) {
 
 		//generate sine function
 		for (unsigned i = start; i < slut; i++) { // loop for every sample
-			double muliple = 0.5 *(1 - cos(2 * M_PI * i / (slut - start)));
-			raw[i] = muliple * AMPLITUDE * (sin(x * TWO_PI) + sin(y * TWO_PI));
+			raw[i] = AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI);
 			x += TUNES[j][0] / SAMPLE_RATE;
 			y += TUNES[j][1] / SAMPLE_RATE;
 
@@ -131,7 +129,7 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS = 1) {
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendStartBit(int startBit, float BPS = 1) {
+void PhysicalLayer::sendStartBit(int startBit, float BPS) {
 	//PLAY SOUND
 	int k = startBit;
 	std::array<double, 2> arr;
@@ -219,25 +217,13 @@ void PhysicalLayer::sendStartBit(int startBit, float BPS = 1) {
 //--------------------------------------------------------------------------------------
 
 
-bool PhysicalLayer::listenStartBit(int sleepTime = 2) {
+bool PhysicalLayer::listenStartBit(int sleepTime) {
 	sf::SoundBufferRecorder recorder;
 
-	//alt herfra
-	int hi = 0;
-	for (int i = 0; i < 101; i++)
-	{
-		auto t1 = std::chrono::high_resolution_clock::now();
-		recorder.start();
-		//sf::sleep(sf::seconds(sleepTime));
-		recorder.stop();
-		auto t2 = std::chrono::high_resolution_clock::now();
-		std::cout << "test function took "
-			<< std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count()
-			<< " milliseconds\n";
-		if (hi < std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count())
-			hi = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
-	}
-	std::cout<< "hi is: " << hi << std::endl;
+	recorder.start();
+	sf::sleep(sf::seconds(sleepTime));
+	recorder.stop();
+
 	const sf::SoundBuffer& buffer = recorder.getBuffer();
 	unsigned int SAMPLE_RATE = recorder.getSampleRate();
 	const sf::Int16* samples = buffer.getSamples();
@@ -250,7 +236,7 @@ bool PhysicalLayer::listenStartBit(int sleepTime = 2) {
 	for (int i = 0; i < 2; i++) {
 		frequencies[i] = *(p + i);
 	}
-	std::cout << frequencies[0] << "  " << frequencies[1] << std::endl;
+	std::cout << frequencies[1] << "  " << frequencies[0] << std::endl;
 
 	if (frequencies[0] == 697 && frequencies[1] == 1209) {
 		std::cout << "true" << std::endl;
@@ -265,30 +251,55 @@ bool PhysicalLayer::listenStartBit(int sleepTime = 2) {
 
 //--------------------------------------------------------------------------------------
 
-//
-//int PhysicalLayer::listenToSound() {
-//	int sleepTime = 2;
-//	
-//	//while (!PhysicalLayer::listenStartBit());
-//	
-//	//Check if recorder is available
-//	if (!sf::SoundBufferRecorder::isAvailable()){
-//		std::cerr << "Error: Recorder not available!" << std::endl;
-//	}
-//	else {
-//		recorder.start();
-//		std::cout << "Tone start" << std::endl;
-//		sf::sleep(sf::seconds(sleepTime));
-//		std::cout << "Tone slut" << std::endl;
-//		recorder.stop();
-//		const sf::SoundBuffer& buffer = recorder.getBuffer();
-//		count = buffer.getSampleCount();
-//		for (int i = 0; count; i++) {
-//			DTMFBuffer[i] = recoder.getBuffer()[i];
-//		}
-//		DTMFbuffer = recorder.getBuffer();
-//	}
-//}
+
+int PhysicalLayer::listenToSound() {
+	sf::SoundBufferRecorder recorder;
+	std::vector<std::array<int, 2>> DTMFBuffer;
+	int sleepTime = 1;
+	
+	int j = 0;
+	while (j < 2) {
+		if (PhysicalLayer::listenStartBit() == true) {
+			std::cout << "Startbit recognized" << std::endl;
+			j++;
+		}
+	}
+	std::cout << "Data transmission started" << std::endl;
+
+	//Check if recorder is available
+	if (!sf::SoundBufferRecorder::isAvailable()) {
+		std::cerr << "Error: Recorder not available!" << std::endl;
+	}
+
+	std::array<int, 2> arr;
+	int i = 0;
+	while (i < 20) {
+		recorder.start();
+		sf::sleep(sf::seconds(sleepTime));
+		recorder.stop();
+
+		const sf::SoundBuffer& buffer = recorder.getBuffer();
+		unsigned int SAMPLE_RATE = recorder.getSampleRate();
+		const sf::Int16* samples = buffer.getSamples();
+		std::size_t count = buffer.getSampleCount();
+
+		float* p;
+		int frequencies[2];
+
+		p = PhysicalLayer::findHighestFreq(count, SAMPLE_RATE, samples, recorder);
+		for (int i = 0; i < 2; i++) {
+			frequencies[i] = *(p + i);
+		}
+		arr = { frequencies[0], frequencies[1] };
+		std::cout << frequencies[1] << "   " << frequencies[0] << std::endl;
+		DTMFBuffer.push_back(arr);
+		i++;
+	}	
+
+
+	return 0;
+	
+}
 
 //--------------------------------------------------------------------------------------
 
@@ -300,6 +311,13 @@ float* PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE
 
 	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
 	float magnitudes[8], magnitudes2[8];
+
+	//std::vector<float> data;
+	//for (int i = 0; i < 689; i++) {
+	//	for (int j = 0; j < 44100 / 4; j++) {
+	//		data[i] = samples[j];
+	//	}
+	//}
 
 	for (int i = 0; i < 8; i++) {
 		magnitudes[i] = goertzel_mag(count, DTMFfreq[i], SAMPLE_RATE, samples);
@@ -329,6 +347,7 @@ float* PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE
 
 	return sortFreq;
 }
+
 
 //--------------------------------------------------------------------------------------
 

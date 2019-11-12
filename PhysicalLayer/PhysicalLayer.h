@@ -17,11 +17,10 @@ public:
 	////Receiver
 	//bool readyToReceive();
 	bool static listenStartBit(int sleepTime = 2);
-	//int listenToSound();
+	int static listenToSound();
 
 
 private:
-	std::vector<const sf::Int16*>& DTMFBuffer;
 	std::size_t count;
 	unsigned const SAMPLE_RATE = 44100;
 
