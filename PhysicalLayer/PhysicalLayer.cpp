@@ -7,7 +7,7 @@
 #include <SFML/Audio.hpp>
 
 #define M_PI 3.1415926535
-#define SUBSAMPLE 9000
+#define SUBSAMPLE 500
 
 //--------------------------------------------------------------------------------------
 //----------------------------------------Sender----------------------------------------
@@ -25,6 +25,7 @@
 PhysicalLayer::PhysicalLayer()
 {
 	bufferCount = 0;
+	setProcessingInterval(sf::milliseconds(100));//default er 100
 	buffer[0xFFFF] = {0};
 	listen = true;
 }
@@ -33,6 +34,7 @@ PhysicalLayer::~PhysicalLayer() {
 	stop();
 	listen = false;
 	sf::sleep(sf::milliseconds(20));
+	std::cout << "DESTRUCTOID" << std::endl;
 }
 //--------------------------------------------------------------------------------------
 
@@ -118,7 +120,8 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 
 		//generate sine function
 		for (unsigned i = start; i < slut; i++) { // loop for every sample
-			raw[i] = AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI);
+			double window = 0.5 * (1 - cos(2 * M_PI * i / (slut - start)));
+			raw[i] = window * (AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI));
 			x += TUNES[j][0] / SAMPLE_RATE;
 			y += TUNES[j][1] / SAMPLE_RATE;
 
@@ -143,7 +146,7 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendStartBit(int startBit, float BPS) {
+void PhysicalLayer::sendStartBit(int startBit) {
 	//PLAY SOUND
 	int k = startBit;
 	std::array<double, 2> arr;
@@ -181,7 +184,9 @@ void PhysicalLayer::sendStartBit(int startBit, float BPS) {
 
 	const unsigned toneCount = TUNES.size();
 
-	const unsigned SAMPLES = 44100;
+	float BPS = 3;
+
+	const unsigned SAMPLES = 65535;
 	unsigned SAMPLE_RATE = (SAMPLES / toneCount) * BPS;
 	int samplePerTone = SAMPLES / toneCount;
 
@@ -203,7 +208,9 @@ void PhysicalLayer::sendStartBit(int startBit, float BPS) {
 
 		//generate sine function
 		for (unsigned i = start; i < slut; i++) { // loop for every sample
-			raw[i] = AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI);
+			double window = 0.5 * (1 - cos(2 * M_PI * i / (slut-start)));
+
+			raw[i] = window * AMPLITUDE*(sin(x * TWO_PI) + sin(y * TWO_PI));
 			x += TUNES[j][0] / SAMPLE_RATE;
 			y += TUNES[j][1] / SAMPLE_RATE;
 
@@ -243,8 +250,7 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 	std::vector<float> samples;
 	unsigned short tailBuffer = 0;
 	while (true) {
-		while ((tailBuffer + SUBSAMPLE < bufferCount))
-			;
+		
 		for (int i = 0; i < SUBSAMPLE; i++, tailBuffer++) {
 			samples.push_back(buffer[tailBuffer]);
 		}
@@ -258,7 +264,7 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 			std::cout << "true" << std::endl;
 			return true;
 		}
-		else if (frequencies[0] == 941 && frequencies[1] == 1209)
+		else if (frequencies[0] == 697 && frequencies[1] == 1209)
 			previousResult = true;
 		else
 			previousResult = false;
@@ -336,29 +342,36 @@ float* PhysicalLayer::findHighestFreq(std::size_t numSamples, unsigned int SAMPL
 		magnitudes[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
 		magnitudes2[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
 	}
+	float sum = 0;
+	for (int i = 0; i < 8; i++) {
+		sum += magnitudes[i];
+	}
 
 	std::sort(magnitudes, magnitudes + 8);
+
 
 	float max1, max2;
 	max1 = magnitudes[6];
 	max2 = magnitudes[7];
 
-	//Here we find the positions of the highest magnitudes 
-	int pos1, pos2;
-	for (int i = 0; i < 8; i++) {
-		if (magnitudes2[i] == max1) {
-			pos1 = i;
+	if ((max1 + max2) / 2 < 100) {
+		//Here we find the positions of the highest magnitudes 
+		int pos1, pos2;
+		for (int i = 0; i < 8; i++) {
+			if (magnitudes2[i] == max1) {
+				pos1 = i;
+			}
+			if (magnitudes2[i] == max2) {
+				pos2 = i;
+			}
 		}
-		if (magnitudes2[i] == max2) {
-			pos2 = i;
-		}
+
+		//Here we make a sorted array of the corresponding DTMF frequency from the position of the highest magnitudes
+		float sortFreq[] = { DTMFfreq[pos2], DTMFfreq[pos1] };
+		std::sort(sortFreq, sortFreq + 2);
+
+		return sortFreq;
 	}
-
-	//Here we make a sorted array of the corresponding DTMF frequency from the position of the highest magnitudes
-	float sortFreq[] = { DTMFfreq[pos2], DTMFfreq[pos1] };
-	std::sort(sortFreq, sortFreq + 2);
-
-	return sortFreq;
 }
 
 std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, std::vector<float> data) {
