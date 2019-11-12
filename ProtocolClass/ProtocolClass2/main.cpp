@@ -37,14 +37,12 @@ int main()
 
         
         std::string CRCstring = p1.senderCRC(FullFrame.GetData());
-        std::cout << p1.getCRC() << std::endl;
         
         Binary CRC(CRCstring);
         FullFrame = FullFrame.BinaryAppend(FullFrame, CRC);
         
         
         std::cout << FullFrame << std::endl;
-        std::cout << CRC << std::endl;
         
     }
 

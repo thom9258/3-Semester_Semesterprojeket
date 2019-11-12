@@ -118,19 +118,13 @@ public:
 
         }
 
-        CRCremainder = encresult.substr(encresult.length()-n+1);
+        std::string CRCremainder = encresult.substr(encresult.length()-n+1);
         
         return CRCremainder;
     }
     
-    std::string getCRC(){
-        return CRCremainder;
-    };
-    
-    
     
 private:
-    std::string CRCremainder;
     std::vector<int> frame;
     std::string fullsentence;
     std::string first_16;
