@@ -114,7 +114,6 @@ public:
     
     
     
-    
 private:
     std::vector<int> frame;
     std::string fullsentence;

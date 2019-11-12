@@ -57,33 +57,18 @@ public:
 	Binary(Binary& bin) : binLength(bin.binLength), data(bin.data) {};
 
 
-	// defined constructor taking ASCII characters as char
-	Binary(string strch)
+	// defined constructor tadasdasking a string of 1 and 0 as char
+	Binary(string strBin)
 	{
-		//for (int i = 0; i <= strch.length(); i++)
-		//{
-		//	int curVal = int(strch[i]);
-
-		//	string bin = "";
-
-		//	while (curVal > 0) 
-		//	{
-		//		(curVal % 2) ? bin.push_back('1') :
-		//			bin.push_back('0');
-		//		curVal /= 2;
-		//	}
-		//	reverse(bin.begin(), bin.end());
-
-		//	data = strToVec(bin);
-		//	binLength = data.size();
-
-
-
-		//	for (int i = 0; i < data.size(); i++) { // prints the binary number
-		//		cout << data[i];
-		//	}
-
-		//}
+		istringstream iss(strBin);
+		vector<int> resVec;
+		int number;
+		while (iss >> number)
+		{
+			resVec.push_back(number);
+		}
+		data = resVec;
+		binLength = resVec.size();
 	};
 
 	// converts a character into a binary value with padding (to get the size to be 8 bits long)
@@ -91,16 +76,24 @@ public:
 	{
 		int integ = int(character);
 		string bin = "";
-		while (integ > 0) // converts integer into binary
+
+		int i = integ;
+		while (i > 0) // converts integer into binary
 		{
-			(integ % 2) ? bin.push_back('1') : // if sentence that needs reformatting
+			(i % 2) ? bin.push_back('1') : // if sentence that needs reformatting
 				bin.push_back('0');
-			integ /= 2;
+			i /= 2;
 		}
 		reverse(bin.begin(), bin.end());
 
 		data = strToVec(bin);
+
 		data.insert(data.begin(), 0);
+
+		if (integ <= 64) {
+			data.insert(data.begin(), 0);
+		}
+
 		binLength = data.size();
 	}
 
