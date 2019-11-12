@@ -105,7 +105,7 @@ public:
 
 		data.insert(data.begin(), 0);
 
-		if (integ <= 0) {
+		if (integ <= 64) {
 			data.insert(data.begin(), 0);
 		}
 

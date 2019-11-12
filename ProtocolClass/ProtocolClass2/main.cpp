@@ -8,10 +8,9 @@ int main()
     
     std::cout << "Input the transmitted sentence" << std::endl;
     std::getline(std::cin, input);
+    std::replace(input.begin(), input.end(),' ', '_');
     
     Protokol p1(input);
-    
-    std::string input2 = p1.getFS();
     
     int sf = 0;
     int ul;
@@ -35,7 +34,6 @@ int main()
             FullFrame = FullFrame.BinaryAppend(FullFrame, singleChar);
             
         }
-        
         
         
         std::cout << FullFrame << std::endl;
