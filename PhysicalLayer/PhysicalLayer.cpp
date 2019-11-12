@@ -7,7 +7,7 @@
 #include <SFML/Audio.hpp>
 
 #define M_PI 3.1415926535
-#define SUBSAMPLE 3600
+#define SUBSAMPLE 9000
 
 //--------------------------------------------------------------------------------------
 //----------------------------------------Sender----------------------------------------
@@ -226,25 +226,24 @@ void PhysicalLayer::sendStartBit(int startBit, float BPS) {
 };
 
 
+
 //--------------------------------------------------------------------------------------
 //---------------------------------------Receiver---------------------------------------
 //--------------------------------------------------------------------------------------
 
 bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount)
 {
-	for (unsigned short i = 0; i < sampleCount; i++, bufferCount++) 
-		PhysicalLayer::buffer[bufferCount] = *(samples + i);
+	for (unsigned short i = 0; i < sampleCount; i++, bufferCount++) PhysicalLayer::buffer[bufferCount] = *(samples + i);
 	return listen;
 }
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
 	bool previousResult = false;
-	float* p;
 	int frequencies[2];
 	std::vector<float> samples;
 	unsigned short tailBuffer = 0;
 	while (true) {
-		while (tailBuffer + SUBSAMPLE < bufferCount)
+		while ((tailBuffer + SUBSAMPLE < bufferCount))
 			;
 		for (int i = 0; i < SUBSAMPLE; i++, tailBuffer++) {
 			samples.push_back(buffer[tailBuffer]);
@@ -259,7 +258,7 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 			std::cout << "true" << std::endl;
 			return true;
 		}
-		else if (frequencies[0] == 697 && frequencies[1] == 1209)
+		else if (frequencies[0] == 941 && frequencies[1] == 1209)
 			previousResult = true;
 		else
 			previousResult = false;

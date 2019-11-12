@@ -64,7 +64,7 @@ private:
 
 protected:
 	unsigned short bufferCount;
-	unsigned int buffer[0xFFFF];
+	unsigned char buffer[0xFFFF];
 	bool listen;
 };
 
