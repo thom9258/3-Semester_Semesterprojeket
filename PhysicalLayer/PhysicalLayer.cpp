@@ -7,7 +7,7 @@
 #include <SFML/Audio.hpp>
 
 #define M_PI 3.1415926535
-#define SUBSAMPLE 500
+#define SUBSAMPLE 8820
 
 //--------------------------------------------------------------------------------------
 //----------------------------------------Sender----------------------------------------
@@ -22,8 +22,7 @@
 //	}
 //}
 
-PhysicalLayer::PhysicalLayer()
-{
+PhysicalLayer::PhysicalLayer(){
 	bufferCount = 0;
 	setProcessingInterval(sf::milliseconds(100));//default er 100
 	buffer[0xFFFF] = {0};
@@ -246,28 +245,31 @@ bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleC
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
 	bool previousResult = false;
+
 	int frequencies[2];
 	std::vector<float> samples;
 	unsigned short tailBuffer = 0;
 	while (true) {
-		
+		samples.clear();
 		for (int i = 0; i < SUBSAMPLE; i++, tailBuffer++) {
 			samples.push_back(buffer[tailBuffer]);
 		}
-		samples = PhysicalLayer::findHighestFreq(SUBSAMPLE, 44100, samples);
-		for (int i = 0; i < 2; i++) {
-			frequencies[i] = samples[i];
+		float mag = goertzel_mag(samples.size(), 1209, SAMPLE_RATE, samples);
+		if (mag > 0) {
+				samples = PhysicalLayer::findHighestFreq(SUBSAMPLE, 44100, samples);
+			for (int i = 0; i < 2; i++) {
+				frequencies[i] = samples[i];
+			}
+			//std::cout << frequencies[1] << "  " << frequencies[0] << "\n";
+			if (frequencies[0] == 697 && frequencies[1] == 1209 && previousResult) {
+				std::cout << "true" << std::endl;
+				//return true;
+			}
+			else if (frequencies[0] == 697 && frequencies[1] == 1209)
+				previousResult = true;
+			else
+				previousResult = false;
 		}
-		samples.clear();
-		std::cout << frequencies[1] << "  " << frequencies[0] << "\n";
-		if (frequencies[0] == 697 && frequencies[1] == 1209 && previousResult) {
-			std::cout << "true" << std::endl;
-			return true;
-		}
-		else if (frequencies[0] == 697 && frequencies[1] == 1209)
-			previousResult = true;
-		else
-			previousResult = false;
 	}
 	return true;
 }
@@ -326,53 +328,49 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 
 //--------------------------------------------------------------------------------------
 
-float* PhysicalLayer::findHighestFreq(std::size_t numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data) {
-
-	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
-	float magnitudes[8], magnitudes2[8];
-
-	//std::vector<float> data;
-	//for (int i = 0; i < 689; i++) {
-	//	for (int j = 0; j < 44100 / 4; j++) {
-	//		data[i] = samples[j];
-	//	}
-	//}
-
-	for (int i = 0; i < 8; i++) {
-		magnitudes[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
-		magnitudes2[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
-	}
-	float sum = 0;
-	for (int i = 0; i < 8; i++) {
-		sum += magnitudes[i];
-	}
-
-	std::sort(magnitudes, magnitudes + 8);
-
-
-	float max1, max2;
-	max1 = magnitudes[6];
-	max2 = magnitudes[7];
-
-	if ((max1 + max2) / 2 < 100) {
-		//Here we find the positions of the highest magnitudes 
-		int pos1, pos2;
-		for (int i = 0; i < 8; i++) {
-			if (magnitudes2[i] == max1) {
-				pos1 = i;
-			}
-			if (magnitudes2[i] == max2) {
-				pos2 = i;
-			}
-		}
-
-		//Here we make a sorted array of the corresponding DTMF frequency from the position of the highest magnitudes
-		float sortFreq[] = { DTMFfreq[pos2], DTMFfreq[pos1] };
-		std::sort(sortFreq, sortFreq + 2);
-
-		return sortFreq;
-	}
-}
+//float* PhysicalLayer::findHighestFreq(std::size_t numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data) {
+//
+//	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
+//	float magnitudes[8], magnitudes2[8];
+//
+//	//std::vector<float> data;
+//	//for (int i = 0; i < 689; i++) {
+//	//	for (int j = 0; j < 44100 / 4; j++) {
+//	//		data[i] = samples[j];
+//	//	}
+//	//}
+//
+//	for (int i = 0; i < 8; i++) {
+//		magnitudes[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
+//		magnitudes2[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
+//	}
+//
+//	std::sort(magnitudes, magnitudes + 8);
+//
+//
+//	float max1, max2;
+//	max1 = magnitudes[6];
+//	max2 = magnitudes[7];
+//
+//	if ((max1 + max2) / 2 < 500) {
+//		//Here we find the positions of the highest magnitudes 
+//		int pos1, pos2;
+//		for (int i = 0; i < 8; i++) {
+//			if (magnitudes2[i] == max1) {
+//				pos1 = i;
+//			}
+//			if (magnitudes2[i] == max2) {
+//				pos2 = i;
+//			}
+//		}
+//
+//		//Here we make a sorted array of the corresponding DTMF frequency from the position of the highest magnitudes
+//		float sortFreq[] = { DTMFfreq[pos2], DTMFfreq[pos1] };
+//		std::sort(sortFreq, sortFreq + 2);
+//
+//		return sortFreq;
+//	}
+//}
 
 std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, std::vector<float> data) {
 	std::vector<float> result;
@@ -390,6 +388,7 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 		magnitudes[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
 		magnitudes2[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
 	}
+	
 
 	std::sort(magnitudes, magnitudes + 8);
 
@@ -408,6 +407,18 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 		}
 	}
 
+	for (int i = 0; i < 8; i++) {
+		if (magnitudes2[i] > 50)
+		std::cout << "Magnitude: " << magnitudes2[i] << " Freq: " << DTMFfreq[i] << "\n";
+	}
+	
+	if (magnitudes2[0] > 50) {
+		std::cout << "\n";
+		std::cout << "600  Magnitude: " << magnitudes2[0] << "\n";
+		std::cout << "1200 Magnitude: " << magnitudes2[4] << "\n";
+		std::cout << "\n";
+	}
+	
 	//Here we make a sorted array of the corresponding DTMF frequency from the position of the highest magnitudes
 	float sortFreq[] = { DTMFfreq[pos2], DTMFfreq[pos1] };
 	std::sort(sortFreq, sortFreq + 2);
