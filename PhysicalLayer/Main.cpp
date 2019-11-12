@@ -29,10 +29,10 @@ int main() {
 	//while(true)
 
 	// Usage
-	PhysicalLayer cat;
-	cat.start();
+	//PhysicalLayer cat;
+	//cat.start();
 
-	cat.listenStartBit();
-	cat.stop();
+	//cat.listenStartBit();
+	//cat.stop();
 	return 0;
 }

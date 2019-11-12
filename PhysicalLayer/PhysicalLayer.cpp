@@ -25,6 +25,7 @@
 PhysicalLayer::PhysicalLayer()
 {
 	bufferCount = 0;
+	setProcessingInterval(sf::milliseconds(100));//default er 100
 	buffer[0xFFFF] = {0};
 	listen = true;
 }
@@ -252,8 +253,6 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 		
 		for (int i = 0; i < SUBSAMPLE; i++, tailBuffer++) {
 			samples.push_back(buffer[tailBuffer]);
-			while ((tailBuffer - 1 == bufferCount))
-				;
 		}
 		samples = PhysicalLayer::findHighestFreq(SUBSAMPLE, 44100, samples);
 		for (int i = 0; i < 2; i++) {
