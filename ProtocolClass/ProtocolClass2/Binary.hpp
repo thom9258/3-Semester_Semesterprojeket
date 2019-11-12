@@ -148,11 +148,6 @@ public:
 		return resVec;
 	}
 
-	{
-	
-
-	}
-
 	// getter functions 
 	int GetLength(void)
 	{
