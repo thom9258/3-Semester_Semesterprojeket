@@ -57,7 +57,7 @@ public:
 	Binary(Binary& bin) : binLength(bin.binLength), data(bin.data) {};
 
 
-	// asdasdsddefined constructor tadasdasking a string of 1 and 0 as char
+	// defined constructor tadasdasking a string of 1 and 0 as char
 	Binary(string strBin)
 	{
 		for (int i = 0; i < strBin.size(); i++) 
@@ -146,11 +146,6 @@ public:
 			resVec.push_back(number);
 		}
 		return resVec;
-	}
-
-	{
-	
-
 	}
 
 	// getter functions 
