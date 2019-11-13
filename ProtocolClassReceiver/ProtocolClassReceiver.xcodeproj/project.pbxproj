@@ -25,6 +25,8 @@
 /* Begin PBXFileReference section */
 		12FCB75F237BEB070057A741 /* ProtocolClassReceiver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolClassReceiver; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FCB762237BEB070057A741 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		12FCB769237BEBF30057A741 /* ProtocolReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProtocolReceiver.h; sourceTree = "<group>"; };
+		12FCB76A237BEC080057A741 /* BinaryReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BinaryReceiver.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,8 @@
 			isa = PBXGroup;
 			children = (
 				12FCB762237BEB070057A741 /* main.cpp */,
+				12FCB769237BEBF30057A741 /* ProtocolReceiver.h */,
+				12FCB76A237BEC080057A741 /* BinaryReceiver.h */,
 			);
 			path = ProtocolClassReceiver;
 			sourceTree = "<group>";
