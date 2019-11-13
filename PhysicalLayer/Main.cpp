@@ -7,7 +7,7 @@
 #include "PhysicalLayer.h"
 #define M_PI 3.1415926535
 
-int main() {
+long int main() {
 
 	/*std::thread t1(record);
 
