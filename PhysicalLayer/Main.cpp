@@ -7,7 +7,7 @@
 #include "PhysicalLayer.h"
 #define M_PI 3.1415926535
 
-int main() {
+long int main() {
 
 	/*std::thread t1(record);
 
@@ -24,15 +24,15 @@ int main() {
 	//std::vector<int> fuckmikkelogthomas{0,0,1,1};
 	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//PhysicalLayer::sendStartBit(0b0000);
-	/*std::vector<int> fuckmikkelogthomas{ 0,0,0,0,1,1,1,0,1,0,1,0 };
-	PhysicalLayer::sendBitString(fuckmikkelogthomas);*/
+	//std::vector<int> fuckmikkelogthomas{ 0,0,0,0,1,1,1,0,1,0,1,0 };
+	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//while(true)
 
 	// Usage
-	//PhysicalLayer cat;
-	//cat.start();
-
+	PhysicalLayer cat;
+	cat.start();
+	cat.sendStartBit(0b0000);
 	//cat.listenStartBit();
-	//cat.stop();
+
 	return 0;
 }
