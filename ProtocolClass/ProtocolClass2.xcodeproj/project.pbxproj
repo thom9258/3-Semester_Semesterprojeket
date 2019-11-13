@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1226E1E523717AB7000BF177 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1226E1E423717AB7000BF177 /* main.cpp */; };
-		127630E123717B5A002D322A /* Protokol.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 127630DE23717B5A002D322A /* Protokol.cpp */; };
-		127630E223717B5A002D322A /* Binary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 127630E023717B5A002D322A /* Binary.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,9 +26,7 @@
 		1226E1E123717AB7000BF177 /* ProtocolClass2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolClass2; sourceTree = BUILT_PRODUCTS_DIR; };
 		1226E1E423717AB7000BF177 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		127630DD23717B5A002D322A /* Protokol.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Protokol.hpp; sourceTree = "<group>"; };
-		127630DE23717B5A002D322A /* Protokol.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Protokol.cpp; sourceTree = "<group>"; };
 		127630DF23717B5A002D322A /* Binary.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Binary.hpp; sourceTree = "<group>"; };
-		127630E023717B5A002D322A /* Binary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Binary.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,9 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				1226E1E423717AB7000BF177 /* main.cpp */,
-				127630E023717B5A002D322A /* Binary.cpp */,
 				127630DF23717B5A002D322A /* Binary.hpp */,
-				127630DE23717B5A002D322A /* Protokol.cpp */,
 				127630DD23717B5A002D322A /* Protokol.hpp */,
 			);
 			path = ProtocolClass2;
@@ -130,8 +124,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1226E1E523717AB7000BF177 /* main.cpp in Sources */,
-				127630E223717B5A002D322A /* Binary.cpp in Sources */,
-				127630E123717B5A002D322A /* Protokol.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
