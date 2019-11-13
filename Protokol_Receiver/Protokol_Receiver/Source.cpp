@@ -19,9 +19,6 @@ int r(vector<int> v1, int n) {
 int main()
 {
 
-	vector<int> v1{ 1, 2, 3, 4, 5 };
-	int r(vector<int> v1, 4);
-
-	system("pause");
+	cout << "it works" << endl;
 	return 0;
 }

@@ -67,12 +67,22 @@ public:
 	//RecNumbering
 
 	//RecFlagDetermine
+	int ProtocolReceiver::getFlagbits(vector<int> vec getVectorBitData(std::vector<int> inputVector, 0, 4)) {
+		if(vec[4]=1){
+			sf = 1;
+		};
+		if (vec[3] = 1) {
+			uligeFlag = 1;
+		};
 
+	}
 	//ConvertData
 
-    
+
 private:
 	std::vector <int> getVectorFlags(vector<int> v1);
 	std::vector <int> getVectorLength(vector<int> v1);
 	std::vector<int> FullFrame;
+	int sf;
+	int uligeFlag;
 };
