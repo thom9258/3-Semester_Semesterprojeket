@@ -127,7 +127,7 @@ public:
 	// bin1 = bin1.BinaryAppend(bin1,bin2);
 
 	// operator overload of the << operator for printing with cout
-	ostream& operator<<(ostream& out, Binary& input)
+	friend ostream& operator<<(ostream& out, Binary& input)
 	{
 		for (int i = 0; i < input.GetLength(); i++)
 		{

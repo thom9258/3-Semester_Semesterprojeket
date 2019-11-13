@@ -10,8 +10,6 @@ class ProtocolReceiver
 public:
 	ProtocolReceiver(std::vector<int> input) : FullFrame(input) {};
 
-	//check crc
-
 	//RecNumbering
 
 	//RecFlagDetermine
@@ -21,4 +19,5 @@ public:
     
 private:
 	std::vector<int> FullFrame;
+    std::string final;
 };

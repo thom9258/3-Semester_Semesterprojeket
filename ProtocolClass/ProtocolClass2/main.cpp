@@ -35,7 +35,6 @@ int main()
             
         }
 
-        
         std::string CRCstring = p1.senderCRC(FullFrame.GetData());
         
         Binary CRC(CRCstring);
