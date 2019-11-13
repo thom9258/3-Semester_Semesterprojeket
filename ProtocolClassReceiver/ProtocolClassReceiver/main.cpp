@@ -4,7 +4,5 @@
 
 int main()
 {
-    std::vector<int> input = {};
     
-    ProtocolReceiver p1(input);
 }
