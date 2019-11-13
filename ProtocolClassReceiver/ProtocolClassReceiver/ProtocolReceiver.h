@@ -85,4 +85,5 @@ private:
 	std::vector<int> FullFrame;
 	int sf;
 	int uligeFlag;
+    std::string final;
 };
