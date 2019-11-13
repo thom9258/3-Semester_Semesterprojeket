@@ -8,8 +8,17 @@
 class ProtocolReceiver
 {
 public:
-    
+	ProtocolReceiver(std::vector<int> input) : FullFrame(input) {};
+
+	//check crc
+
+	//RecNumbering
+
+	//RecFlagDetermine
+
+	//ConvertData
+
     
 private:
-    
+	std::vector<int> FullFrame;
 };

@@ -13,7 +13,15 @@ class BinaryReceiver
 {
 public:
     
+	// constructor for vector
+
+	//lav 4 bit vector til int (binToInt)
+
+	//lav en 8 bit vector om til Char (BinToChar)
+	
+
     
 private:
-    
+    // vector data
+	// int length
 };
