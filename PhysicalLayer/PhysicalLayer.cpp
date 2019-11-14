@@ -294,21 +294,21 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 
 	std::sort(magnitudes, magnitudes + 8);
 
-	//float max1, max2;
+	float max1, max2;
 
-	//max1 = magnitudes[6];
-	//max2 = magnitudes[7];
-
-	//Here we find the positions of the highest magnitudes 
-	//int pos1, pos2;
-	//for (int i = 0; i < 8; i++) {
-	//	if (magnitudes2[i] == max1) {
-	//		pos1 = i;
-	//	}
-	//	if (magnitudes2[i] == max2) {
-	//		pos2 = i;
-	//	}
-	//}
+	max1 = magnitudes[6];
+	max2 = magnitudes[7];
+/*
+	Here we find the positions of the highest magnitudes */
+	int pos1, pos2;
+	for (int i = 0; i < 8; i++) {
+		if (magnitudes2[i] == max1) {
+			pos1 = i;
+		}
+		if (magnitudes2[i] == max2) {
+			pos2 = i;
+		}
+	}
 
 	for (int i = 0; i < 8; i++) {
 		if (magnitudes2[i] > 20)
