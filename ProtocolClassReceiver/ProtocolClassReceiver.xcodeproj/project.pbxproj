@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1226E1E523717AB7000BF177 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1226E1E423717AB7000BF177 /* main.cpp */; };
+		12FCB763237BEB070057A741 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12FCB762237BEB070057A741 /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1226E1DF23717AB7000BF177 /* CopyFiles */ = {
+		12FCB75D237BEB070057A741 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -23,14 +23,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1226E1E123717AB7000BF177 /* ProtocolClass2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolClass2; sourceTree = BUILT_PRODUCTS_DIR; };
-		1226E1E423717AB7000BF177 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		127630DD23717B5A002D322A /* Protokol.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Protokol.hpp; sourceTree = "<group>"; };
-		127630DF23717B5A002D322A /* Binary.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Binary.hpp; sourceTree = "<group>"; };
+		12FCB75F237BEB070057A741 /* ProtocolClassReceiver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProtocolClassReceiver; sourceTree = BUILT_PRODUCTS_DIR; };
+		12FCB762237BEB070057A741 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		12FCB769237BEBF30057A741 /* ProtocolReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProtocolReceiver.h; sourceTree = "<group>"; };
+		12FCB76A237BEC080057A741 /* BinaryReceiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BinaryReceiver.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1226E1DE23717AB7000BF177 /* Frameworks */ = {
+		12FCB75C237BEB070057A741 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -40,67 +40,67 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1226E1D823717AB7000BF177 = {
+		12FCB756237BEB070057A741 = {
 			isa = PBXGroup;
 			children = (
-				1226E1E323717AB7000BF177 /* ProtocolClass2 */,
-				1226E1E223717AB7000BF177 /* Products */,
+				12FCB761237BEB070057A741 /* ProtocolClassReceiver */,
+				12FCB760237BEB070057A741 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		1226E1E223717AB7000BF177 /* Products */ = {
+		12FCB760237BEB070057A741 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1226E1E123717AB7000BF177 /* ProtocolClass2 */,
+				12FCB75F237BEB070057A741 /* ProtocolClassReceiver */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1226E1E323717AB7000BF177 /* ProtocolClass2 */ = {
+		12FCB761237BEB070057A741 /* ProtocolClassReceiver */ = {
 			isa = PBXGroup;
 			children = (
-				1226E1E423717AB7000BF177 /* main.cpp */,
-				127630DF23717B5A002D322A /* Binary.hpp */,
-				127630DD23717B5A002D322A /* Protokol.hpp */,
+				12FCB762237BEB070057A741 /* main.cpp */,
+				12FCB769237BEBF30057A741 /* ProtocolReceiver.h */,
+				12FCB76A237BEC080057A741 /* BinaryReceiver.h */,
 			);
-			path = ProtocolClass2;
+			path = ProtocolClassReceiver;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1226E1E023717AB7000BF177 /* ProtocolClass2 */ = {
+		12FCB75E237BEB070057A741 /* ProtocolClassReceiver */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1226E1E823717AB7000BF177 /* Build configuration list for PBXNativeTarget "ProtocolClass2" */;
+			buildConfigurationList = 12FCB766237BEB070057A741 /* Build configuration list for PBXNativeTarget "ProtocolClassReceiver" */;
 			buildPhases = (
-				1226E1DD23717AB7000BF177 /* Sources */,
-				1226E1DE23717AB7000BF177 /* Frameworks */,
-				1226E1DF23717AB7000BF177 /* CopyFiles */,
+				12FCB75B237BEB070057A741 /* Sources */,
+				12FCB75C237BEB070057A741 /* Frameworks */,
+				12FCB75D237BEB070057A741 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = ProtocolClass2;
-			productName = ProtocolClass2;
-			productReference = 1226E1E123717AB7000BF177 /* ProtocolClass2 */;
+			name = ProtocolClassReceiver;
+			productName = ProtocolClassReceiver;
+			productReference = 12FCB75F237BEB070057A741 /* ProtocolClassReceiver */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		1226E1D923717AB7000BF177 /* Project object */ = {
+		12FCB757237BEB070057A741 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = "Mikkel Werge Olsen";
 				TargetAttributes = {
-					1226E1E023717AB7000BF177 = {
+					12FCB75E237BEB070057A741 = {
 						CreatedOnToolsVersion = 11.1;
 					};
 				};
 			};
-			buildConfigurationList = 1226E1DC23717AB7000BF177 /* Build configuration list for PBXProject "ProtocolClass2" */;
+			buildConfigurationList = 12FCB75A237BEB070057A741 /* Build configuration list for PBXProject "ProtocolClassReceiver" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -108,29 +108,29 @@
 				en,
 				Base,
 			);
-			mainGroup = 1226E1D823717AB7000BF177;
-			productRefGroup = 1226E1E223717AB7000BF177 /* Products */;
+			mainGroup = 12FCB756237BEB070057A741;
+			productRefGroup = 12FCB760237BEB070057A741 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1226E1E023717AB7000BF177 /* ProtocolClass2 */,
+				12FCB75E237BEB070057A741 /* ProtocolClassReceiver */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1226E1DD23717AB7000BF177 /* Sources */ = {
+		12FCB75B237BEB070057A741 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1226E1E523717AB7000BF177 /* main.cpp in Sources */,
+				12FCB763237BEB070057A741 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1226E1E623717AB7000BF177 /* Debug */ = {
+		12FCB764237BEB070057A741 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -188,7 +188,7 @@
 			};
 			name = Debug;
 		};
-		1226E1E723717AB7000BF177 /* Release */ = {
+		12FCB765237BEB070057A741 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -239,7 +239,7 @@
 			};
 			name = Release;
 		};
-		1226E1E923717AB7000BF177 /* Debug */ = {
+		12FCB767237BEB070057A741 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -247,7 +247,7 @@
 			};
 			name = Debug;
 		};
-		1226E1EA23717AB7000BF177 /* Release */ = {
+		12FCB768237BEB070057A741 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -258,25 +258,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1226E1DC23717AB7000BF177 /* Build configuration list for PBXProject "ProtocolClass2" */ = {
+		12FCB75A237BEB070057A741 /* Build configuration list for PBXProject "ProtocolClassReceiver" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1226E1E623717AB7000BF177 /* Debug */,
-				1226E1E723717AB7000BF177 /* Release */,
+				12FCB764237BEB070057A741 /* Debug */,
+				12FCB765237BEB070057A741 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1226E1E823717AB7000BF177 /* Build configuration list for PBXNativeTarget "ProtocolClass2" */ = {
+		12FCB766237BEB070057A741 /* Build configuration list for PBXNativeTarget "ProtocolClassReceiver" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1226E1E923717AB7000BF177 /* Debug */,
-				1226E1EA23717AB7000BF177 /* Release */,
+				12FCB767237BEB070057A741 /* Debug */,
+				12FCB768237BEB070057A741 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 1226E1D923717AB7000BF177 /* Project object */;
+	rootObject = 12FCB757237BEB070057A741 /* Project object */;
 }

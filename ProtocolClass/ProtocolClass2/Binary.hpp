@@ -57,7 +57,7 @@ public:
 	Binary(Binary& bin) : binLength(bin.binLength), data(bin.data) {};
 
 
-	// asdasdsddefined constructor tadasdasking a string of 1 and 0 as char
+	// defined constructor tadasdasking a string of 1 and 0 as char
 	Binary(string strBin)
 	{
 		for (int i = 0; i < strBin.size(); i++) 
@@ -83,6 +83,7 @@ public:
 		data = resVec;
 		binLength = resVec.size();*/
 	};
+
 
 	// converts a character into a binary value with padding (to get the size to be 8 bits long)
 	Binary(char character)
@@ -111,7 +112,6 @@ public:
 	}
 
 
-
 	// appends a binary number onto another binary number
 	Binary BinaryAppend(Binary num1, Binary num2)
 	{
@@ -124,6 +124,7 @@ public:
 		}
 		return result;
 	};
+	// bin1 = bin1.BinaryAppend(bin1,bin2);
 
 	// operator overload of the << operator for printing with cout
 	friend ostream& operator<<(ostream& out, Binary& input)
@@ -134,6 +135,7 @@ public:
 		}
 		return out;
 	}
+
 
 	// turns strings into vectors
 	vector<int> strToVec(string str)
@@ -170,5 +172,4 @@ private:
 	vector<int> data;
 	// length of the above vector
 	int binLength = 0;
-
 };

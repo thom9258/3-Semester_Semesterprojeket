@@ -26,11 +26,12 @@
 PhysicalLayer::PhysicalLayer(){
 	bufferCount = 0;
 	setProcessingInterval(sf::milliseconds(100));//default er 100
-	buffer[0xFFFF] = {0};
+	buffer[0xFFFF] = { 0 };
 	listen = true;
 }
 
 PhysicalLayer::~PhysicalLayer() {
+	std::cout << "hejsa" << std::endl;
 	stop();
 	listen = false;
 	sf::sleep(sf::milliseconds(20));
@@ -178,16 +179,20 @@ void PhysicalLayer::sendStartBit(int startBit) {
 
 bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount)
 {
-	for (unsigned short i = 0; i < sampleCount; i++, bufferCount++) PhysicalLayer::buffer[bufferCount] = *(samples + i);
+	for (unsigned short i = 0; i < sampleCount; i++, bufferCount++) {
+		PhysicalLayer::buffer[bufferCount] = *(samples + i);
+	}
 	return listen;
 }
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
 	bool previousResult = false;
+	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
 
 	int frequencies[2];
 	std::vector<float> samples;
 	unsigned short tailBuffer = 0;
+
 	while (true) {
 		samples.clear();
 		for (int i = 0; i < SUBSAMPLE; i++, tailBuffer++) {
@@ -199,10 +204,10 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 			for (int i = 0; i < 2; i++) {
 				frequencies[i] = samples[i];
 			}
-			//std::cout << frequencies[1] << "  " << frequencies[0] << "\n";
+			std::cout << frequencies[1] << "  " << frequencies[0] << "\n";
 			if (frequencies[0] == 697 && frequencies[1] == 1209 && previousResult) {
 				std::cout << "true" << std::endl;
-				//return true;
+				return true;
 			}
 			else if (frequencies[0] == 697 && frequencies[1] == 1209)
 				previousResult = true;
@@ -289,20 +294,21 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 
 	std::sort(magnitudes, magnitudes + 8);
 
-	float max1, max2;
-	max1 = magnitudes[6];
-	max2 = magnitudes[7];
+	//float max1, max2;
+
+	//max1 = magnitudes[6];
+	//max2 = magnitudes[7];
 
 	//Here we find the positions of the highest magnitudes 
-	int pos1, pos2;
-	for (int i = 0; i < 8; i++) {
-		if (magnitudes2[i] == max1) {
-			pos1 = i;
-		}
-		if (magnitudes2[i] == max2) {
-			pos2 = i;
-		}
-	}
+	//int pos1, pos2;
+	//for (int i = 0; i < 8; i++) {
+	//	if (magnitudes2[i] == max1) {
+	//		pos1 = i;
+	//	}
+	//	if (magnitudes2[i] == max2) {
+	//		pos2 = i;
+	//	}
+	//}
 
 	for (int i = 0; i < 8; i++) {
 		if (magnitudes2[i] > 20)
@@ -339,35 +345,35 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 
 //--------------------------------------------------------------------------------------
 
-float PhysicalLayer::goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data) {
-	int k, i;
-	float floatnumSamples;
-	float omega, sine, cosine, coeff, q0, q1, q2, magnitude, real, imag;
-
-	float scalingFactor = numSamples / 2.0;
-
-	floatnumSamples = (float)numSamples;
-	k = (int)(0.5 + ((floatnumSamples * TARGET_FREQ) / SAMPLING_RATE));
-	omega = (2.0 * M_PI * k) / floatnumSamples;
-	sine = sin(omega);
-	cosine = cos(omega);
-	coeff = 2.0 * cosine;
-	q0 = 0;
-	q1 = 0;
-	q2 = 0;
-
-	for (i = 0; i < numSamples; i++) {
-		q0 = coeff * q1 - q2 + data[i];
-		q2 = q1;
-		q1 = q0;
-	}
-	real = (q1 - q2 * cosine) / scalingFactor;
-	imag = (q2 * sine) / scalingFactor;
-
-	magnitude = sqrtf(pow(real, 2) + pow(imag, 2));
-
-	return magnitude;
-}
+//float PhysicalLayer::goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data) {
+//	int k, i;
+//	float floatnumSamples;
+//	float omega, sine, cosine, coeff, q0, q1, q2, magnitude, real, imag;
+//
+//	float scalingFactor = numSamples / 2.0;
+//
+//	floatnumSamples = (float)numSamples;
+//	k = (int)(0.5 + ((floatnumSamples * TARGET_FREQ) / SAMPLING_RATE));
+//	omega = (2.0 * M_PI * k) / floatnumSamples;
+//	sine = sin(omega);
+//	cosine = cos(omega);
+//	coeff = 2.0 * cosine;
+//	q0 = 0;
+//	q1 = 0;
+//	q2 = 0;
+//
+//	for (i = 0; i < numSamples; i++) {
+//		q0 = coeff * q1 - q2 + data[i];
+//		q2 = q1;
+//		q1 = q0;
+//	}
+//	real = (q1 - q2 * cosine) / scalingFactor;
+//	imag = (q2 * sine) / scalingFactor;
+//
+//	magnitude = sqrtf(pow(real, 2) + pow(imag, 2));
+//
+//	return magnitude;
+//}
 
 float PhysicalLayer::goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, std::vector<float> data) {
 	int k, i;
