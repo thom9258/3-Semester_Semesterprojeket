@@ -86,6 +86,22 @@ public:
     {
         return ul;
     }
+
+	std::vector<int> SenderCRC(std::vector<int> input) 
+	{
+		std::vector<int> result;
+		std::vector<int> CRCPoly = {1, 0,0,0,1, 1,1,0,1};
+
+		result = input;
+
+		for (int i = CRCPoly.size() - 1; i >= 0; i--) 
+		{
+			result.push_back(0);
+		}
+
+
+		return result;
+	}
     
     
     
