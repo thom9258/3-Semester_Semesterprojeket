@@ -7,7 +7,22 @@
 #include "PhysicalLayer.h"
 #define M_PI 3.1415926535
 
-long int main() {
+
+
+std::vector<int> binaryToVector(unsigned int bit, char bitCount) {
+	std::vector<int> result;
+	result.reserve(bitCount);
+	unsigned char k = 0b1;
+	for (int i = 0; i < bitCount; i++) {
+		k = 1;
+		k = bit & k;
+		result.push_back(k);
+		bit = bit>> 1;
+	}
+	return result;
+}
+
+int main() {
 
 	/*std::thread t1(record);
 
@@ -24,15 +39,15 @@ long int main() {
 	//std::vector<int> fuckmikkelogthomas{0,0,1,1};
 	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//PhysicalLayer::sendStartBit(0b0000);
-	//std::vector<int> fuckmikkelogthomas{ 0,0,0,0,1,1,1,0,1,0,1,0 };
-	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
+	std::vector<int> fuckmikkelogthomas = binaryToVector(0b0000'0001'0000'0001'0000'0001'0001, 28);
+	PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//while(true)
 
 	// Usage
-	PhysicalLayer cat;
-	cat.start();
-	cat.sendStartBit(0b0000);
+	//PhysicalLayer cat;
+	//cat.start();
+	//cat.sendStartBit(0b0000);
 	//cat.listenStartBit();
-
+	sf::sleep(sf::seconds(2));
 	return 0;
 }
