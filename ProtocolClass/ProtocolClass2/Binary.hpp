@@ -93,14 +93,14 @@ public:
 		int i = integ;
 		while (i > 0) // converts integer into binary
 		{
-			(i % 2) ? data.push_back('1') : // if sentence that needs reformatting
-				data.push_back('0');
+			(i % 2) ? data.push_back(1) : // if sentence that needs reformatting
+				data.push_back(0);
 			i /= 2;
 		}
 		reverse(data.begin(), data.end());
 
 
-		while (data.size() + 1 != 8) { data.insert(data.begin, 0); }
+		while (data.size() + 1 <= 8) { data.insert(data.begin(), 0); }
 
 		binLength = data.size();
 	}

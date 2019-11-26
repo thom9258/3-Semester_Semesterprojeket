@@ -109,7 +109,6 @@ public:
         }
 
         std::string final = message + encresult.substr(encresult.length()-n+1);
-        std::cout << final << std::endl;
         return final;
     }
     
