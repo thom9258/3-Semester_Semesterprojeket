@@ -89,28 +89,49 @@ public:
 	Binary(char character)
 	{
 		int integ = int(character);
-		string bin = "";
 
 		int i = integ;
 		while (i > 0) // converts integer into binary
 		{
-			(i % 2) ? bin.push_back('1') : // if sentence that needs reformatting
-				bin.push_back('0');
+			(i % 2) ? data.push_back('1') : // if sentence that needs reformatting
+				data.push_back('0');
 			i /= 2;
 		}
-		reverse(bin.begin(), bin.end());
+		reverse(data.begin(), data.end());
 
-		data = strToVec(bin);
 
-		data.insert(data.begin(), 0);
-
-		if (integ <= 64) {
-			data.insert(data.begin(), 0);
-		}
+		while (data.size() + 1 != 8) { data.insert(data.begin, 0); }
 
 		binLength = data.size();
 	}
     
+	//Binary(char character)
+	//{
+	//	int integ = int(character);
+	//	string bin = "";
+
+	//	int i = integ;
+	//	while (i > 0) // converts integer into binary
+	//	{
+	//		(i % 2) ? bin.push_back('1') : // if sentence that needs reformatting
+	//			bin.push_back('0');
+	//		i /= 2;
+	//	}
+	//	reverse(bin.begin(), bin.end());
+
+
+
+	//	data.insert(data.begin(), 0);
+
+	//	if (integ <= 64) {
+	//		data.insert(data.begin(), 0);
+	//	}
+
+	//	binLength = data.size();
+	//}
+
+
+
     std::string returnString(void)
     {
         std::string result;
