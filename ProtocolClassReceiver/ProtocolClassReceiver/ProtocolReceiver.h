@@ -19,7 +19,16 @@ public:
 	int convertBinaryToDecimal(std::vector <int> v1);
 	int readFrom;
 	int readTo;
+	std::vector <int> getVectorLength(vector<int> v1) {
+		vector<int> numbersOfLetters;
+		for (int i = 0; i < 4; i++) {
 
+			numbersOfLetters.push_back(v1[i])
+		}
+		int n = convertBinaryToDecimal(numbersOfLetters);
+		return n;
+
+	}
 	std::vector <int> getVectorBitData(std::vector<int> v1, int readFrom, int readTo) {
 
 		std::vector <int> vectorBits;

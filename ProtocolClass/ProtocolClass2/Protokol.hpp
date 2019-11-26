@@ -90,7 +90,7 @@ public:
 	std::vector<int> SenderCRC(std::vector<int> input) 
 	{
 		std::vector<int> result;
-		std::vector<int> CRCPoly = {1,0,0,0,1,1,1,0,1};
+		std::vector<int> CRCPoly = {1, 0,0,0,1, 1,1,0,1};
 
 		result = input;
 
