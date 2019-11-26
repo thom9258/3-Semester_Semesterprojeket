@@ -7,7 +7,7 @@
 #include <math.h>
 #include<cassert>
 #include<algorithm>
-#include<sstream>
+#include <sstream>
 
 using namespace std;
 
@@ -110,18 +110,33 @@ public:
 
 		binLength = data.size();
 	}
+    
+    std::string returnString(void)
+    {
+        std::string result;
+        for(int i=0; i < data.size(); i++){
+            if (data[i] == 1) {
+                result.push_back('1');
+            }
+            else{
+                result.push_back('0');
+            }
+        }
+            
+        return result;
+    }
 
 
 	// appends a binary number onto another binary number
 	Binary BinaryAppend(Binary num1, Binary num2)
 	{
 		Binary result = num1;
-		result.SetLength(num1.GetLength() + num2.GetLength());
 
 		for (int i = 0; i < num2.GetLength(); i++)
 		{
 			result.data.push_back(num2.data[i]);
 		}
+        binLength = data.size();
 		return result;
 	};
 	// bin1 = bin1.BinaryAppend(bin1,bin2);
@@ -153,7 +168,7 @@ public:
 	// getter functions 
 	int GetLength(void)
 	{
-		return binLength;
+        return binLength;
 	}
 
 	vector<int> GetData(void)

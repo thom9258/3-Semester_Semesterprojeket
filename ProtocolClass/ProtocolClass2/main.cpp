@@ -18,6 +18,7 @@ int main()
     while (sf != 1) {
         p1.divider();
         Binary FullFrame(p1.numbering());
+        std::cout << FullFrame.GetLength() << std::endl;
 //        std::cout << p1.getFS() << std::endl;
 //        std::cout << p1.getF16() << std::endl;
 //        std::cout << p1.numbering() << std::endl;
@@ -27,21 +28,46 @@ int main()
         ul = p1.getUL();
         Binary flag({0,0,ul,sf});
         FullFrame = FullFrame.BinaryAppend(FullFrame, flag);
-        
+        std::cout << FullFrame.GetLength() << std::endl;
         for(int i = 0; i < p1.getF16().length(); i++)
         {
             Binary singleChar(p1.getF16()[i]);
             FullFrame = FullFrame.BinaryAppend(FullFrame, singleChar);
             
         }
+        
 
         //CRC here
-        Binary CRCchecked(p1.SenderCRC(FullFrame.GetData()));
+        
+//        std::cout << FullFrame << std::endl;
+//
+//        std::vector<int> sd = FullFrame.GetData();
+//
+//        std::cout << sd.size() << std::endl;
+//
+//        for (int i = 0; i < sd.size(); i++) {
+//            std::cout << sd[i];
+//        }
+//
+//        std::vector<int> myvec = {1, 0, 0};
+//
+//        std::cout << myvec.size() << std::endl;
         
         
-        std::cout << CRCchecked << std::endl;
         
 
+
+//        std::string result;
+//        for(int i=0; i < framesize; i++){
+//            if (FullFrame.GetData()[i] == 1) {
+//                result.push_back('1');
+//            }
+//            else{
+//                result.push_back('0');
+//            }
+//        }
+        
+        
 
     return 0;
     }

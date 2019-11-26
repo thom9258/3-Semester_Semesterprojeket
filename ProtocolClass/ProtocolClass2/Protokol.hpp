@@ -87,24 +87,31 @@ public:
         return ul;
     }
 
-	std::vector<int> SenderCRC(std::vector<int> input) 
-	{
-		std::vector<int> result;
-		std::vector<int> CRCPoly = {1, 0,0,0,1, 1,1,0,1};
+    std::string SenderCRC(std::string message)
+    {
+        
+        std::string CRC = "100011101";
 
-		result = input;
+    std::string encresult="";
 
-		//append poly-1 onto start frame
-		for (int i = CRCPoly.size() - 2; i >= 0; i--) { result.push_back(0); }
+        encresult += message;
 
+        int n = CRC.length();
 
-		return result;
-	}
-    
-	//int eor(int a, int b) 
-	//{
-	//	return a ^ b;
-	//}
+        for(int i = 1; i<=n-1; i++){
+            encresult += '0';
+        }
+        for(int i = 0; i <= encresult.length()-n; ){
+            for (int k=0; k<n; k++)
+                encresult[i+k] = encresult[i+k]==CRC[k]? '0' : '1';
+                for( ; i < encresult.length() && encresult[i] != '1'; i++);
+
+        }
+
+        std::string final = message + encresult.substr(encresult.length()-n+1);
+        std::cout << final << std::endl;
+        return final;
+    }
     
 private:
     std::vector<int> frame;
