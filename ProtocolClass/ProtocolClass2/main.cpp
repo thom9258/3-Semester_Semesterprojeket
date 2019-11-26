@@ -37,6 +37,8 @@ int main()
         
         Binary FullFrame2(p1.SenderCRC(stringFrame));
         
+        std::cout << FullFrame2 << std::endl;
+        
         // GIVE FULLFRAME 2 TO PHYSICAL LAYER, THIS IS THE FINAL BIT STRING !!
         
         
