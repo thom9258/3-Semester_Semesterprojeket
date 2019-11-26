@@ -137,7 +137,8 @@ public:
 			result.data.push_back(num2.data[i]);
 		}
         //binLength = data.size();
-		result.SetLength(num1.GetLength() + num2.GetLength);
+        int length = num1.GetLength() + num2.GetLength();
+		result.SetLength(length);
 		return result;
 	};
 

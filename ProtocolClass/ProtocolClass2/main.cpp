@@ -19,6 +19,7 @@ int main()
         p1.divider();
         Binary FullFrame(p1.numbering());
         std::cout << FullFrame.GetLength() << std::endl;
+        std::cout << FullFrame << std::endl;
 //        std::cout << p1.getFS() << std::endl;
 //        std::cout << p1.getF16() << std::endl;
 //        std::cout << p1.numbering() << std::endl;
@@ -29,12 +30,15 @@ int main()
         Binary flag({0,0,ul,sf});
         FullFrame = FullFrame.BinaryAppend(FullFrame, flag);
         std::cout << FullFrame.GetLength() << std::endl;
+        std::cout << FullFrame << std::endl;
         for(int i = 0; i < p1.getF16().length(); i++)
         {
             Binary singleChar(p1.getF16()[i]);
             FullFrame = FullFrame.BinaryAppend(FullFrame, singleChar);
             
         }
+        std::cout << FullFrame.GetLength() << std::endl;
+        std::cout << FullFrame << std::endl;
         
 
         //CRC here
