@@ -23,12 +23,15 @@
 //--------------------------------------------------------------------------------------
 //-------------------------------------constructors-------------------------------------
 //--------------------------------------------------------------------------------------
-PhysicalLayer::PhysicalLayer(){
+PhysicalLayer::PhysicalLayer() {
 	bufferCount = 0;
 	setProcessingInterval(sf::milliseconds(100));//default er 100
 	buffer[0xFFFF] = { 0 };
+	tail = buffer;
+	head = buffer;
 	listen = true;
 }
+
 
 PhysicalLayer::~PhysicalLayer() {
 	std::cout << "hejsa" << std::endl;
@@ -144,7 +147,6 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	//	std::cout << std::bitset<4>(nipples[i]) << std::endl;
 	//}
 
-	//int nipple = bitString;
 	int k;
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
@@ -177,12 +179,28 @@ void PhysicalLayer::sendStartBit(int startBit) {
 //---------------------------------------Receiver---------------------------------------
 //--------------------------------------------------------------------------------------
 
-bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount)
-{
-	for (unsigned short i = 0; i < sampleCount; i++, bufferCount++) {
-		PhysicalLayer::buffer[bufferCount] = *(samples + i);
+bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount) {
+	for (short i = 0; i < sampleCount; i++) {
+		//assign value to head of buffer
+		*(PhysicalLayer::head++) = *(samples + i);
+
+		//reset head if end is reached
+		if (PhysicalLayer::head > PhysicalLayer::buffer + bufferCount)
+			PhysicalLayer::head = PhysicalLayer::buffer;
 	}
+
 	return listen;
+}
+
+float PhysicalLayer::tailBuffer() {
+
+	//reset tail if end is reached
+	if (PhysicalLayer::tail > PhysicalLayer::buffer + bufferCount)
+		PhysicalLayer::tail = PhysicalLayer::buffer;
+
+	//wait til head is a-head
+	while (tail >= head)
+		return *(PhysicalLayer::tail++);
 }
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
@@ -191,12 +209,11 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 
 	int frequencies[2];
 	std::vector<float> samples;
-	unsigned short tailBuffer = 0;
 
 	while (true) {
 		samples.clear();
-		for (int i = 0; i < SUBSAMPLE; i++, tailBuffer++) {
-			samples.push_back(buffer[tailBuffer]);
+		for (int i = 0; i < SUBSAMPLE; i++) {
+			samples.push_back(tailBuffer());
 		}
 		float mag = goertzel_mag(samples.size(), 1209, SAMPLE_RATE, samples);
 		if (mag > 20) {
