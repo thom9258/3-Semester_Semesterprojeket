@@ -101,7 +101,10 @@ public:
 		return result;
 	}
     
-    
+	//int eor(int a, int b) 
+	//{
+	//	return a ^ b;
+	//}
     
 private:
     std::vector<int> frame;
