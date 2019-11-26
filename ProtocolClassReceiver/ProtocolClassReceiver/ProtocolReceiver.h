@@ -6,24 +6,21 @@
 #include <iostream>
 
 
-vector <int> getVectorFlags(vector<int> v1);
-vector <int> getVectorLength(vector<int> v1);
-int convertBinaryToDecimal(vector <int> v1);
-int readFrom;
-int readTo;
+
+
 class ProtocolReceiver
 {
 public:
-	ProtocolReceiver(std::vector<int> input) : FullFrame(input) {};
-
-	int convertBinaryToDecimal(std::vector <int> v1);
 	int readFrom;
 	int readTo;
-	std::vector <int> getVectorLength(vector<int> v1) {
-		vector<int> numbersOfLetters;
+	ProtocolReceiver(std::vector<int> input) : FullFrame(input) {};
+
+
+	int getVectorLength(std::vector<int> v1) {
+		std::vector<int> numbersOfLetters;
 		for (int i = 0; i < 4; i++) {
 
-			numbersOfLetters.push_back(v1[i])
+			numbersOfLetters.push_back(v1[i]);
 		}
 		int n = convertBinaryToDecimal(numbersOfLetters);
 		return n;
@@ -44,7 +41,7 @@ public:
 
 
 
-	int convertBinaryToDecimal(vector <int> v1)
+	int convertBinaryToDecimal(std::vector <int> v1)
 	{
 		int n = v1.at(0) * 1 + v1.at(1) * 2 + v1.at(2) * 4 + v1.at(3) * 8;
 
@@ -61,7 +58,8 @@ public:
 	//RecNumbering
 
 	//RecFlagDetermine
-	int ProtocolReceiver::getFlagbits(vector<int> vec getVectorBitData(std::vector<int> inputVector, 0, 4)) {
+	int getFlagbits(std::vector<int> vec) {
+		//getVectorBitData(std::vector<int> inputVector, 0, 4)
 		if(vec[4]=1){
 			sf = 1;
 		};
@@ -74,8 +72,7 @@ public:
 
 
 private:
-	std::vector <int> getVectorFlags(vector<int> v1);
-	std::vector <int> getVectorLength(vector<int> v1);
+
 	std::vector<int> FullFrame;
 	int sf;
 	int uligeFlag;
