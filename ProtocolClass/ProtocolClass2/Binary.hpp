@@ -136,10 +136,13 @@ public:
 		{
 			result.data.push_back(num2.data[i]);
 		}
-        binLength = data.size();
+        //binLength = data.size();
+		result.SetLength(num1.GetLength() + num2.GetLength);
 		return result;
 	};
-	// bin1 = bin1.BinaryAppend(bin1,bin2);
+
+
+
 
 	// operator overload of the << operator for printing with cout
 	friend ostream& operator<<(ostream& out, Binary& input)
