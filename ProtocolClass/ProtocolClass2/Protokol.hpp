@@ -95,7 +95,7 @@ public:
 		result = input;
 
 		//append poly-1 onto start frame
-		for (int i = CRCPoly.size() - 1; i >= 0; i--) { result.push_back(0); }
+		for (int i = CRCPoly.size() - 2; i >= 0; i--) { result.push_back(0); }
 
 
 		return result;
