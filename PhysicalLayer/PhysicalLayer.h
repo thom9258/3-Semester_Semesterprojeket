@@ -11,7 +11,7 @@ class PhysicalLayer : public sf::SoundRecorder
 public:
 	PhysicalLayer();
 	~PhysicalLayer();
-	
+	float tailBuffer();
 	//Sender
 	//bool static readyToSend();
 	void static sendBitString(std::vector<int> bitString, float BPS = 1);
@@ -63,8 +63,10 @@ private:
 	std::vector<double> D = { 1633, 941 };
 
 protected:
-	unsigned short bufferCount;
-	unsigned char buffer[0xFFFF];
+	unsigned int bufferCount = 0xFFFF;
+	float buffer[0xFFFF];
+	float* tail = buffer;
+	float* head = buffer;
 	bool listen;
 };
 
