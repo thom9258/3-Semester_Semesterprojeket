@@ -5,6 +5,7 @@
 #include <chrono>     
 #include <ctime> 
 #include <SFML/Audio.hpp>
+#include <circular_buffer.hpp>
 
 #define M_PI 3.1415926535
 #define SUBSAMPLE 5500

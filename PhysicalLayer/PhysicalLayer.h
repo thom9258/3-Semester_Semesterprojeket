@@ -4,6 +4,7 @@
 #include <algorithm> 
 #include <iostream>
 #include <SFML/Audio.hpp>
+#include <circular_buffer.hpp>
 
 
 
@@ -64,8 +65,9 @@ private:
 	std::vector<double> D = { 1633, 941 };
 
 protected:
+	boost::circular_buffer<float> cb(3);
+
 	unsigned int bufferCount = 0xFFFF;
-	float buffer[0xFFFF];
 	float* tail = buffer;
 	float* pretail;
 	float* head = buffer;
