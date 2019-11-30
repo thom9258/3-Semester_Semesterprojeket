@@ -6,6 +6,7 @@
 #include <SFML/Audio.hpp>
 
 
+
 class PhysicalLayer : public sf::SoundRecorder
 {
 public:
@@ -23,7 +24,7 @@ public:
 	bool listenStartBit(int sleepTime = 1000);
 	//int static listenToSound();
 	
-	//inheretance fra SFML 
+	//inheritance fra SFML 
 	virtual bool OnStart() { std::cout << bufferCount << std::endl;  return true; }
 
 	virtual bool onProcessSamples(const int16_t* samples, std::size_t sampleCount);
@@ -66,6 +67,7 @@ protected:
 	unsigned int bufferCount = 0xFFFF;
 	float buffer[0xFFFF];
 	float* tail = buffer;
+	float* pretail;
 	float* head = buffer;
 	bool listen;
 };
