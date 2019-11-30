@@ -12,12 +12,13 @@
 //--------------------------------------------------------------------------------------
 //-------------------------------------constructors-------------------------------------
 //--------------------------------------------------------------------------------------
-PhysicalLayer::PhysicalLayer(){
-	std::cout << "constructor reeeee" << std::endl;
+PhysicalLayer::PhysicalLayer() {
 	bufferCount = 0;
 	setProcessingInterval(sf::milliseconds(100));//default er 100
 	buffer[0xFFFF] = { 0 };
-	listen = false;
+	tail = buffer;
+	head = buffer;
+	listen = true;
 }
 
 //--------------------------------------------------------------------------------------
@@ -133,6 +134,10 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	}
 	std::reverse(nipples.begin(), nipples.end());
 
+	//for (int i = 0; i < nipples.size(); i++) {
+	//	std::cout << std::bitset<4>(nipples[i]) << std::endl;
+	//}
+
 	int k;
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
@@ -165,12 +170,28 @@ void PhysicalLayer::sendStartBit(int startBit) {
 //---------------------------------------Receiver---------------------------------------
 //--------------------------------------------------------------------------------------
 
-bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount){
-	for (unsigned short i = 0; i < sampleCount; i++, bufferCount++) {
-		PhysicalLayer::buffer[bufferCount] = *(samples + i);
+bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount) {
+	for (short i = 0; i < sampleCount; i++) {
+		//assign value to head of buffer
+		*(PhysicalLayer::head++) = *(samples + i);
+
+		//reset head if end is reached
+		if (PhysicalLayer::head > PhysicalLayer::buffer + bufferCount)
+			PhysicalLayer::head = PhysicalLayer::buffer;
 	}
-	//std::cout << bufferCount << ":   still running \n";
-	return !listen;
+
+	return listen;
+}
+
+float PhysicalLayer::tailBuffer() {
+
+	//reset tail if end is reached
+	if (PhysicalLayer::tail > PhysicalLayer::buffer + bufferCount)
+		PhysicalLayer::tail = PhysicalLayer::buffer;
+
+	//wait til head is a-head
+	while (tail >= head)
+		return *(PhysicalLayer::tail++);
 }
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
@@ -188,14 +209,12 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 	std::vector<float> highFreq;
 	std::vector<float> samples;
 
-	unsigned short tailBuffer = 0;
-
 	bool harGaaetOp = false;
 
 	while (true) {
 		samples.clear();
 		for (int i = 0; i < SUBSAMPLE; i++) {
-			samples.push_back(PhysicalLayer::buffer[tailBuffer + i]);
+			samples.push_back(tailBuffer());
 		}
 		for (int i = 0; i < 8; i++) {
 			std::cout << goertzel_mag(SUBSAMPLE, DTMFfreq[i], 44100, samples) << "\n";
@@ -354,6 +373,22 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 	}
 
 	std::sort(magnitudes, magnitudes + 8);
+
+	float max1, max2;
+
+	max1 = magnitudes[6];
+	max2 = magnitudes[7];
+/*
+	Here we find the positions of the highest magnitudes */
+	int pos1, pos2;
+	for (int i = 0; i < 8; i++) {
+		if (magnitudes2[i] == max1) {
+			pos1 = i;
+		}
+		if (magnitudes2[i] == max2) {
+			pos2 = i;
+		}
+	}
 
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {

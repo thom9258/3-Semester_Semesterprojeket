@@ -27,24 +27,20 @@ int main()
         ul = p1.getUL();
         Binary flag({0,0,ul,sf});
         FullFrame = FullFrame.BinaryAppend(FullFrame, flag);
-        
         for(int i = 0; i < p1.getF16().length(); i++)
         {
             Binary singleChar(p1.getF16()[i]);
             FullFrame = FullFrame.BinaryAppend(FullFrame, singleChar);
             
         }
-
+        std::string stringFrame = FullFrame.returnString();
         
-        std::string CRCstring = p1.senderCRC(FullFrame.GetData());
-        
-        Binary CRC(CRCstring);
-        FullFrame = FullFrame.BinaryAppend(FullFrame, CRC);
-        
-        
+        Binary FullFrame2(p1.SenderCRC(stringFrame));
         std::cout << FullFrame << std::endl;
+        std::cout << FullFrame2 << std::endl;
         
-    }
-
+        // GIVE FULLFRAME 2 TO PHYSICAL LAYER, THIS IS THE FINAL BIT STRING !!
+        
     return 0;
+    }
 }

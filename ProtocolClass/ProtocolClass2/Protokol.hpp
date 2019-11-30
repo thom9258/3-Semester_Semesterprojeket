@@ -24,6 +24,7 @@ public:
             return fullsentence;
         };
     
+    // Divides the sentence, and saves the first 16 characters in one variable.
     std::string divider()
     {
         
@@ -85,26 +86,15 @@ public:
     {
         return ul;
     }
-    
-    std::string senderCRC(std::vector<int> input)
+
+    std::string SenderCRC(std::string message)
     {
-        std::string message;
         
-        for(int i = 0; i < input.size(); i++)
-        {
-            if(input[i] == 1){
-                message.push_back('1');
-            }
-            else{
-                message.push_back('0');
-            }
-        }
+        std::string CRC = "100011101";
 
     std::string encresult="";
 
         encresult += message;
-        
-        std::string CRC = "100000111";
 
         int n = CRC.length();
 
@@ -118,11 +108,9 @@ public:
 
         }
 
-        std::string CRCremainder = encresult.substr(encresult.length()-n+1);
-        
-        return CRCremainder;
+        std::string final = message + encresult.substr(encresult.length()-n+1);
+        return final;
     }
-    
     
 private:
     std::vector<int> frame;
