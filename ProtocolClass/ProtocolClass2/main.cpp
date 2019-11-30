@@ -41,8 +41,6 @@ int main()
         
         // GIVE FULLFRAME 2 TO PHYSICAL LAYER, THIS IS THE FINAL BIT STRING !!
         
-        
-
     return 0;
     }
 }

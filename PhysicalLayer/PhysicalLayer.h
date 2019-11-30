@@ -6,6 +6,7 @@
 #include <SFML/Audio.hpp>
 
 
+
 class PhysicalLayer : public sf::SoundRecorder
 {
 public:
@@ -23,7 +24,7 @@ public:
 	bool listenStartBit(int sleepTime = 1000);
 	//int static listenToSound();
 	
-	//inheretance fra SFML 
+	//inheritance fra SFML 
 	virtual bool OnStart() { std::cout << bufferCount << std::endl;  return true; }
 
 	virtual bool onProcessSamples(const int16_t* samples, std::size_t sampleCount);
@@ -37,11 +38,11 @@ private:
 	unsigned const SAMPLE_RATE = 44100;
 
 	//bool sending, receiving;
-	//	//Receiver methods
-	float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data);
+	//Receiver methods
+	//float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data);
 	float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, std::vector<float> data); //gør den compatibel med vector
 
-	float static* findHighestFreq(std::size_t numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data);
+	//float static* findHighestFreq(std::size_t numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data);
 	std::vector<float> static findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, std::vector<float> data); //uhm... ved ikke hvorfor den ovenover har de argumenter så lave min egen
 	
 	//Receiver & Sender variables
@@ -66,6 +67,7 @@ protected:
 	unsigned int bufferCount = 0xFFFF;
 	float buffer[0xFFFF];
 	float* tail = buffer;
+	float* pretail;
 	float* head = buffer;
 	bool listen;
 };
