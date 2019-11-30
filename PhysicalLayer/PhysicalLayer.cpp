@@ -10,16 +10,6 @@
 #define SUBSAMPLE 5500
 #define SAMPLE_RATE_LISTEN 44100
 
-
-//bool PhysicalLayer::readyToSend() {
-//	if (sending || receiving) {
-//		return false;
-//	}
-//	else {
-//		return true;
-//	}
-//}
-
 //--------------------------------------------------------------------------------------
 //-------------------------------------constructors-------------------------------------
 //--------------------------------------------------------------------------------------
@@ -32,10 +22,11 @@ PhysicalLayer::PhysicalLayer() {
 	listen = true;
 }
 
+//--------------------------------------------------------------------------------------
 
 PhysicalLayer::~PhysicalLayer() {
 	stop();
-	listen = false;
+	listen = true;
 	sf::sleep(sf::milliseconds(20));
 	std::cout << "DESTRUCTOID" << std::endl;
 }
@@ -77,6 +68,8 @@ void nipplesToFreq(intType nipple, arrayType& arr) { //nipple, saveToArray
 		break;
 	}
 }
+
+//--------------------------------------------------------------------------------------
 
 void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned int AMPLITUDE = 5000) {
 	const unsigned toneCount = TUNES.size();
@@ -215,9 +208,17 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 	std::array<float, 2> prevRes = { 0,0 };
 	std::array<float, 2> currRes = { 0,0 };
 
+	std::vector<float> currentResult;
+	std::vector<float> prevResult;
+	prevResult.resize(2);
+	currentResult.resize(2);
+	listen = false;
 	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
 	std::array<float, 2> oneTone = { 1336, 697 };
 
+	int frequencies[8];
+	std::vector<float> zeroTone(1209, 697);
+	std::vector<float> highFreq;
 	std::vector<float> samples;
 	samples.resize(SUBSAMPLE);
 
@@ -287,8 +288,8 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 }
 
 //
-//--------------------------------------------------------------------------------------
 
+//--------------------------------------------------------------------------------------
 
 //int PhysicalLayer::listenToSound() {
 //	sf::SoundBufferRecorder recorder;
@@ -341,25 +342,15 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 
 //--------------------------------------------------------------------------------------
 
-
-
 std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, std::vector<float> data) {
 	std::vector<float> result;
 	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
 	float magnitudes[8], magnitudes2[8];
 
-	//std::vector<float> data;
-	//for (int i = 0; i < 689; i++) {
-	//	for (int j = 0; j < 44100 / 4; j++) {
-	//		data[i] = samples[j];
-	//	}
-	//}
-
 	for (int i = 0; i < 8; i++) {
 		magnitudes[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
 		magnitudes2[i] = goertzel_mag(numSamples, DTMFfreq[i], SAMPLING_RATE, data);
 	}
-	
 
 	std::sort(magnitudes, magnitudes + 8);
 
