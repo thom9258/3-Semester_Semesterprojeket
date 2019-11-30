@@ -31,8 +31,14 @@ long int main() {
 	// Usage
 	PhysicalLayer cat;
 	cat.start();
-	cat.sendStartBit(0b0000);
-	//cat.listenStartBit();
+	//cat.sendStartBit(0b0000);	
+	std::cout << "2 seconds until start" << std::endl;
+	sf::sleep(sf::milliseconds(2000));
+	std::cout << "start" << std::endl;
+
+	cat.listenStartBit();
+	
+	std::cout << "exit main" << std::endl;
 
 	return 0;
 }

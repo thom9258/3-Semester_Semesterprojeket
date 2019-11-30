@@ -37,11 +37,11 @@ private:
 	unsigned const SAMPLE_RATE = 44100;
 
 	//bool sending, receiving;
-	//	//Receiver methods
-	float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data);
+	//Receiver methods
+	//float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data);
 	float static goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, std::vector<float> data); //gør den compatibel med vector
 
-	float static* findHighestFreq(std::size_t numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data);
+	//float static* findHighestFreq(std::size_t numSamples, unsigned int SAMPLING_RATE, const sf::Int16* data);
 	std::vector<float> static findHighestFreq(int numSamples, unsigned int SAMPLING_RATE, std::vector<float> data); //uhm... ved ikke hvorfor den ovenover har de argumenter så lave min egen
 	
 	//Receiver & Sender variables
@@ -64,7 +64,7 @@ private:
 
 protected:
 	unsigned short bufferCount;
-	unsigned char buffer[0xFFFF];
+	float buffer[0xFFFF];
 	bool listen;
 };
 
