@@ -4,6 +4,9 @@
 #include <algorithm> 
 #include <iostream>
 #include <SFML/Audio.hpp>
+#include <queue>
+#include <array>
+
 
 
 
@@ -25,7 +28,7 @@ public:
 	//int static listenToSound();
 	
 	//inheritance fra SFML 
-	virtual bool OnStart() { std::cout << bufferCount << std::endl;  return true; }
+	virtual bool OnStart() { return true; }
 
 	virtual bool onProcessSamples(const int16_t* samples, std::size_t sampleCount);
 
@@ -64,11 +67,10 @@ private:
 	std::vector<double> D = { 1633, 941 };
 
 protected:
-	unsigned int bufferCount = 0xFFFF;
-	float buffer[0xFFFF];
-	float* tail = buffer;
-	float* pretail;
-	float* head = buffer;
+	int buffersize;
+	std::array<float, 0xFFF> buffer;
 	bool listen;
+	int head;
+	int tail;
 };
 

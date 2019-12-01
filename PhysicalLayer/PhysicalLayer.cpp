@@ -14,12 +14,11 @@
 //-------------------------------------constructors-------------------------------------
 //--------------------------------------------------------------------------------------
 PhysicalLayer::PhysicalLayer() {
-	bufferCount = 0xFFFF;
 	setProcessingInterval(sf::milliseconds(100));//default er 100
-	buffer[0xFFFF] = { 0 };
-	tail = buffer;
-	head = buffer;
 	listen = true;
+	buffersize = 0xFF;
+	int head = 0;
+	int tail = 0;
 }
 
 //--------------------------------------------------------------------------------------
@@ -171,35 +170,21 @@ void PhysicalLayer::sendStartBit(int startBit) {
 //--------------------------------------------------------------------------------------
 
 bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount) {
-	for (int i = 0; i < sampleCount; i++) {
-		//assign value to head of buffer
-		*(head++) = *(samples + i);
-		//reset head if end is reached
-		if (head > (buffer + bufferCount))
-			head = buffer;
-		//std::cout << "headVal: " << *(head) << " sam: " << *(samples + i) << "\n";
-		//std::cout << "head: " << head << "\n";
-	}
 	
-	//std::cout << "tail: " << tail;
+	for (int i = 0; i < sampleCount; i++) {
+		if (head + 1 >= buffersize)
+			head = 0;
+		buffer[head++] = ((*(samples + i)));
+	}
 	return listen;
 }
 
 float PhysicalLayer::tailBuffer() {
-
-	//reset tail if end is reached
-	if (tail < (buffer + bufferCount))
-		tail = buffer;
-	pretail = tail;
-	std::cout << "bufferStart: " << buffer << "\n";
-	std::cout << "bufferEnd: " << buffer + bufferCount << "\nTail:" << tail << "\n";
-	//wait til head is a-head
-	while (tail >= head) {
+	while (tail + 2 > head && head - tail > 0 || ((tail + 1 == buffersize) && head < 2))
 		;
-	}
-	 tail = pretail;
-
-	return *(tail++);
+	if (tail +1 >= buffersize)
+		tail = 0;
+	return buffer[tail++];
 }
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
@@ -212,7 +197,7 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 	std::vector<float> prevResult;
 	prevResult.resize(2);
 	currentResult.resize(2);
-	listen = false;
+	listen = true;
 	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
 	std::array<float, 2> oneTone = { 1336, 697 };
 
@@ -222,68 +207,75 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 	std::vector<float> samples;
 	samples.resize(SUBSAMPLE);
 
-	std::vector<float> highFreq;
 	highFreq.resize(8);
 
 	int windowRotate = 250;
 	float threshold = 5.0f;
-	while (true)
-		tailBuffer();
-	//for (int i = 0; i < SUBSAMPLE; i++) {
-	//	samples[i] = tailBuffer();
-	//}
 
-	//while (true) {
-	//	
-	//	std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
-	//	for (int i = SUBSAMPLE - windowRotate; i < SUBSAMPLE; i++) {
-	//		samples[i] = tailBuffer();
-	//	}
-	//	prevRes = currRes;
-	//	currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
-	//	currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);
+	for (int i = 0; i < SUBSAMPLE; i++) {
+		samples[i] = tailBuffer();
+	}
+	float mag;
+	while (true) {
+		std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
+		for (int i = SUBSAMPLE - windowRotate; i < SUBSAMPLE; i++) {
+			samples[i] = tailBuffer();
+		}
+		for (int i = 0; i < 8; i++) {
+			mag = goertzel_mag(samples.size(), DTMFfreq[i], SAMPLE_RATE_LISTEN, samples);
+			if (mag > 1)
+				std::cout << "freq: " << DTMFfreq[i] << " mag: " << mag << "\n";
+		}
+		
+		//std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
+		//for (int i = SUBSAMPLE - windowRotate; i < SUBSAMPLE; i++) {
+		//	samples[i] = tailBuffer();
+		//}
+		//prevRes = currRes;
+		//currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
+		//currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);
 
-	//	if (currRes[0] < prevRes[0] && currRes[1] < prevRes[1] && downSlope == false) {
-	//		downSlope = true;
-	//		std::cout << "Downslobe" << "\n";
-	//	}
-	//	if (currRes[0] > prevRes[0] && currRes[1] > prevRes[1] && downSlope == true) {
-	//		std::cout << "Upslobe" << "\n";
-	//		while (prevRes < currRes) {
-	//			prevRes = currRes;
-	//			currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
-	//			currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);
-	//		}
-	//		std::cout << "peak found" << "\n";
+		//if (currRes[0] < prevRes[0] && currRes[1] < prevRes[1] && downSlope == false) {
+		//	downSlope = true;
+		//	std::cout << "Downslobe" << "\n";
+		//}
+		//if (currRes[0] > prevRes[0] && currRes[1] > prevRes[1] && downSlope == true) {
+		//	std::cout << "Upslobe" << "\n";
+		//	while (prevRes < currRes) {
+		//		prevRes = currRes;
+		//		currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
+		//		currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);
+		//	}
+		//	std::cout << "peak found" << "\n";
 
-	//		for (int i = 0; i < 66150; i++) {
-	//			tailBuffer();
-	//			
-	//		}
-	//		//std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
-	//		for (int i = 0; i < SUBSAMPLE; i++) {
-	//			samples[i] = tailBuffer();
-	//		}
+		//	for (int i = 0; i < 66150; i++) {
+		//		tailBuffer();
+		//		
+		//	}
+		//	//std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
+		//	for (int i = 0; i < SUBSAMPLE; i++) {
+		//		samples[i] = tailBuffer();
+		//	}
 
 
-	//		highFreq = findHighestFreq(SUBSAMPLE, SAMPLE_RATE_LISTEN, samples);
-	//		
+		//	highFreq = findHighestFreq(SUBSAMPLE, SAMPLE_RATE_LISTEN, samples);
+		//	
 
-	//		while (highFreq[1] != 1336 && highFreq[0] != 697) {
-	//			for (int i = 0; i < 66150; i++) {
-	//				tailBuffer();
-	//			}
-	//			//std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
-	//			for (int i = 0; i < SUBSAMPLE; i++) {
-	//				samples[i] = tailBuffer();
-	//			}
-	//			highFreq = findHighestFreq(SUBSAMPLE, SAMPLE_RATE_LISTEN, samples);
-	//		}
-	//		return true;
+		//	while (highFreq[1] != 1336 && highFreq[0] != 697) {
+		//		for (int i = 0; i < 66150; i++) {
+		//			tailBuffer();
+		//		}
+		//		//std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
+		//		for (int i = 0; i < SUBSAMPLE; i++) {
+		//			samples[i] = tailBuffer();
+		//		}
+		//		highFreq = findHighestFreq(SUBSAMPLE, SAMPLE_RATE_LISTEN, samples);
+		//	}
+		//	return true;
 
-	//	}
-	//
-	//}
+		//}
+	
+	}
 
 }
 
