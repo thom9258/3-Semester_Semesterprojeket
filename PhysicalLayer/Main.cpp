@@ -39,7 +39,7 @@ int main() {
 	//std::vector<int> fuckmikkelogthomas{0,0,1,1};
 	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//PhysicalLayer::sendStartBit(0b0000);
-	std::vector<int> fuckmikkelogthomas = binaryToVector(0b0000'0001'0000'0001'0000'0001'0000'0001'0001, 28);
+	//std::vector<int> fuckmikkelogthomas = binaryToVector(0b0000'0001'0000'0001'0000'0001'0000'0001'0001, 28);
 	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//while(true)
 
@@ -48,6 +48,6 @@ int main() {
 	cat.start();
 	//cat.sendStartBit(0b0000);
 	cat.listenStartBit();
-	sf::sleep(sf::seconds(2));
+	//sf::sleep(sf::seconds(2));
 	return 0;
 }
