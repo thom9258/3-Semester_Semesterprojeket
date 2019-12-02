@@ -51,6 +51,8 @@ public:
     }
     
 	//check crc
+	
+
     
     int getsf(){
         return sf;
