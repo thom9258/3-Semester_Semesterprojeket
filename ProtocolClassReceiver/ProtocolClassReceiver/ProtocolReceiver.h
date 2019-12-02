@@ -50,8 +50,43 @@ public:
         return FullFrame;
     }
     
-	//check crc
-	
+	// returns true if the message is correct
+	//input of function below
+	//std::vector<int> mes
+	bool CheckCRC(void)
+	{
+		// the polynomial used to calculate crc
+		std::vector<int> pol = { 1, 0,0,0,1, 1,1,0,1 };
+		std::vector<int> resultVec;
+		// changed this from mes to fullframe
+		resultVec = FullFrame;
+
+		// might not be used
+		//for (int i = pol.size() - 1; i > 0; i--) { resultVec.push_back(0); }
+
+		// crc algorithm
+		while (resultVec.size() > pol.size() - 1)
+		{
+			std::vector<int> newPol = pol;
+
+			// make the polynomial the size of the message
+			while (newPol.size() != resultVec.size()) { newPol.push_back(0); }
+
+			// eor the polynomial with the message
+			for (int i = 0; i < newPol.size(); i++) { resultVec[i] = resultVec[i] ^ newPol[i]; }
+
+			// remove excess zeros from msb of message
+			while (resultVec[0] == 0 && resultVec.size() != 1) { resultVec.erase(resultVec.begin()); }
+		}
+
+		// return true if the message is equals to 0 after the crc algorithm
+		if (resultVec[0] == 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
     
     int getsf(){
