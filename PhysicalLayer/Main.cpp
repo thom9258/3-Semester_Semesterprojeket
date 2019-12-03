@@ -9,10 +9,10 @@
 
 
 
-std::vector<int> binaryToVector(unsigned int bit, char bitCount) {
+std::vector<int> binaryToVector(unsigned long long bit, char bitCount) {
 	std::vector<int> result;
 	result.reserve(bitCount);
-	unsigned char k = 0b1;
+	unsigned int k = 0b1;
 	for (int i = 0; i < bitCount; i++) {
 		k = 1;
 		k = bit & k;
@@ -39,15 +39,18 @@ int main() {
 	//std::vector<int> fuckmikkelogthomas{0,0,1,1};
 	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//PhysicalLayer::sendStartBit(0b0000);
-	//std::vector<int> fuckmikkelogthomas = binaryToVector(0b0000'0001'0000'0001'0000'0001'0000'0001'0001, 28);
-	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
+	//std::vector<int> fuckmikkelogthomas = binaryToVector(0b1101'1101'0101'1111'0000'1000'1000'1001'0001'0010, 40);
+	//std::vector<int> fuckmikkelogthomas = { 0,1,0,1,1,1,0,0,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,1,0,0,0,1,1,0,0,1,0,1,0,0,1,1,0,1,0,1,0,0,0,1,1,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,0,1,0,1,1 };
+	std::vector<int> fuckmikkelogthomas = { 1,1,0,0 };
+	
 	//while(true)
-
+	std::cout << fuckmikkelogthomas.size() << std::endl;
 	// Usage
 	PhysicalLayer cat;
-	cat.start();
-	//cat.sendStartBit(0b0000);
-	cat.listenStartBit();
+	//cat.start();
+	//cat.sendStartBit(0b0000, 3);
+	PhysicalLayer::sendBitString(fuckmikkelogthomas, 4);
+	//cat.listenStartBit();
 	//sf::sleep(sf::seconds(2));
 	return 0;
 }
