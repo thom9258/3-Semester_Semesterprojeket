@@ -53,7 +53,7 @@ public:
 	// returns true if the message is correct
 	//input of function below
 	//std::vector<int> mes
-	bool CheckCRC(void)
+	bool CheckCRC()
 	{
 		// the polynomial used to calculate crc
 		std::vector<int> pol = { 1, 0,0,0,1, 1,1,0,1 };
