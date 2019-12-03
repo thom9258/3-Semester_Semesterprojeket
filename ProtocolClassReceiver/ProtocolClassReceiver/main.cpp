@@ -13,6 +13,8 @@ void printVec(vector<int> inp, string mess)
 
 int main()
 {
+
+
     std::vector<int> v1{0,0,0,0,0,0,1,1,0,1,1,0,1,0,0,0,1,0,1,0,1,0,0,0};
 	printVec(v1, "start message");
 
@@ -35,12 +37,29 @@ int main()
     
 
 
+
+
+
 	std::string fullMessage;
 	 
+	while (p1.getsf() != 1) 
+	{
 
-    std::vector<int> myvec2 = p1.getData();
-    
-	printVec(myvec2, "something");
+		// mik sindsygs kode som laver p1 objekterne og checker om alt er i orden
+
+
+		std::vector<int> currVec = p1.getData();
+		printVec(currVec, "curr data");
+
+
+		std::string currMessage = p1.returnMessage(currVec);
+
+		fullMessage += currMessage;
+	}
+
+	// giveToAPILayer(fullMessage);
+
+
 
 	int a;
 	std::cin >> a;

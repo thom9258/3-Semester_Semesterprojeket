@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "BinaryReceiver.h"
 
 
 class ProtocolReceiver
@@ -106,6 +107,25 @@ public:
         return FullFrame;
     }
     
+
+	std::string returnMessage(std::vector <int> fullVector) 
+	{
+		std::vector<int> ff = fullVector;
+		std::vector<int> currFrame;
+		std::string result;
+
+		while (ff.size() != 0) 
+		{
+			for (int i = 0; i < 8; i++) 
+			{
+				currFrame.push_back(ff.at(0));
+				ff.erase(ff.begin());
+				BinaryRec currBin(currFrame);
+				result = result + currBin.BinToChar();
+			}
+		}
+		return result;
+	}
 
 private:
 	std::vector<int> FullFrame;
