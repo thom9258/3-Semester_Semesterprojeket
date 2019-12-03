@@ -103,6 +103,9 @@ public:
         return framecountervar;
     }
     
+	void setACK(std::vector <int> inp) { ACK = inp; }
+
+
     std::vector<int> databytesDetermine()
     {
         FullFrame.erase(FullFrame.begin(), FullFrame.begin()+8);
@@ -113,9 +116,9 @@ public:
     }
     
 
-	std::string returnMessage(std::vector <int> fullVector) 
+	std::string returnMessage(void) 
 	{
-		std::vector<int> ff = fullVector;
+		std::vector<int> ff = FullFrame;
 		std::vector<int> currFrame;
 		std::string result;
 
@@ -132,8 +135,12 @@ public:
 		return result;
 	}
 
+
 private:
 	std::vector<int> FullFrame;
+	std::vector<int> ACK = {1,1,1,1};
+	std::vector<int> NACK = {0,0,0,0};
+	std::vector<int> ACKReq = {1,0,1,0};
     int numbering;
     int sf = 0, ul = 0;
     int framecountervar = 0;
