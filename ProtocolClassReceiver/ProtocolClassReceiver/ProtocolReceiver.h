@@ -97,6 +97,11 @@ public:
         return ul;
     }
     
+    int getframecounter(){
+        framecountervar++;
+        return framecountervar;
+    }
+    
     std::vector<int> databytesDetermine()
     {
         FullFrame.erase(FullFrame.begin(), FullFrame.begin()+8);
@@ -111,4 +116,5 @@ private:
 	std::vector<int> FullFrame;
     int numbering;
     int sf = 0, ul = 0;
+    int framecountervar = 0;
 };
