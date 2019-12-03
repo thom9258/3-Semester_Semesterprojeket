@@ -122,20 +122,17 @@ void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned 
 
 
 void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
+	std::reverse(bitString.begin(), bitString.end());
 	std::vector<int> nipples;
 	for (int i = 0; i < bitString.size(); i+=4) {	
 		int temp = 0;
-		for (int j = 0; j < 4; j++) {
+		for (int j = 3; j >= 0; j--) {
 			temp = temp << 1;
 			temp += bitString[j + i];
 		}
 		nipples.push_back(temp);
 	}
 	std::reverse(nipples.begin(), nipples.end());
-
-	//for (int i = 0; i < nipples.size(); i++) {
-	//	std::cout << std::bitset<4>(nipples[i]) << std::endl;
-	//}
 
 	int k;
 	std::array<double, 2> arr;
@@ -148,19 +145,26 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	}
 
 	//output sound
-	playTune(TUNES);
+	playTune(TUNES, BPS);
 }
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendStartBit(int startBit) {
+void PhysicalLayer::sendStartBit(int startBit, int count, float BPM) {
 	//PLAY SOUND
 	int k = startBit;
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
 	nipplesToFreq(k,arr);
 	TUNES.push_back(arr);
-	playTune(TUNES, 1/3.);
+	for (int i = 0; i < count; i++)
+		playTune(TUNES, BPM);
+
+	TUNES.clear();
+	k = 0b0001;
+	nipplesToFreq(k, arr);
+	TUNES.push_back(arr);
+	playTune(TUNES, BPM);
 };
 
 
