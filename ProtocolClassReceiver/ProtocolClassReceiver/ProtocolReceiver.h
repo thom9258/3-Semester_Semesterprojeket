@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "BinaryReceiver.h"
 
 
 class ProtocolReceiver
@@ -50,7 +51,44 @@ public:
         return FullFrame;
     }
     
-	//check crc
+	// returns true if the message is correct
+	//input of function below
+	//std::vector<int> mes
+	bool CheckCRC()
+	{
+		// the polynomial used to calculate crc
+		std::vector<int> pol = { 1, 0,0,0,1, 1,1,0,1 };
+		std::vector<int> resultVec;
+		// changed this from mes to fullframe
+		resultVec = FullFrame;
+
+		// might not be used
+//		for (int i = pol.size() - 1; i > 0; i--) { resultVec.push_back(0); }
+
+		// crc algorithm
+		while (resultVec.size() > pol.size() - 1)
+		{
+			std::vector<int> newPol = pol;
+
+			// make the polynomial the size of the message
+			while (newPol.size() != resultVec.size()) { newPol.push_back(0); }
+
+			// eor the polynomial with the message
+			for (int i = 0; i < newPol.size(); i++) { resultVec[i] = resultVec[i] ^ newPol[i]; }
+
+			// remove excess zeros from msb of message
+			while (resultVec[0] == 0 && resultVec.size() != 1) { resultVec.erase(resultVec.begin()); }
+		}
+
+		// return true if the message is equals to 0 after the crc algorithm
+		if (resultVec[0] == 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
     
     int getsf(){
         return sf;
@@ -58,6 +96,11 @@ public:
 
     int getul(){
         return ul;
+    }
+    
+    int getframecounter(){
+        framecountervar++;
+        return framecountervar;
     }
     
     std::vector<int> databytesDetermine()
@@ -70,8 +113,28 @@ public:
     }
     
 
+	std::string returnMessage(std::vector <int> fullVector) 
+	{
+		std::vector<int> ff = fullVector;
+		std::vector<int> currFrame;
+		std::string result;
+
+		while (ff.size() != 0) 
+		{
+			for (int i = 0; i < 8; i++) 
+			{
+				currFrame.push_back(ff.at(0));
+				ff.erase(ff.begin());
+				BinaryRec currBin(currFrame);
+				result = result + currBin.BinToChar();
+			}
+		}
+		return result;
+	}
+
 private:
 	std::vector<int> FullFrame;
     int numbering;
     int sf = 0, ul = 0;
+    int framecountervar = 0;
 };

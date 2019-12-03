@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{2E9C95B4-81CA-4BDD-AF61-3AF106BF8A1F}</ProjectGuid>
-    <RootNamespace>ProtokolReceiver</RootNamespace>
+    <ProjectGuid>{5B4947E5-F3FA-4171-9C20-C84FA9564E1A}</ProjectGuid>
+    <RootNamespace>ProtocolClassReceiver</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -115,7 +115,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="..\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\BinaryReceiver.h" />
+    <ClInclude Include="..\ProtocolReceiver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
