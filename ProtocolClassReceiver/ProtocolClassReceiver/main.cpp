@@ -31,10 +31,16 @@ int main()
     p1.databytesDetermine();
     
     
+
+
+	std::string fullMessage;
+	 
+
     std::vector<int> myvec2 = p1.getData();
     
 	printVec(myvec2, "something");
 
-
+	int a;
+	std::cin >> a;
     
 }
