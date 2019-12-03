@@ -10,13 +10,15 @@
 
 class ProtocolReceiver
 {
+	std::vector<int> vec;
 public:
+
 	int readFrom;
 	int readTo;
 	ProtocolReceiver(std::vector<int> input) : FullFrame(input) {};
 
 
-	int getVectorLength(std::vector<int> v1) {
+	int getVectorLength (std::vector<int> v1) {
 		std::vector<int> numbersOfLetters;
 		for (int i = 0; i < 4; i++) {
 
