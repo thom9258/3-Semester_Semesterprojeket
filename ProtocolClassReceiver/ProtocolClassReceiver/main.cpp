@@ -18,12 +18,12 @@ int main()
     ProtocolReceiver p1(v1);
 	if ( p1.CheckCRC() == true )
 	{
-		std::cout << "true" << std::endl;
+		std::cout << "CRC check is true" << std::endl;
 		// if true, keep going
 	}
 	else
 	{
-		std::cout << "false" << std::endl;
+		std::cout << "CRC check is false" << std::endl;
 	}
 
     p1.numberingRec(p1.getData());
