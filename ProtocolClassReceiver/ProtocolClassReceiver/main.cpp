@@ -9,6 +9,8 @@ void printVec(vector<int> inp, string mess)
 	cout << "]" << endl;
 }
 
+
+
 int main()
 {
     std::vector<int> v1{0,0,0,0,0,0,1,1,0,1,1,0,1,0,0,0,1,0,1,0,1,0,0,0};
