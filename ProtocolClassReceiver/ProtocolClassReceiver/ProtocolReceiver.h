@@ -62,7 +62,7 @@ public:
 		resultVec = FullFrame;
 
 		// might not be used
-		//for (int i = pol.size() - 1; i > 0; i--) { resultVec.push_back(0); }
+//		for (int i = pol.size() - 1; i > 0; i--) { resultVec.push_back(0); }
 
 		// crc algorithm
 		while (resultVec.size() > pol.size() - 1)
