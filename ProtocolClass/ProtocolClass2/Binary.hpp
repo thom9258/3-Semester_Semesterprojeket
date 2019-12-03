@@ -7,7 +7,7 @@
 #include <math.h>
 #include<cassert>
 #include<algorithm>
-#include<sstream>
+#include <sstream>
 
 using namespace std;
 
@@ -89,42 +89,82 @@ public:
 	Binary(char character)
 	{
 		int integ = int(character);
-		string bin = "";
 
 		int i = integ;
 		while (i > 0) // converts integer into binary
 		{
-			(i % 2) ? bin.push_back('1') : // if sentence that needs reformatting
-				bin.push_back('0');
+			(i % 2) ? data.push_back(1) : // if sentence that needs reformatting
+				data.push_back(0);
 			i /= 2;
 		}
-		reverse(bin.begin(), bin.end());
+		reverse(data.begin(), data.end());
 
-		data = strToVec(bin);
 
-		data.insert(data.begin(), 0);
-
-		if (integ <= 64) {
-			data.insert(data.begin(), 0);
-		}
+		while (data.size() + 1 <= 8) { data.insert(data.begin(), 0); }
 
 		binLength = data.size();
 	}
+    
+	//Binary(char character)
+	//{
+	//	int integ = int(character);
+	//	string bin = "";
+
+	//	int i = integ;
+	//	while (i > 0) // converts integer into binary
+	//	{
+	//		(i % 2) ? bin.push_back('1') : // if sentence that needs reformatting
+	//			bin.push_back('0');
+	//		i /= 2;
+	//	}
+	//	reverse(bin.begin(), bin.end());
+
+
+
+	//	data.insert(data.begin(), 0);
+
+	//	if (integ <= 64) {
+	//		data.insert(data.begin(), 0);
+	//	}
+
+	//	binLength = data.size();
+	//}
+
+
+
+    std::string returnString(void)
+    {
+        std::string result;
+        for(int i=0; i < data.size(); i++){
+            if (data[i] == 1) {
+                result.push_back('1');
+            }
+            else{
+                result.push_back('0');
+            }
+        }
+            
+        return result;
+    }
 
 
 	// appends a binary number onto another binary number
 	Binary BinaryAppend(Binary num1, Binary num2)
 	{
 		Binary result = num1;
-		result.SetLength(num1.GetLength() + num2.GetLength());
 
 		for (int i = 0; i < num2.GetLength(); i++)
 		{
 			result.data.push_back(num2.data[i]);
 		}
+        //binLength = data.size();
+        int length = num1.GetLength() + num2.GetLength();
+		result.SetLength(length);
 		return result;
 	};
-	// bin1 = bin1.BinaryAppend(bin1,bin2);
+
+
+
 
 	// operator overload of the << operator for printing with cout
 	friend ostream& operator<<(ostream& out, Binary& input)
@@ -153,7 +193,7 @@ public:
 	// getter functions 
 	int GetLength(void)
 	{
-		return binLength;
+        return binLength;
 	}
 
 	vector<int> GetData(void)
