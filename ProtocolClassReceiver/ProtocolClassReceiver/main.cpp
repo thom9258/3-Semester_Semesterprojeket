@@ -62,34 +62,29 @@ int main()
     p1.databytesDetermine();
     
     
-
-
-
-
-
-	std::string fullMessage;
-	 
-	while (p1.getsf() != 1) 
-	{
-
-		// mik sindsygs kode som laver p1 objekterne og checker om alt er i orden
-
-
-		std::vector<int> currVec = p1.getData();
-		printVec(currVec, "curr data");
-
-
-		std::string currMessage = p1.returnMessage();
-
-		fullMessage += currMessage;
-	}
-
-	// giveToAPILayer(fullMessage);
-
-
-
-	int a;
-	std::cin >> a;
+        std::string fullMessage;
+         
+        while (p1.getsf() != 1)
+        {
+    
+            // mik sindsygs kode som laver p1 objekterne og checker om alt er i orden
+    
+    
+            std::vector<int> currVec = p1.getData();
+            printVec(currVec, "curr data");
+    
+    
+            std::string currMessage = p1.returnMessage(currVec);
+    
+            fullMessage += currMessage;
+        }
+    
+        // giveToAPILayer(fullMessage);
+    
+    
+    
+        int a;
+        std::cin >> a;
     
 
 
