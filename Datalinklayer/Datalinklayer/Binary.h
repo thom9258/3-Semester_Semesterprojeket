@@ -13,6 +13,8 @@ using namespace std;
 class Binary
 {
 public:
+
+
 	// default constructor for non input
 	Binary(void) : binLength(0) {};
 
@@ -41,7 +43,7 @@ public:
 	};
 
 
-	// defined constructor as initializer list
+	// constructor as initializer list
 	Binary(initializer_list<int> base)
 		: binLength(base.size())
 	{
@@ -52,11 +54,11 @@ public:
 	};
 
 
-	// defined constructor taking another Binary 
+	// constructor taking another Binary 
 	Binary(Binary& bin) : binLength(bin.binLength), data(bin.data) {};
 
 
-	// defined constructor tadasdasking a string of 1 and 0 as char
+	// constructor taking a string of 1 and 0 as char
 	Binary(string strBin)
 	{
 		for (int i = 0; i < strBin.size(); i++)
@@ -71,16 +73,6 @@ public:
 			}
 			binLength = data.size();
 		}
-
-		/*	istringstream iss(strBin);
-			vector<int> resVec;
-			int number;
-			while (iss >> number)
-			{
-				resVec.push_back(number);
-			}
-			data = resVec;
-			binLength = resVec.size();*/
 	};
 
 
@@ -104,33 +96,9 @@ public:
 		binLength = data.size();
 	}
 
-	//Binary(char character)
-	//{
-	//	int integ = int(character);
-	//	string bin = "";
-
-	//	int i = integ;
-	//	while (i > 0) // converts integer into binary
-	//	{
-	//		(i % 2) ? bin.push_back('1') : // if sentence that needs reformatting
-	//			bin.push_back('0');
-	//		i /= 2;
-	//	}
-	//	reverse(bin.begin(), bin.end());
 
 
-
-	//	data.insert(data.begin(), 0);
-
-	//	if (integ <= 64) {
-	//		data.insert(data.begin(), 0);
-	//	}
-
-	//	binLength = data.size();
-	//}
-
-
-
+	// returns a string of char 1 and 0
 	std::string returnString(void)
 	{
 		std::string result;
@@ -163,6 +131,24 @@ public:
 	};
 
 
+	// returning a char
+	char BinToChar(void)
+	{
+		int result = 0;
+
+		vector<int> binData = data;
+		reverse(binData.begin(), binData.end());
+
+		for (int i = 0; i < binData.size(); i++)
+		{
+			if (binData[i] == 1)
+			{
+				result += pow((binData[i] * 2), i);
+
+			}
+		}
+		return result;
+	}
 
 
 	// operator overload of the << operator for printing with cout
@@ -174,6 +160,7 @@ public:
 		}
 		return out;
 	}
+
 
 
 	// turns strings into vectors
@@ -212,83 +199,3 @@ private:
 	// length of the above vector
 	int binLength = 0;
 };
-
-
-
-
-
-//#pragma once
-//
-//#include <iostream>
-//#include <vector>
-//#include <string>
-//#include <initializer_list>
-//#include <math.h>
-//#include <cassert>
-//#include <algorithm>
-//#include <sstream>
-//
-//using namespace std;
-//
-//class BinaryRec
-//{
-//public:
-//
-//	// vector constructor
-//	BinaryRec(vector<int> vec) : data(vec), binLength(vec.size()) {};
-//
-//	// returning a char
-//	char BinToChar(void)
-//	{
-//		int result = 0;
-//
-//		vector<int> binData = data;
-//		reverse(binData.begin(), binData.end());
-//
-//		for (int i = 0; i < binData.size(); i++)
-//		{
-//			if (binData[i] == 1)
-//			{
-//				result += pow((binData[i] * 2), i);
-//
-//			}
-//		}
-//		return result;
-//	}
-//
-//	// getter functions 
-//	int GetLength(void)
-//	{
-//		return binLength;
-//	}
-//
-//	vector<int> GetData(void)
-//	{
-//		return data;
-//	}
-//
-//
-//	friend ostream& operator<<(ostream& out, BinaryRec& input)
-//	{
-//		for (int i = 0; i < input.GetLength(); i++)
-//		{
-//			out << input.GetData()[i]; // bug here, vector sometimes out of scope
-//		}
-//		return out;
-//	}
-//
-//	//setter functions
-//	void SetLength(int length) {
-//		binLength = length;
-//	}
-//
-//private:
-//	//variable containing the binary "vector" in a format of integers of 0 and 1
-//	vector<int> data;
-//	// length of the above vector
-//	int binLength = 0;
-//};
-//
-//
-//
-//
