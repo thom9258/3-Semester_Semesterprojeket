@@ -72,4 +72,11 @@ int main()
 
 
     
+    
+    std::vector<int> myvec2 = p1.getData();
+    
+	printVec(myvec2, "something");
+
+
+    
 }
