@@ -16,7 +16,7 @@ public:
 	//Sender
 	//bool static readyToSend();
 	void static sendBitString(std::vector<int> bitString, float BPS = 1);
-	void static sendStartBit(int startBit);
+	void static sendStartBit(int startBit, int count, float BPM = 1);
 
 
 	////Receiver
@@ -74,5 +74,7 @@ protected:
 	int tail, head;
 	int buffersize;
 	bool listen;
+	int head;
+	int tail;
 };
 

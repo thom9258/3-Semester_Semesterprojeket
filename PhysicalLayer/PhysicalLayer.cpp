@@ -21,6 +21,9 @@ PhysicalLayer::PhysicalLayer() {
 	tail = 0;
 	head = 0;
 	listen = true;
+	buffersize = 0xFF;
+	int head = 0;
+	int tail = 0;
 }
 
 //--------------------------------------------------------------------------------------
@@ -208,20 +211,17 @@ void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned 
 
 
 void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
+	std::reverse(bitString.begin(), bitString.end());
 	std::vector<int> nipples;
 	for (int i = 0; i < bitString.size(); i+=4) {	
 		int temp = 0;
-		for (int j = 0; j < 4; j++) {
+		for (int j = 3; j >= 0; j--) {
 			temp = temp << 1;
 			temp += bitString[j + i];
 		}
 		nipples.push_back(temp);
 	}
 	std::reverse(nipples.begin(), nipples.end());
-
-	//for (int i = 0; i < nipples.size(); i++) {
-	//	std::cout << std::bitset<4>(nipples[i]) << std::endl;
-	//}
 
 	int k;
 	std::array<double, 2> arr;
@@ -234,19 +234,26 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	}
 
 	//output sound
-	playTune(TUNES);
+	playTune(TUNES, BPS);
 }
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendStartBit(int startBit) {
+void PhysicalLayer::sendStartBit(int startBit, int count, float BPM) {
 	//PLAY SOUND
 	int k = startBit;
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
 	nipplesToFreq(k,arr);
 	TUNES.push_back(arr);
-	playTune(TUNES, 1/3.);
+	for (int i = 0; i < count; i++)
+		playTune(TUNES, BPM);
+
+	TUNES.clear();
+	k = 0b0001;
+	nipplesToFreq(k, arr);
+	TUNES.push_back(arr);
+	playTune(TUNES, BPM);
 };
 
 
@@ -256,6 +263,7 @@ void PhysicalLayer::sendStartBit(int startBit) {
 //--------------------------------------------------------------------------------------
 
 bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount) {
+	
 	for (int i = 0; i < sampleCount; i++) {
 		if (head + 1 >= buffersize)
 			head = 0;
@@ -265,16 +273,21 @@ bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleC
 }
 
 float PhysicalLayer::tailBuffer() {
-	while (tail + 2 > head&& head - tail > 0 || ((tail + 1 == buffersize) && head < 2)) {
+
+	//reset tail if end is reached
+	if (tail < (buffer + bufferCount))
+		tail = buffer;
+	pretail = tail;
+	std::cout << "bufferStart: " << buffer << "\n";
+	std::cout << "bufferEnd: " << buffer + bufferCount << "\nTail:" << tail << "\n";
+	//wait til head is a-head
+	while (tail >= head) {
 		;
 	}
-	if (tail + 1 >= buffersize) {
-		tail = 0;
-	}
+	 tail = pretail;
 
-	return buffer[tail++];
+	return *(tail++);
 }
-
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
 	bool downSlope = false;

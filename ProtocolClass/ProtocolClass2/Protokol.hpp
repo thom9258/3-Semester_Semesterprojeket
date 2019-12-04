@@ -113,7 +113,6 @@ public:
     }
     
 private:
-    std::vector<int> frame;
     std::string fullsentence;
     std::string first_16;
     int NumOfChar;

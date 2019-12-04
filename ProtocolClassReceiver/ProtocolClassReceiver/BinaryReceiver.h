@@ -18,26 +18,6 @@ public:
 	// vector constructor
 	BinaryRec(vector<int> vec) : data(vec), binLength(vec.size()) {};
 
-
-	// returning a int with 0 indexing
-	int BinToInti(void)
-	{
-		int result = 0;
-
-		vector<int> binData = data;
-		reverse(binData.begin(), binData.end());
-
-		for (int i = 0; i < binData.size(); i++)
-		{
-			if (binData[i] == 1)
-			{
-				result += pow((binData[i] * 2), i);
-			}
-		}
-		result++; // adds 1 because we have 0 indexing
-		return result;
-	}
-
 	// returning a char
 	char BinToChar(void)
 	{
@@ -89,3 +69,6 @@ private:
 	// length of the above vector
 	int binLength = 0;
 };
+
+
+
