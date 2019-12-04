@@ -114,7 +114,7 @@ void freqToNipples(std::vector<float> freq, std::array<int, 4>& resultNipple) {
 
 void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned int AMPLITUDE = 5000) {
 	const unsigned toneCount = TUNES.size();
-	const unsigned SAMPLES = 44100;
+	const unsigned SAMPLES = 88200;
 	unsigned SAMPLE_RATE = (SAMPLES / toneCount) * BPS;
 	int samplePerTone = SAMPLES / toneCount;
 
@@ -136,7 +136,11 @@ void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned 
 
 		//generate sine function
 		for (unsigned i = start; i < slut; i++) { // loop for every sample
-			double window = 0.5 * (1 - cos(2 * M_PI * i / (slut - start))); //hamming window function
+			//double window = sin(i*M_PI/(slut-start));																			//sine window funktion source:Claus
+			//double window = asin(sin(i*M_PI / (slut - start)));																//triangular source:Claus
+			//double window = 0.5 * (1 - cos(2 * M_PI*i / (slut-start)));														//Hann window function source:https://stackoverflow.com/questions/3555318/implement-hann-window
+			//double window = 0.42 - 0.5*cos(2 * M_PI*i / ((slut - start) - 1)) + 0.08*cos(4 * M_PI*i / ((slut - start) - 1));	//blackman source matlab
+			double window = 0.5 * (1 - cos(2 * M_PI * i / (slut - start)));														//hamming window function
 			raw[i] = window * (AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI));
 			x += TUNES[j][0] / SAMPLE_RATE;
 			y += TUNES[j][1] / SAMPLE_RATE;
