@@ -74,7 +74,6 @@ protected:
 	std::array<float, 0xFFFF> buffer;
 	int buffersize;
 	bool listen;
-	int head;
-	int tail;
+	int head, tail;
 };
 

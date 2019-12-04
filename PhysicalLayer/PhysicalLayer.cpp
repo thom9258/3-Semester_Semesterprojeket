@@ -16,18 +16,18 @@
 //-------------------------------------constructors-------------------------------------
 //--------------------------------------------------------------------------------------
 PhysicalLayer::PhysicalLayer() {
+	buffersize = 0xFFFF;
 	setProcessingInterval(sf::milliseconds(100));//default er 100
+	tail = 0;
+	head = 0;
 	listen = true;
-	buffersize = 0xFF;
-	int head = 0;
-	int tail = 0;
 }
 
 //--------------------------------------------------------------------------------------
 
 PhysicalLayer::~PhysicalLayer() {
 	stop();
-	listen = true;
+	listen = false;
 	sf::sleep(sf::milliseconds(20));
 	std::cout << "DESTRUCTOID" << std::endl;
 }
@@ -36,8 +36,82 @@ PhysicalLayer::~PhysicalLayer() {
 //----------------------------------Practical function----------------------------------
 //--------------------------------------------------------------------------------------
 
-//--------------------------------Convert freq to nibble--------------------------------
-void freqToNipples(std::vector<float> freq, std::array<int, 4> &resultNipple) {
+//finding frequency from nipple and save frequency to given array 
+template<typename arrayType, typename intType>
+void nipplesToFreq(intType nipple, arrayType& arr) { //nipple, saveToArray
+	switch (nipple & 0b0011) {
+	case 0b0000:
+		*std::begin(arr) = 1209;
+		break;
+	case 0b0001:
+		*std::begin(arr) = 1336;
+		break;
+	case 0b0010:
+		*std::begin(arr) = 1477;
+		break;
+	case 0b0011:
+		*std::begin(arr) = 1633;
+		break;
+	}
+
+	switch (nipple & 0b1100) {
+	case 0b0000:
+		*(std::end(arr) - 1) = 697;
+		break;
+	case 0b0100:
+		*(std::end(arr) - 1) = 770;
+		break;
+	case 0b1000:
+		*(std::end(arr) - 1) = 852;
+		break;
+	case 0b1100:
+		*(std::end(arr) - 1) = 941;
+		break;
+	}
+}
+
+//void freqToNipples(std::vector<float> freq, std::vector<int> &resultNipple) { 
+//	std::vector<int> freq2(freq.begin(), freq.end());
+//	switch (freq2[0]) {
+//	case 697:
+//		resultNipple.push_back(0b0);
+//		resultNipple.push_back(0b0);
+//		break;
+//	case 770:
+//		resultNipple.push_back(0b0);
+//		resultNipple.push_back(0b1);
+//		break;
+//	case 852:
+//		resultNipple.push_back(0b1);
+//		resultNipple.push_back(0b0);
+//		break;
+//	case 941:
+//		resultNipple.push_back(0b1);
+//		resultNipple.push_back(0b1);
+//		break;
+//	}
+//
+//	switch (freq2[1]) {
+//	case 1209:
+//		resultNipple.push_back(0b0);
+//		resultNipple.push_back(0b0);
+//		break;
+//	case 1336:
+//		resultNipple.push_back(0b0);
+//		resultNipple.push_back(0b1);
+//		break;
+//	case 1477:
+//		resultNipple.push_back(0b1);
+//		resultNipple.push_back(0b0);
+//		break;
+//	case 1633:
+//		resultNipple.push_back(0b1);
+//		resultNipple.push_back(0b1);
+//		break;
+//	}
+//}
+
+void freqToNipples(std::vector<float> freq, std::array<int, 4>& resultNipple) {
 	std::vector<int> freq2(freq.begin(), freq.end());
 	switch (freq2[0]) {
 	case 697:
@@ -78,41 +152,10 @@ void freqToNipples(std::vector<float> freq, std::array<int, 4> &resultNipple) {
 	}
 }
 
-//--------------convert nibble to frequency--------------
-template<typename arrayType, typename intType>
-void nipplesToFreq(intType nipple, arrayType& arr) { //nipple, saveToArray
-	switch (nipple & 0b0011) {
-	case 0b0000:
-		*std::begin(arr) = 1209;
-		break;
-	case 0b0001:
-		*std::begin(arr) = 1336;
-		break;
-	case 0b0010:
-		*std::begin(arr) = 1477;
-		break;
-	case 0b0011:
-		*std::begin(arr) = 1633;
-		break;
-	}
 
-	switch (nipple & 0b1100) {
-	case 0b0000:
-		*(std::end(arr) - 1) = 697;
-		break;
-	case 0b0100:
-		*(std::end(arr) - 1) = 770;
-		break;
-	case 0b1000:
-		*(std::end(arr) - 1) = 852;
-		break;
-	case 0b1100:
-		*(std::end(arr) - 1) = 941;
-		break;
-	}
-}
 
-//--------------play vector of array with frequencies--------------
+//--------------------------------------------------------------------------------------
+
 void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned int AMPLITUDE = 5000) {
 	const unsigned toneCount = TUNES.size();
 	const unsigned SAMPLES = 44100;
@@ -159,37 +202,16 @@ void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned 
 }
 
 
-
-
 //--------------------------------------------------------------------------------------
 //----------------------------------------Sender----------------------------------------
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendNippleCount(std::vector<int> bitString, float BPS) {
-	//sending nibble count
-	unsigned short nippleCount;
-	nippleCount = bitString.size() / 4;
-
-	std::array<double, 2> arr;
-	std::vector<std::array<double, 2>> TUNES;
-	
-	for (int i = 0; i < 2; i++) {
-		nipplesToFreq(nippleCount, arr);
-		TUNES.push_back(arr);
-		nippleCount = nippleCount >> 4;
-	}
-	//output sound
-	std::reverse(TUNES.begin(), TUNES.end());
-	playTune(TUNES, BPS);
-}
 
 void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
-	//send data
-	std::reverse(bitString.begin(), bitString.end());
 	std::vector<int> nipples;
-	for (int i = 0; i < bitString.size(); i+=4) {	
+	for (int i = 0; i < bitString.size(); i += 4) {
 		int temp = 0;
-		for (int j = 3; j >= 0; j--) {
+		for (int j = 0; j < 4; j++) {
 			temp = temp << 1;
 			temp += bitString[j + i];
 		}
@@ -197,36 +219,35 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	}
 	std::reverse(nipples.begin(), nipples.end());
 
+	//for (int i = 0; i < nipples.size(); i++) {
+	//	std::cout << std::bitset<4>(nipples[i]) << std::endl;
+	//}
+
+	int k;
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
+	int i = 0;
 
 	for (int i = 0; i < nipples.size(); i++) {
-		nipplesToFreq(nipples[i],arr);
+		nipplesToFreq(nipples[i], arr);
 		TUNES.push_back(arr);
 	}
 
 	//output sound
-	playTune(TUNES, BPS);
+	playTune(TUNES);
 }
 
 //--------------------------------------------------------------------------------------
 
-void PhysicalLayer::sendStartBit(int startBit, int count, float BPM) {
-	//PLAY SOUND
-	int k = startBit;
-	std::array<double, 2> arr;
-	std::vector<std::array<double, 2>> TUNES;
-	nipplesToFreq(k,arr);
-	TUNES.push_back(arr);
-	for (int i = 0; i < count; i++)
-		playTune(TUNES, BPM);
-
-	TUNES.clear();
-	k = 0b0001;
-	nipplesToFreq(k, arr);
-	TUNES.push_back(arr);
-	playTune(TUNES, BPM);
-};
+//void PhysicalLayer::sendStartBit(int startBit) {
+//	//PLAY SOUND
+//	int k = startBit;
+//	std::array<double, 2> arr;
+//	std::vector<std::array<double, 2>> TUNES;
+//	nipplesToFreq(k, arr);
+//	TUNES.push_back(arr);
+//	playTune(TUNES, 1 / 3.);
+//};
 
 
 
@@ -235,7 +256,6 @@ void PhysicalLayer::sendStartBit(int startBit, int count, float BPM) {
 //--------------------------------------------------------------------------------------
 
 bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount) {
-	
 	for (int i = 0; i < sampleCount; i++) {
 		if (head + 1 >= buffersize)
 			head = 0;
@@ -245,12 +265,16 @@ bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleC
 }
 
 float PhysicalLayer::tailBuffer() {
-	while (tail + 2 > head && head - tail > 0 || ((tail + 1 == buffersize) && head < 2))
+	while (tail + 2 > head&& head - tail > 0 || ((tail + 1 == buffersize) && head < 2)) {
 		;
-	if (tail +1 >= buffersize)
+	}
+	if (tail + 1 >= buffersize) {
 		tail = 0;
+	}
+
 	return buffer[tail++];
 }
+
 
 bool PhysicalLayer::listenStartBit(int sleepTime) {
 	bool downSlope = false;
@@ -294,21 +318,21 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 			prevRes = currRes;
 			currRes[0] = goertzel_mag(samples.size(), 1633, SAMPLE_RATE_LISTEN, samples);
 			currRes[1] = goertzel_mag(samples.size(), 770, SAMPLE_RATE_LISTEN, samples);
-		/*	currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
-			currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);*/
+			/*	currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
+				currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);*/
 
-			if (currRes[0] < prevRes[0] && currRes[1] < prevRes[1] && downSlope == false && currRes[1] > threshold && currRes[0] > threshold) {
+			if (currRes[0] < prevRes[0] && currRes[1] < prevRes[1] && downSlope == false && currRes[1] > threshold&& currRes[0] > threshold) {
 				downSlope = true;
 				std::cout << "Downslobe" << "\n";
 			}
-			if (currRes[0] > prevRes[0] && currRes[1] > prevRes[1] && downSlope == true && currRes[1] > threshold && currRes[0] > threshold) {
+			if (currRes[0] > prevRes[0] && currRes[1] > prevRes[1] && downSlope == true && currRes[1] > threshold&& currRes[0] > threshold) {
 				std::cout << "Upslobe" << "\n";
-				while (prevRes < currRes && currRes[1] > threshold && currRes[0] > threshold) {
+				while (prevRes < currRes && currRes[1] > threshold&& currRes[0] > threshold) {
 					prevRes = currRes;
 					currRes[0] = goertzel_mag(samples.size(), 1633, SAMPLE_RATE_LISTEN, samples);
 					currRes[1] = goertzel_mag(samples.size(), 770, SAMPLE_RATE_LISTEN, samples);
-		/*			currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
-					currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);*/
+					/*			currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
+								currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);*/
 				}
 				std::cout << "peak found" << "\n";
 
@@ -371,7 +395,7 @@ std::array<int, 4> PhysicalLayer::listenToSound() {
 	float threshold = 200.0f;
 
 	std::cout << "we have the highground\n";
-	
+
 	for (int i = 0; i < numSamples; i++) {
 		tailBuffer();
 	}
@@ -387,7 +411,7 @@ std::array<int, 4> PhysicalLayer::listenToSound() {
 		mag = goertzel_mag(numSamples, freq[0], SAMPLE_RATE_LISTEN, samples);
 		mag1 = goertzel_mag(numSamples, freq[1], SAMPLE_RATE_LISTEN, samples);
 
-		if (mag > threshold && mag1 > threshold) {
+		if (mag > threshold&& mag1 > threshold) {
 			freqToNipples(freq, results);
 
 			if (k == 0) {
@@ -421,8 +445,8 @@ std::array<int, 4> PhysicalLayer::listenToSound() {
 		mag = goertzel_mag(numSamples, freq[0], SAMPLE_RATE_LISTEN, samples);
 		mag1 = goertzel_mag(numSamples, freq[1], SAMPLE_RATE_LISTEN, samples);
 
-		
-		if (mag > threshold && mag1 > threshold) {
+
+		if (mag > threshold&& mag1 > threshold) {
 			freq = findHighestFreq(samples.size(), SAMPLE_RATE_LISTEN, samples);
 
 			freqToNipples(freq, results);
@@ -431,7 +455,7 @@ std::array<int, 4> PhysicalLayer::listenToSound() {
 			for (int i = 0; i < results.size(); i++) {
 				std::cout << results[i];
 			}
-			
+
 			mag = 0.0f;
 			mag1 = 0.0f;
 			std::cout << "\n";
@@ -471,8 +495,8 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 
 	max1 = magnitudes[6];
 	max2 = magnitudes[7];
-/*
-	Here we find the positions of the highest magnitudes */
+	/*
+		Here we find the positions of the highest magnitudes */
 	int pos1, pos2;
 	for (int i = 0; i < 8; i++) {
 		if (magnitudes2[i] == max1) {
@@ -481,8 +505,8 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 		if (magnitudes2[i] == max2) {
 			pos2 = i;
 		}
-	}	
-	
+	}
+
 	//Here we make a sorted array of the corresponding DTMF frequency from the position of the highest magnitudes
 	float sortFreq[] = { DTMFfreq[pos2], DTMFfreq[pos1] };
 	std::sort(sortFreq, sortFreq + 2);
@@ -573,7 +597,7 @@ int PhysicalLayer::debug() {
 	}
 
 	for (int j = 0; j < 1000; j++) {
-		
+
 		std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
 		for (int i = SUBSAMPLE - windowRotate; i < SUBSAMPLE; i++) {
 			samples[i] = tailBuffer();
@@ -583,6 +607,6 @@ int PhysicalLayer::debug() {
 		outputFile << mag << ",";
 	}
 	outputFile.close();
-	
+
 	return 0;
 }
