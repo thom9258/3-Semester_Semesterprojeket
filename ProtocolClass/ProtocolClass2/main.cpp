@@ -32,7 +32,7 @@ int main()
             Binary singleChar(p1.getF16()[i]);
             FullFrame = FullFrame.BinaryAppend(FullFrame, singleChar);
             
-        }
+        } 
         std::string stringFrame = FullFrame.returnString();
         
         Binary FullFrame2(p1.SenderCRC(stringFrame));

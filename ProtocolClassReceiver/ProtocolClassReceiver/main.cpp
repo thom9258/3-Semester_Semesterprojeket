@@ -74,7 +74,7 @@ int main()
             printVec(currVec, "curr data");
     
     
-            std::string currMessage = p1.returnMessage(currVec);
+            std::string currMessage = p1.returnMessage();
     
             fullMessage += currMessage;
         }
