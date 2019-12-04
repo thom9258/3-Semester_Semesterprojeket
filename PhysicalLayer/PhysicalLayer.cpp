@@ -174,12 +174,31 @@ void transmit(std::vector<int> fraDataLink) {
 //----------------------------------------Sender----------------------------------------
 //--------------------------------------------------------------------------------------
 
+void PhysicalLayer::sendNippleCount(std::vector<int> bitString, float BPS) {
+	//sending nibble count
+	unsigned short nippleCount;
+	nippleCount = bitString.size() / 4;
+
+	std::array<double, 2> arr;
+	std::vector<std::array<double, 2>> TUNES;
+
+	for (int i = 0; i < 2; i++) {
+		nipplesToFreq(nippleCount, arr);
+		TUNES.push_back(arr);
+		nippleCount = nippleCount >> 4;
+	}
+	//output sound
+	std::reverse(TUNES.begin(), TUNES.end());
+	playTune(TUNES, BPS);
+}
 
 void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
+	//send data
+	std::reverse(bitString.begin(), bitString.end());
 	std::vector<int> nipples;
 	for (int i = 0; i < bitString.size(); i += 4) {
 		int temp = 0;
-		for (int j = 0; j < 4; j++) {
+		for (int j = 3; j >= 0; j--) {
 			temp = temp << 1;
 			temp += bitString[j + i];
 		}
@@ -187,14 +206,8 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	}
 	std::reverse(nipples.begin(), nipples.end());
 
-	//for (int i = 0; i < nipples.size(); i++) {
-	//	std::cout << std::bitset<4>(nipples[i]) << std::endl;
-	//}
-
-	int k;
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
-	int i = 0;
 
 	for (int i = 0; i < nipples.size(); i++) {
 		nipplesToFreq(nipples[i], arr);
@@ -202,26 +215,34 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	}
 
 	//output sound
-	playTune(TUNES);
+	playTune(TUNES, BPS);
 }
 
 //--------------------------------------------------------------------------------------
 
-//void PhysicalLayer::sendStartBit(int startBit) {
-//	//PLAY SOUND
-//	int k = startBit;
-//	std::array<double, 2> arr;
-//	std::vector<std::array<double, 2>> TUNES;
-//	nipplesToFreq(k, arr);
-//	TUNES.push_back(arr);
-//	playTune(TUNES, 1 / 3.);
-//};
+void PhysicalLayer::sendStartBit(int startBit, int count, float BPM) {
+	//PLAY SOUND
+	int k = startBit;
+	std::array<double, 2> arr;
+	std::vector<std::array<double, 2>> TUNES;
+	nipplesToFreq(k, arr);
+	TUNES.push_back(arr);
+	for (int i = 0; i < count; i++)
+		playTune(TUNES, BPM);
+
+	TUNES.clear();
+	k = 0b0001;
+	nipplesToFreq(k, arr);
+	TUNES.push_back(arr);
+	playTune(TUNES, BPM);
+};
 
 
 
 //--------------------------------------------------------------------------------------
 //---------------------------------------Receiver---------------------------------------
 //--------------------------------------------------------------------------------------
+
 
 bool PhysicalLayer::onProcessSamples(const int16_t* samples, std::size_t sampleCount) {
 	for (int i = 0; i < sampleCount; i++) {
