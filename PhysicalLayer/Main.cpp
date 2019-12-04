@@ -9,6 +9,7 @@
 
 
 
+//--------------convert longlong to vector of "boleans"--------------
 std::vector<int> binaryToVector(unsigned long long bit, char bitCount) {
 	std::vector<int> result;
 	result.reserve(bitCount);
@@ -17,8 +18,9 @@ std::vector<int> binaryToVector(unsigned long long bit, char bitCount) {
 		k = 1;
 		k = bit & k;
 		result.push_back(k);
-		bit = bit>> 1;
+		bit = bit >> 1;
 	}
+	std::reverse(result.begin(), result.end());
 	return result;
 }
 
@@ -39,17 +41,19 @@ int main() {
 	//std::vector<int> fuckmikkelogthomas{0,0,1,1};
 	//PhysicalLayer::sendBitString(fuckmikkelogthomas);
 	//PhysicalLayer::sendStartBit(0b0000);
-	//std::vector<int> fuckmikkelogthomas = binaryToVector(0b1101'1101'0101'1111'0000'1000'1000'1001'0001'0010, 40);
+	std::vector<int> fuckmikkelogthomas = binaryToVector(0b1101'1101'0101'1111'0000'1000'1000'1001'0001'0010, 40);
 	//std::vector<int> fuckmikkelogthomas = { 0,1,0,1,1,1,0,0,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,1,0,0,0,1,1,0,0,1,0,1,0,0,1,1,0,1,0,1,0,0,0,1,1,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,0,1,0,1,1 };
-	std::vector<int> fuckmikkelogthomas = { 1,1,0,0 };
-	
+	//std::vector<int> fuckmikkelogthomas = binaryToVector(0b0000'0001'0000'0001'0000'0001'0000'0001'0001, 28);
+	//std::vector<int> fuckmikkelogthomas = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
+	//std::vector<int> fuckmikkelogthomas = { 0,0,0,0 };
 	//while(true)
-	std::cout << fuckmikkelogthomas.size() << std::endl;
+	
 	// Usage
 	PhysicalLayer cat;
 	//cat.start();
-	//cat.sendStartBit(0b0000, 3);
-	PhysicalLayer::sendBitString(fuckmikkelogthomas, 4);
+	cat.sendStartBit();
+	PhysicalLayer::sendNippleCount(fuckmikkelogthomas, 4);
+	PhysicalLayer::sendBitString(fuckmikkelogthomas, 4); 
 	//cat.listenStartBit();
 	//sf::sleep(sf::seconds(2));
 	return 0;
