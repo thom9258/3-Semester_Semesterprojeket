@@ -13,6 +13,16 @@ void setPrevious(std::vector<int> input){
 }
 
 
+std::string fullMessageString;
+
+void addToFullMessage(std::string input) {
+	fullMessageString += input;
+}
+void resetFullMessage(void) {
+	fullMessageString = "";
+}
+
+
 
 
 class Protokol {
