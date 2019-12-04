@@ -18,8 +18,9 @@ public:
 	float tailBuffer();
 	//Sender
 	//bool static readyToSend();
-	void static sendBitString(std::vector<int> bitString, float BPS = 1);
-	void static sendStartBit(int startBit, int count, float BPM = 1);
+	void static sendBitString(std::vector<int> bitString, float BPS = 2);
+	void static sendStartBit(int startBit = 0b0111, int count = 3, float BPM = 1);
+	void static sendNippleCount(std::vector<int> bitString, float BPS = 2);
 
 
 	////Receiver

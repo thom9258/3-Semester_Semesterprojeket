@@ -34,7 +34,7 @@ PhysicalLayer::~PhysicalLayer() {
 //----------------------------------Practical function----------------------------------
 //--------------------------------------------------------------------------------------
 
-//finding frequency from nipple and save frequency to given array 
+//--------------convert nibble to frequency--------------
 template<typename arrayType, typename intType>
 void nipplesToFreq(intType nipple, arrayType& arr) { //nipple, saveToArray
 	switch (nipple & 0b0011) {
@@ -68,8 +68,7 @@ void nipplesToFreq(intType nipple, arrayType& arr) { //nipple, saveToArray
 	}
 }
 
-//--------------------------------------------------------------------------------------
-
+//--------------play vector of array with frequencies--------------
 void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned int AMPLITUDE = 5000) {
 	const unsigned toneCount = TUNES.size();
 	const unsigned SAMPLES = 44100;
@@ -116,12 +115,32 @@ void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned 
 }
 
 
+
+
 //--------------------------------------------------------------------------------------
 //----------------------------------------Sender----------------------------------------
 //--------------------------------------------------------------------------------------
 
+void PhysicalLayer::sendNippleCount(std::vector<int> bitString, float BPS) {
+	//sending nibble count
+	unsigned short nippleCount;
+	nippleCount = bitString.size() / 4;
+
+	std::array<double, 2> arr;
+	std::vector<std::array<double, 2>> TUNES;
+	
+	for (int i = 0; i < 2; i++) {
+		nipplesToFreq(nippleCount, arr);
+		TUNES.push_back(arr);
+		nippleCount = nippleCount >> 4;
+	}
+	//output sound
+	std::reverse(TUNES.begin(), TUNES.end());
+	playTune(TUNES, BPS);
+}
 
 void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
+	//send data
 	std::reverse(bitString.begin(), bitString.end());
 	std::vector<int> nipples;
 	for (int i = 0; i < bitString.size(); i+=4) {	
@@ -134,10 +153,8 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	}
 	std::reverse(nipples.begin(), nipples.end());
 
-	int k;
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
-	int i = 0;
 
 	for (int i = 0; i < nipples.size(); i++) {
 		nipplesToFreq(nipples[i],arr);
