@@ -282,21 +282,15 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 	std::array<float, 2> prevRes = { 0,0 };
 	std::array<float, 2> currRes = { 0,0 };
 
-	std::vector<float> currentResult;
-	std::vector<float> prevResult;
-	prevResult.resize(2);
-	currentResult.resize(2);
-	listen = true;
 	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
-	std::array<float, 2> oneTone = { 1336, 697 };
-
-	int frequencies[8];
-	std::vector<float> zeroTone(1209, 697);
+	
 	std::vector<float> highFreq;
 	highFreq.resize(8);
 
 	std::vector<float> samples;
 	samples.resize(SUBSAMPLE);
+
+	listen = true;
 
 	int numSamples = 44100 / 2;
 	int wait = 33075;
@@ -465,17 +459,6 @@ std::array<int, 4> PhysicalLayer::listenToSound() {
 	return results;
 }
 
-//std::vector<int> PhysicalLayer::dataToDataLink() {
-//	std::vector<int> frame;
-//
-//
-//	for (int i = 0; i < 4; i++) {
-//		frame = PhysicalLayer::listenToSound()[i];
-//	}
-//
-//	return frame;
-//}
-
 
 //--------------------------------------------------------------------------------------
 
@@ -516,38 +499,6 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 	return result;
 }
 
-//--------------------------------------------------------------------------------------
-
-//float PhysicalLayer::goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, const sf::Int16* data) {
-//	int k, i;
-//	float floatnumSamples;
-//	float omega, sine, cosine, coeff, q0, q1, q2, magnitude, real, imag;
-//
-//	float scalingFactor = numSamples / 2.0;
-//
-//	floatnumSamples = (float)numSamples;
-//	k = (int)(0.5 + ((floatnumSamples * TARGET_FREQ) / SAMPLING_RATE));
-//	omega = (2.0 * M_PI * k) / floatnumSamples;
-//	sine = sin(omega);
-//	cosine = cos(omega);
-//	coeff = 2.0 * cosine;
-//	q0 = 0;
-//	q1 = 0;
-//	q2 = 0;
-//
-//	for (i = 0; i < numSamples; i++) {
-//		q0 = coeff * q1 - q2 + data[i];
-//		q2 = q1;
-//		q1 = q0;
-//	}
-//	real = (q1 - q2 * cosine) / scalingFactor;
-//	imag = (q2 * sine) / scalingFactor;
-//
-//	magnitude = sqrtf(pow(real, 2) + pow(imag, 2));
-//
-//	return magnitude;
-//}
-
 float PhysicalLayer::goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int SAMPLING_RATE, std::vector<float> data) {
 	int k, i;
 	float floatnumSamples;
@@ -578,7 +529,7 @@ float PhysicalLayer::goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int 
 	return magnitude;
 }
 
-
+//--------------------------------------------------------------------------------------
 
 int PhysicalLayer::debug() {
 	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
