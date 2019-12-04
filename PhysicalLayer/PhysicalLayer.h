@@ -4,8 +4,7 @@
 #include <algorithm> 
 #include <iostream>
 #include <SFML/Audio.hpp>
-#include <circular_buffer.hpp>
-
+#include <array>
 
 
 class PhysicalLayer : public sf::SoundRecorder
@@ -23,15 +22,21 @@ public:
 	////Receiver
 	//bool readyToReceive();
 	bool listenStartBit(int sleepTime = 1000);
-	//int static listenToSound();
+	std::array<int, 4> listenToSound();
 	
+	
+	//std::vector<int> dataToDataLink();
+
 	//inheritance fra SFML 
-	virtual bool OnStart() { std::cout << bufferCount << std::endl;  return true; }
+	virtual bool OnStart() { return true; }
 
 	virtual bool onProcessSamples(const int16_t* samples, std::size_t sampleCount);
 
-	virtual void OnStop() {}
-	
+	virtual void OnStop(){}
+
+
+
+	int debug();
 	
 
 private:
@@ -65,12 +70,9 @@ private:
 	std::vector<double> D = { 1633, 941 };
 
 protected:
-	boost::circular_buffer<float> cb(3);
-
-	unsigned int bufferCount = 0xFFFF;
-	float* tail = buffer;
-	float* pretail;
-	float* head = buffer;
+	std::array<float, 0xFFFF> buffer;
+	int tail, head;
+	int buffersize;
 	bool listen;
 };
 

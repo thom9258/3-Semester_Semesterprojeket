@@ -48,6 +48,12 @@ int main() {
 	cat.start();
 	//cat.sendStartBit(0b0000);
 	cat.listenStartBit();
+	cat.listenToSound();
 	//sf::sleep(sf::seconds(2));
+
+	//cat.debug();
+	
+
+
 	return 0;
 }
