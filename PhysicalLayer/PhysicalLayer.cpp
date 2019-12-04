@@ -70,46 +70,7 @@ void nipplesToFreq(intType nipple, arrayType& arr) { //nipple, saveToArray
 	}
 }
 
-//void freqToNipples(std::vector<float> freq, std::vector<int> &resultNipple) { 
-//	std::vector<int> freq2(freq.begin(), freq.end());
-//	switch (freq2[0]) {
-//	case 697:
-//		resultNipple.push_back(0b0);
-//		resultNipple.push_back(0b0);
-//		break;
-//	case 770:
-//		resultNipple.push_back(0b0);
-//		resultNipple.push_back(0b1);
-//		break;
-//	case 852:
-//		resultNipple.push_back(0b1);
-//		resultNipple.push_back(0b0);
-//		break;
-//	case 941:
-//		resultNipple.push_back(0b1);
-//		resultNipple.push_back(0b1);
-//		break;
-//	}
-//
-//	switch (freq2[1]) {
-//	case 1209:
-//		resultNipple.push_back(0b0);
-//		resultNipple.push_back(0b0);
-//		break;
-//	case 1336:
-//		resultNipple.push_back(0b0);
-//		resultNipple.push_back(0b1);
-//		break;
-//	case 1477:
-//		resultNipple.push_back(0b1);
-//		resultNipple.push_back(0b0);
-//		break;
-//	case 1633:
-//		resultNipple.push_back(0b1);
-//		resultNipple.push_back(0b1);
-//		break;
-//	}
-//}
+
 
 void freqToNipples(std::vector<float> freq, std::array<int, 4>& resultNipple) {
 	std::vector<int> freq2(freq.begin(), freq.end());
@@ -200,6 +161,13 @@ void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned 
 	Sound.play();
 	sf::sleep(sf::seconds((toneCount / BPS)));
 }
+
+
+void transmit(std::vector<int> fraDataLink) {
+	
+
+}
+
 
 
 //--------------------------------------------------------------------------------------
@@ -366,8 +334,7 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 
 
 //--------------------------------------------------------------------------------------
-
-std::array<int, 4> PhysicalLayer::listenToSound() {
+std::vector<int> PhysicalLayer::listenToSound() {
 	int numSamples = 44100 / 4;
 	std::vector<float> samples;
 	samples.resize(numSamples);
@@ -376,6 +343,7 @@ std::array<int, 4> PhysicalLayer::listenToSound() {
 	freq.resize(2);
 
 	std::array<int, 4> results;
+	std::vector<int> notBool;
 
 	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
 	int soundWidth = 44100;
@@ -427,6 +395,7 @@ std::array<int, 4> PhysicalLayer::listenToSound() {
 		}
 	}
 
+
 	std::cout << nippleLength << "\n";
 
 	for (int j = 0; j < nippleLength; j++) {
@@ -448,6 +417,7 @@ std::array<int, 4> PhysicalLayer::listenToSound() {
 			std::cout << "nipple: ";
 			for (int i = 0; i < results.size(); i++) {
 				std::cout << results[i];
+				notBool.push_back(results[i]);
 			}
 
 			mag = 0.0f;
@@ -455,9 +425,13 @@ std::array<int, 4> PhysicalLayer::listenToSound() {
 			std::cout << "\n";
 		}
 	}
-
-	return results;
+	for (int i = 0; i < notBool.size(); i++) {
+		std::cout << notBool[i];
+	}
+	std::cout << std::endl;
+	return notBool;
 }
+
 
 
 //--------------------------------------------------------------------------------------
