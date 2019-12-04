@@ -13,6 +13,9 @@ public:
 	PhysicalLayer();
 	~PhysicalLayer();
 	float tailBuffer();
+
+	void transmit(std::vector<int> fraDataLink);
+
 	//Sender
 	//bool static readyToSend();
 	void static sendBitString(std::vector<int> bitString, float BPS = 4);
@@ -23,7 +26,8 @@ public:
 	////Receiver
 	//bool readyToReceive();
 	bool listenStartBit(int sleepTime = 1000);
-	std::array<int, 4> listenToSound();
+	std::vector<int> listenToSound();
+	//std::array<int, 4> listenToSound();
 	
 	
 	//std::vector<int> dataToDataLink();
