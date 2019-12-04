@@ -2,8 +2,20 @@
 #include "Binary.h"
 #include "Protocol.h"
 
-std::vector<int> stringToVec(std::string input)
+
+
+void printVec(vector<int> inp, string mess)
 {
+    cout << mess << ": [ ";
+    for (int i = 0; i < inp.size(); i++) { cout << inp[i] << " "; }
+    cout << "]" << endl;
+}
+
+
+
+void APIToPhysical(std::string input)
+{
+    
     std::replace(input.begin(), input.end(),' ', '_');
     Protokol p1(input);
     int sf = 0;
@@ -29,16 +41,67 @@ std::vector<int> stringToVec(std::string input)
             std::string stringFrame = FullFrame.returnString();
             
             Binary FullFrame2(p1.SenderCRC(stringFrame));
-    //        std::cout << FullFrame << std::endl;
-            return FullFrame2;
+            setPrevious(FullFrame2.GetData());
+    //USE THIS AS THEIR FUNCTION        return FullFrame2.GetData();
             
             // GIVE FULLFRAME 2 TO PHYSICAL LAYER, THIS IS THE FINAL BIT STRING !!
             
         }
+};
+
+void PhysicalToAPI(std::vector<int> input)
+{
+    Protokol p2(input);
+    if (p2.errorCheck(p2)) {
+        
+        if (input == p2.ACK) {
+            std::cout << "YAY" << std::endl;
+        }
+
+
+
+        else if (input == p2.NACK){
+            // USE THEIR FUNCTION HERE return previousmessage;
+        }
+
+
+
+        else if (input == p2.ACKReq){
+            // USE THEIR FUNCTION HERE return ACK
+        }
+
+
+
+        else {
+            p2.numberingReceiver(p2.getData());
+            p2.flagdetermineReceiver();
+            p2.databytesDetermine();
+            
+                std::string fullMessage;
+                 
+            if (p2.getsfReceiver() == 1) {
+                
+            }
+            
+                // giveToAPILayer(fullMessage);
+            
+        }
+    }
+    
+    
+    
+    
+
+    else{
+       // GIVE TO PHYSICAL LAYER           return p2.NACK;
+    }
+
 }
+
+
 
 int main()
 {
-    
+
     return 0;
 }
