@@ -103,9 +103,6 @@
             return framecountervar;
         }
         
-        void setACK(std::vector <int> inp) { ACK = inp; }
-
-
         std::vector<int> databytesDetermine()
         {
             FullFrame.erase(FullFrame.begin(), FullFrame.begin()+8);
