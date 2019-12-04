@@ -36,6 +36,48 @@ PhysicalLayer::~PhysicalLayer() {
 //----------------------------------Practical function----------------------------------
 //--------------------------------------------------------------------------------------
 
+//--------------------------------Convert freq to nibble--------------------------------
+void freqToNipples(std::vector<float> freq, std::array<int, 4> &resultNipple) {
+	std::vector<int> freq2(freq.begin(), freq.end());
+	switch (freq2[0]) {
+	case 697:
+		resultNipple[0] = 0b0;
+		resultNipple[1] = 0b0;
+		break;
+	case 770:
+		resultNipple[0] = 0b0;
+		resultNipple[1] = 0b1;
+		break;
+	case 852:
+		resultNipple[0] = 0b1;
+		resultNipple[1] = 0b0;
+		break;
+	case 941:
+		resultNipple[0] = 0b1;
+		resultNipple[1] = 0b1;
+		break;
+	}
+
+	switch (freq2[1]) {
+	case 1209:
+		resultNipple[2] = 0b0;
+		resultNipple[3] = 0b0;
+		break;
+	case 1336:
+		resultNipple[2] = 0b0;
+		resultNipple[3] = 0b1;
+		break;
+	case 1477:
+		resultNipple[2] = 0b1;
+		resultNipple[3] = 0b0;
+		break;
+	case 1633:
+		resultNipple[2] = 0b1;
+		resultNipple[3] = 0b1;
+		break;
+	}
+}
+
 //--------------convert nibble to frequency--------------
 template<typename arrayType, typename intType>
 void nipplesToFreq(intType nipple, arrayType& arr) { //nipple, saveToArray
