@@ -29,8 +29,8 @@ int main() {
 
 	PhysicalLayer cat;
 	cat.start();
-	cat.listenToSound();
 	cat.listenStartBit();
+	cat.listenToSound();
 
 	return 0;
 }
