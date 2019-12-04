@@ -5,6 +5,8 @@
 #include <chrono>     
 #include <ctime> 
 #include <SFML/Audio.hpp>
+#include <fstream>
+#include <string>
 
 #define M_PI 3.1415926535
 #define SUBSAMPLE 5500
@@ -34,7 +36,49 @@ PhysicalLayer::~PhysicalLayer() {
 //----------------------------------Practical function----------------------------------
 //--------------------------------------------------------------------------------------
 
-//finding frequency from nipple and save frequency to given array 
+//--------------------------------Convert freq to nibble--------------------------------
+void freqToNipples(std::vector<float> freq, std::array<int, 4> &resultNipple) {
+	std::vector<int> freq2(freq.begin(), freq.end());
+	switch (freq2[0]) {
+	case 697:
+		resultNipple[0] = 0b0;
+		resultNipple[1] = 0b0;
+		break;
+	case 770:
+		resultNipple[0] = 0b0;
+		resultNipple[1] = 0b1;
+		break;
+	case 852:
+		resultNipple[0] = 0b1;
+		resultNipple[1] = 0b0;
+		break;
+	case 941:
+		resultNipple[0] = 0b1;
+		resultNipple[1] = 0b1;
+		break;
+	}
+
+	switch (freq2[1]) {
+	case 1209:
+		resultNipple[2] = 0b0;
+		resultNipple[3] = 0b0;
+		break;
+	case 1336:
+		resultNipple[2] = 0b0;
+		resultNipple[3] = 0b1;
+		break;
+	case 1477:
+		resultNipple[2] = 0b1;
+		resultNipple[3] = 0b0;
+		break;
+	case 1633:
+		resultNipple[2] = 0b1;
+		resultNipple[3] = 0b1;
+		break;
+	}
+}
+
+//--------------convert nibble to frequency--------------
 template<typename arrayType, typename intType>
 void nipplesToFreq(intType nipple, arrayType& arr) { //nipple, saveToArray
 	switch (nipple & 0b0011) {
@@ -68,8 +112,7 @@ void nipplesToFreq(intType nipple, arrayType& arr) { //nipple, saveToArray
 	}
 }
 
-//--------------------------------------------------------------------------------------
-
+//--------------play vector of array with frequencies--------------
 void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned int AMPLITUDE = 5000) {
 	const unsigned toneCount = TUNES.size();
 	const unsigned SAMPLES = 44100;
@@ -116,12 +159,32 @@ void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned 
 }
 
 
+
+
 //--------------------------------------------------------------------------------------
 //----------------------------------------Sender----------------------------------------
 //--------------------------------------------------------------------------------------
 
+void PhysicalLayer::sendNippleCount(std::vector<int> bitString, float BPS) {
+	//sending nibble count
+	unsigned short nippleCount;
+	nippleCount = bitString.size() / 4;
+
+	std::array<double, 2> arr;
+	std::vector<std::array<double, 2>> TUNES;
+	
+	for (int i = 0; i < 2; i++) {
+		nipplesToFreq(nippleCount, arr);
+		TUNES.push_back(arr);
+		nippleCount = nippleCount >> 4;
+	}
+	//output sound
+	std::reverse(TUNES.begin(), TUNES.end());
+	playTune(TUNES, BPS);
+}
 
 void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
+	//send data
 	std::reverse(bitString.begin(), bitString.end());
 	std::vector<int> nipples;
 	for (int i = 0; i < bitString.size(); i+=4) {	
@@ -134,10 +197,8 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	}
 	std::reverse(nipples.begin(), nipples.end());
 
-	int k;
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
-	int i = 0;
 
 	for (int i = 0; i < nipples.size(); i++) {
 		nipplesToFreq(nipples[i],arr);
@@ -208,133 +269,189 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 	int frequencies[8];
 	std::vector<float> zeroTone(1209, 697);
 	std::vector<float> highFreq;
+	highFreq.resize(8);
+
 	std::vector<float> samples;
 	samples.resize(SUBSAMPLE);
 
-	highFreq.resize(8);
+	int numSamples = 44100 / 2;
+	int wait = 33075;
+	int windowRotate = 300;
+	//før 300
+	float threshold = 300.0f;
 
-	int windowRotate = 250;
-	float threshold = 5.0f;
-
-	for (int i = 0; i < SUBSAMPLE; i++) {
-		samples[i] = tailBuffer();
-	}
-	float mag;
 	while (true) {
-		std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
-		for (int i = SUBSAMPLE - windowRotate; i < SUBSAMPLE; i++) {
+		for (int i = 0; i < SUBSAMPLE; i++) {
 			samples[i] = tailBuffer();
 		}
-		for (int i = 0; i < 8; i++) {
-			mag = goertzel_mag(samples.size(), DTMFfreq[i], SAMPLE_RATE_LISTEN, samples);
-			if (mag > 1)
-				std::cout << "freq: " << DTMFfreq[i] << " mag: " << mag << "\n";
+
+		while (true) {
+			//Vindue rykker
+			std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
+			for (int i = SUBSAMPLE - windowRotate; i < SUBSAMPLE; i++) {
+				samples[i] = tailBuffer();
+			}
+			prevRes = currRes;
+			currRes[0] = goertzel_mag(samples.size(), 1633, SAMPLE_RATE_LISTEN, samples);
+			currRes[1] = goertzel_mag(samples.size(), 770, SAMPLE_RATE_LISTEN, samples);
+		/*	currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
+			currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);*/
+
+			if (currRes[0] < prevRes[0] && currRes[1] < prevRes[1] && downSlope == false && currRes[1] > threshold && currRes[0] > threshold) {
+				downSlope = true;
+				std::cout << "Downslobe" << "\n";
+			}
+			if (currRes[0] > prevRes[0] && currRes[1] > prevRes[1] && downSlope == true && currRes[1] > threshold && currRes[0] > threshold) {
+				std::cout << "Upslobe" << "\n";
+				while (prevRes < currRes && currRes[1] > threshold && currRes[0] > threshold) {
+					prevRes = currRes;
+					currRes[0] = goertzel_mag(samples.size(), 1633, SAMPLE_RATE_LISTEN, samples);
+					currRes[1] = goertzel_mag(samples.size(), 770, SAMPLE_RATE_LISTEN, samples);
+		/*			currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
+					currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);*/
+				}
+				std::cout << "peak found" << "\n";
+
+				for (int i = 0; i < wait; i++) {
+					tailBuffer();
+				}
+				std::cout << "into the while\n";
+
+				samples.clear();
+				samples.resize(numSamples);
+				for (int i = 0; i < numSamples; i++) {
+					samples[i] = tailBuffer();
+				}
+
+
+				highFreq = findHighestFreq(numSamples, SAMPLE_RATE_LISTEN, samples);
+
+				while (!(highFreq[1] == 1336.0f && highFreq[0] == 697.0f)) {
+					for (int i = 0; i < numSamples; i++) {
+						tailBuffer();
+					}
+					//std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
+					for (int i = 0; i < numSamples; i++) {
+						samples[i] = tailBuffer();
+					}
+					highFreq = findHighestFreq(numSamples, SAMPLE_RATE_LISTEN, samples);
+				}
+				for (int i = 0; i < 2; i++) {
+					std::cout << highFreq[i] << "\n";
+				}
+
+				return true;
+			}
 		}
-		
-		//std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
-		//for (int i = SUBSAMPLE - windowRotate; i < SUBSAMPLE; i++) {
-		//	samples[i] = tailBuffer();
-		//}
-		//prevRes = currRes;
-		//currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
-		//currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);
-
-		//if (currRes[0] < prevRes[0] && currRes[1] < prevRes[1] && downSlope == false) {
-		//	downSlope = true;
-		//	std::cout << "Downslobe" << "\n";
-		//}
-		//if (currRes[0] > prevRes[0] && currRes[1] > prevRes[1] && downSlope == true) {
-		//	std::cout << "Upslobe" << "\n";
-		//	while (prevRes < currRes) {
-		//		prevRes = currRes;
-		//		currRes[0] = goertzel_mag(samples.size(), 1209, SAMPLE_RATE_LISTEN, samples);
-		//		currRes[1] = goertzel_mag(samples.size(), 697, SAMPLE_RATE_LISTEN, samples);
-		//	}
-		//	std::cout << "peak found" << "\n";
-
-		//	for (int i = 0; i < 66150; i++) {
-		//		tailBuffer();
-		//		
-		//	}
-		//	//std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
-		//	for (int i = 0; i < SUBSAMPLE; i++) {
-		//		samples[i] = tailBuffer();
-		//	}
-
-
-		//	highFreq = findHighestFreq(SUBSAMPLE, SAMPLE_RATE_LISTEN, samples);
-		//	
-
-		//	while (highFreq[1] != 1336 && highFreq[0] != 697) {
-		//		for (int i = 0; i < 66150; i++) {
-		//			tailBuffer();
-		//		}
-		//		//std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
-		//		for (int i = 0; i < SUBSAMPLE; i++) {
-		//			samples[i] = tailBuffer();
-		//		}
-		//		highFreq = findHighestFreq(SUBSAMPLE, SAMPLE_RATE_LISTEN, samples);
-		//	}
-		//	return true;
-
-		//}
-	
 	}
-
 }
 
-//
 
 //--------------------------------------------------------------------------------------
 
-//int PhysicalLayer::listenToSound() {
-//	sf::SoundBufferRecorder recorder;
-//	std::vector<std::array<int, 2>> DTMFBuffer;
-//	int sleepTime = 1;
-//	
-//	int j = 0;
-//	while (j < 2) {
-//		if (PhysicalLayer::listenStartBit() == true) {
-//			std::cout << "Startbit recognized" << std::endl;
-//			j++;
-//		}
+std::array<int, 4> PhysicalLayer::listenToSound() {
+	int numSamples = 44100 / 4;
+	std::vector<float> samples;
+	samples.resize(numSamples);
+
+	std::vector<float> freq;
+	freq.resize(2);
+
+	std::array<int, 4> results;
+
+	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
+	int soundWidth = 44100;
+
+	float mag = 0.0f;
+	float mag1 = 0.0f;
+
+	short nippleLength;
+
+	//før 200 threshold
+	float threshold = 200.0f;
+
+	std::cout << "we have the highground\n";
+	
+	for (int i = 0; i < numSamples; i++) {
+		tailBuffer();
+	}
+
+	int k = 0;
+	// Check nipple størrelse på kommende data frame fra data link lager
+	while (k < 2) {
+		for (int i = 0; i < numSamples; i++) {
+			samples[i] = tailBuffer();
+		}
+
+		freq = findHighestFreq(samples.size(), SAMPLE_RATE_LISTEN, samples);
+		mag = goertzel_mag(numSamples, freq[0], SAMPLE_RATE_LISTEN, samples);
+		mag1 = goertzel_mag(numSamples, freq[1], SAMPLE_RATE_LISTEN, samples);
+
+		if (mag > threshold && mag1 > threshold) {
+			freqToNipples(freq, results);
+
+			if (k == 0) {
+				nippleLength = results[0];
+				for (int i = 1; i < results.size(); i++) {
+					nippleLength = nippleLength << 1;
+					nippleLength = nippleLength | results[i];
+				}
+			}
+			if (k == 1) {
+				for (int i = 0; i < results.size(); i++) {
+					nippleLength = nippleLength << 1;
+					nippleLength = nippleLength | results[i];
+				}
+			}
+			k++;
+			mag = 0;
+			mag1 = 0;
+		}
+	}
+
+	std::cout << nippleLength << "\n";
+
+	for (int j = 0; j < nippleLength; j++) {
+		for (int i = 0; i < numSamples; i++) {
+			samples[i] = tailBuffer();
+		}
+
+		freq = findHighestFreq(samples.size(), SAMPLE_RATE_LISTEN, samples);
+
+		mag = goertzel_mag(numSamples, freq[0], SAMPLE_RATE_LISTEN, samples);
+		mag1 = goertzel_mag(numSamples, freq[1], SAMPLE_RATE_LISTEN, samples);
+
+		
+		if (mag > threshold && mag1 > threshold) {
+			freq = findHighestFreq(samples.size(), SAMPLE_RATE_LISTEN, samples);
+
+			freqToNipples(freq, results);
+
+			std::cout << "nipple: ";
+			for (int i = 0; i < results.size(); i++) {
+				std::cout << results[i];
+			}
+			
+			mag = 0.0f;
+			mag1 = 0.0f;
+			std::cout << "\n";
+		}
+	}
+
+	return results;
+}
+
+//std::vector<int> PhysicalLayer::dataToDataLink() {
+//	std::vector<int> frame;
+//
+//
+//	for (int i = 0; i < 4; i++) {
+//		frame = PhysicalLayer::listenToSound()[i];
 //	}
-//	std::cout << "Data transmission started" << std::endl;
 //
-//	//Check if recorder is available
-//	if (!sf::SoundBufferRecorder::isAvailable()) {
-//		std::cerr << "Error: Recorder not available!" << std::endl;
-//	}
-//
-//	std::array<int, 2> arr;
-//	int i = 0;
-//	while (i < 20) {
-//		recorder.start();
-//		sf::sleep(sf::seconds(sleepTime));
-//		recorder.stop();
-//
-//		const sf::SoundBuffer& buffer = recorder.getBuffer();
-//		unsigned int SAMPLE_RATE = recorder.getSampleRate();
-//		const sf::Int16* samples = buffer.getSamples();
-//		std::size_t count = buffer.getSampleCount();
-//
-//		float* p;
-//		int frequencies[2];
-//
-//		p = PhysicalLayer::findHighestFreq(count, SAMPLE_RATE, samples);
-//		for (int i = 0; i < 2; i++) {
-//			frequencies[i] = *(p + i);
-//		}
-//		arr = { frequencies[0], frequencies[1] };
-//		std::cout << frequencies[1] << "   " << frequencies[0] << std::endl;
-//		DTMFBuffer.push_back(arr);
-//		i++;
-//	}	
-//
-//
-//	return 0;
-//	
+//	return frame;
 //}
+
 
 //--------------------------------------------------------------------------------------
 
@@ -374,18 +491,6 @@ std::vector<float> PhysicalLayer::findHighestFreq(int numSamples, unsigned int S
 
 	return result;
 }
-
-//--------------------------------------------------------------------------------------
-
-////Maybe delete????? Hvornår er vi klar til at modtage?
-//bool PhysicalLayer::readyToReceive() {
-//	if (sending || receiving) {
-//		return false;
-//	}
-//	else {
-//		return true;
-//	}
-//}
 
 //--------------------------------------------------------------------------------------
 
@@ -447,4 +552,37 @@ float PhysicalLayer::goertzel_mag(int numSamples, int TARGET_FREQ, unsigned int 
 	magnitude = sqrtf(pow(real, 2) + pow(imag, 2));
 
 	return magnitude;
+}
+
+
+
+int PhysicalLayer::debug() {
+	int DTMFfreq[] = { 697, 770, 852, 941, 1209, 1336, 1477, 1633 };
+	int freq = 697;
+	float mag = 0.0f;
+	std::vector<float> samples;
+	samples.resize(22050);
+	int windowRotate = 300;
+
+	sf::sleep(sf::seconds(2));
+	std::cout << "go" << std::endl;
+
+	std::ofstream outputFile("goertzel_mag_test.csv");
+	for (int j = 0; j < SUBSAMPLE; j++) {
+		samples[j] = tailBuffer();
+	}
+
+	for (int j = 0; j < 1000; j++) {
+		
+		std::rotate(samples.begin(), samples.begin() + windowRotate, samples.end());
+		for (int i = SUBSAMPLE - windowRotate; i < SUBSAMPLE; i++) {
+			samples[i] = tailBuffer();
+		}
+
+		mag = PhysicalLayer::goertzel_mag(samples.size(), freq, SAMPLE_RATE_LISTEN, samples);
+		outputFile << mag << ",";
+	}
+	outputFile.close();
+	
+	return 0;
 }
