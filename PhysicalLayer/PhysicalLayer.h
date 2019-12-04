@@ -4,10 +4,7 @@
 #include <algorithm> 
 #include <iostream>
 #include <SFML/Audio.hpp>
-#include <queue>
 #include <array>
-
-
 
 
 class PhysicalLayer : public sf::SoundRecorder
@@ -26,15 +23,21 @@ public:
 	////Receiver
 	//bool readyToReceive();
 	bool listenStartBit(int sleepTime = 1000);
-	//int static listenToSound();
+	std::array<int, 4> listenToSound();
 	
+	
+	//std::vector<int> dataToDataLink();
+
 	//inheritance fra SFML 
 	virtual bool OnStart() { return true; }
 
 	virtual bool onProcessSamples(const int16_t* samples, std::size_t sampleCount);
 
-	virtual void OnStop() {}
-	
+	virtual void OnStop(){}
+
+
+
+	int debug();
 	
 
 private:
@@ -68,8 +71,9 @@ private:
 	std::vector<double> D = { 1633, 941 };
 
 protected:
+	std::array<float, 0xFFFF> buffer;
+	int tail, head;
 	int buffersize;
-	std::array<float, 0xFFF> buffer;
 	bool listen;
 	int head;
 	int tail;
