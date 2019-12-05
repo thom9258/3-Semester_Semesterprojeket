@@ -21,7 +21,7 @@
     <ClCompile Include="application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Datalinklayer\Datalinklayer\main.cpp">
+    <ClCompile Include="PhysicalLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -33,6 +33,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Datalinklayer\Datalinklayer\Protocol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicalLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,14 +23,9 @@ string application::sender()
 	getline(cin, j);
 	w = j;
 	d = q + w;
-	cout << d << endl;
 	if (state == 0) {
 		setState(1);
-		return j;
-	}
-	else if (state == 1) {
-		setState(1);
-		return "You can't send!";
+		return d;
 	}
 }
 
