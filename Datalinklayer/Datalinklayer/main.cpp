@@ -13,7 +13,7 @@ void printVec(vector<int> inp, string mess)
 
 
 
-void APPToPhysical(std::string input)
+void APIToPhysical(std::string input)
 {
     
     std::replace(input.begin(), input.end(),' ', '_');
@@ -23,7 +23,10 @@ void APPToPhysical(std::string input)
         while (sf != 1) {
             p1.divider();
             Binary FullFrame(p1.numberingSender());
-
+    //        std::cout << p1.getFS() << std::endl;
+    //        std::cout << p1.getF16() << std::endl;
+    //        std::cout << p1.numbering() << std::endl;
+    //        std::cout << p1.getFramecounter() << std::endl;
             p1.flagDetermineSender();
             sf = p1.getSF();
             ul = p1.getUL();
@@ -39,47 +42,63 @@ void APPToPhysical(std::string input)
             
             Binary FullFrame2(p1.SenderCRC(stringFrame));
             setPrevious(FullFrame2.GetData());
-			
-			//USE THIS AS THEIR FUNCTION        return FullFrame2.GetData();
+    //USE THIS AS THEIR FUNCTION        return FullFrame2.GetData();
             
             // GIVE FULLFRAME 2 TO PHYSICAL LAYER, THIS IS THE FINAL BIT STRING !!
             
         }
 };
 
-void PhysicalToAPP(std::vector<int> input)
+void PhysicalToAPI(std::vector<int> input)
 {
     Protokol p2(input);
-    if (p2.errorCheck(p2)) 
-	{  
-        if (input == p2.ACK) 
-		{
-            std::cout << "YAY" << std::endl;
+    if (p2.errorCheck(p2))
+    {
+        
+        if (input == p2.ACK)
+        {
+            //End function
         }
-        else if (input == p2.NACK){
+        else if (input == p2.NACK)
+        {
             // USE THEIR FUNCTION HERE return previousmessage;
         }
         else if (input == p2.ACKReq)
-		{
-            // USE THEIR FUNCTION HERE return ACK
+        {
+            // USE THEIR FUNCTION HERE return previousControlFrame;
         }
-        else 
-		{
+        else
+        {
             p2.numberingReceiver(p2.getData());
             p2.flagdetermineReceiver();
             p2.databytesDetermine();
             
                 std::string fullMessage;
                  
-            if (p2.getsfReceiver() == 1) {
-                
+            if (p2.getsfReceiver() == 1)
+            {
+                addToFullMessage(p2.returnMessage());
+                //USE THEIR FUNCTION HERE return fullMessageString;
+                resetFullMessage();
+                //USE THEIR FUNCTION HERE return ACK;
+                setPreviousControlFrame(p2.ACK);
             }
-                // giveToAPILayer(fullMessage);   
+            else
+            {
+                addToFullMessage(p2.returnMessage());
+                //USE THEIR FUNCTION HERE return ACK;
+                setPreviousControlFrame(p2.ACK);
+            }
         }
+            
     }
-    else
-	{
-       // GIVE TO PHYSICAL LAYER           return p2.NACK;
+    
+    else{
+        
+        //USE THEIR FUNCTION HERE return NACK;
+        setPreviousControlFrame(p2.NACK);
+        
+        
     }
 
 }
