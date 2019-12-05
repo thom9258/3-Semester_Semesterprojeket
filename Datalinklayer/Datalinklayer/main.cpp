@@ -52,9 +52,11 @@ void APIToPhysical(std::string input)
 void PhysicalToAPI(std::vector<int> input)
 {
     Protokol p2(input);
-    if (p2.errorCheck(p2)) {
+    if (p2.errorCheck(p2)) 
+	{
         
-        if (input == p2.ACK) {
+        if (input == p2.ACK) 
+		{
             std::cout << "YAY" << std::endl;
         }
 
@@ -66,13 +68,15 @@ void PhysicalToAPI(std::vector<int> input)
 
 
 
-        else if (input == p2.ACKReq){
+        else if (input == p2.ACKReq)
+		{
             // USE THEIR FUNCTION HERE return ACK
         }
 
 
 
-        else {
+        else 
+		{
             p2.numberingReceiver(p2.getData());
             p2.flagdetermineReceiver();
             p2.databytesDetermine();
@@ -87,12 +91,8 @@ void PhysicalToAPI(std::vector<int> input)
             
         }
     }
-    
-    
-    
-    
-
-    else{
+    else
+	{
        // GIVE TO PHYSICAL LAYER           return p2.NACK;
     }
 
