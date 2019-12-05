@@ -307,12 +307,12 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 			//check for downslope
 			if (currRes[0] < prevRes[0] && currRes[1] < prevRes[1] && downSlope == false && currRes[1] > threshold&& currRes[0] > threshold) {
 				downSlope = true;
-				//std::cout << "Downslope" << "\n"; //debugging
+				std::cout << "Downslope" << "\n"; //debugging
 			}
 
 			//check for upslope
 			if (currRes[0] > prevRes[0] && currRes[1] > prevRes[1] && downSlope == true && currRes[1] > threshold&& currRes[0] > threshold) {
-				//std::cout << "Upslope" << "\n"; //debugging
+				std::cout << "Upslope" << "\n"; //debugging
 				//here we check for peak
 				while (prevRes < currRes && currRes[1] > threshold&& currRes[0] > threshold) {
 					prevRes = currRes;
@@ -320,13 +320,13 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 					currRes[1] = goertzel_mag(samples.size(), 770, SAMPLE_RATE_LISTEN, samples);
 
 				}
-				//std::cout << "peak found" << "\n"; //debugging
+				std::cout << "peak found" << "\n"; //debugging
 
 				//here we wait till start of next tone by updating our tail
 				for (int i = 0; i < wait; i++) {
 					tailBuffer();
 				}
-				//std::cout << "into the while\n"; //debugging
+				std::cout << "into the while\n"; //debugging
 
 				//here we update our window
 				samples.clear(); 
@@ -347,9 +347,9 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 					highFreq = findHighestFreq(numSamples, SAMPLE_RATE_LISTEN, samples);
 				}
 				//debugging
-				//for (int i = 0; i < 2; i++) {
-				//	std::cout << highFreq[i] << "\n";
-				//}
+				for (int i = 0; i < 2; i++) {
+					std::cout << highFreq[i] << "\n";
+				}
 
 				return true;
 			}
@@ -379,10 +379,10 @@ std::vector<int> PhysicalLayer::listenToSound() {
 
 	float threshold = 150.0f; //tested threshold at 35 cm
 
-	//std::cout << "we have the highground\n"; //debugging
+	std::cout << "we have the highground\n"; //debugging
 
 	//wait for pause
-	for (int i = 0; i < numSamples; i++) {
+	for (int i = 0; i < numSamples*2; i++) {
 		tailBuffer();
 	}
 
