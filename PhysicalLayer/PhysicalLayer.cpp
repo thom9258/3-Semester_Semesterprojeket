@@ -373,7 +373,7 @@ std::vector<int> PhysicalLayer::listenToSound() {
 
 	short nippleLength;
 
-	float threshold = 200.0f; //tested threshold at 35 cm
+	float threshold = 150.0f; //tested threshold at 35 cm
 
 	//std::cout << "we have the highground\n"; //debugging
 
@@ -418,7 +418,7 @@ std::vector<int> PhysicalLayer::listenToSound() {
 
 	std::cout << "frame length in nipples: " << nippleLength << "\n"; //debugging
 
-	for (int j = 0; j < nippleLength; j++) {
+	for (int j = 0; j < nippleLength + 1; j++) {
 		//update buffer
 		for (int i = 0; i < numSamples; i++) {
 			samples[i] = tailBuffer();
@@ -428,7 +428,7 @@ std::vector<int> PhysicalLayer::listenToSound() {
 		mag = goertzel_mag(numSamples, freq[0], SAMPLE_RATE_LISTEN, samples);
 		mag1 = goertzel_mag(numSamples, freq[1], SAMPLE_RATE_LISTEN, samples);
 
-		if (mag > threshold&& mag1 > threshold) {
+		if (mag > threshold && mag1 > threshold) {
 			freq = findHighestFreq(samples.size(), SAMPLE_RATE_LISTEN, samples);
 
 			freqToNipples(freq, results);
