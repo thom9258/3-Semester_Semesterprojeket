@@ -9,7 +9,7 @@
 #include <string>
 
 #define M_PI 3.1415926535
-#define SUBSAMPLE 5500
+#define SUBSAMPLE 2750
 #define SAMPLE_RATE_LISTEN 44100
 
 //--------------------------------------------------------------------------------------
@@ -287,7 +287,7 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 
 	int numSamples = 44100 / 2; // expected tone time in samples. here we send 1 tone and 1 pause per second
 	int wait = (SAMPLE_RATE_LISTEN/4) + (SAMPLE_RATE_LISTEN/2); // used to synchronize after peak found. we wait 1/4 of a tone + the pause 
-	int windowRotate = 300; // how much we move our window 
+	int windowRotate = 100; // how much we move our window 
 	float threshold = 300.0f; // tested threshold for our goertzel magnitudes. tested at 35 cm distance
 
 	while (true) {
@@ -377,18 +377,19 @@ std::vector<int> PhysicalLayer::listenToSound() {
 	float mag = 0.0f;
 	float mag1 = 0.0f;
 
-	short nippleLength;
+	unsigned short nippleLength;
 
 	float threshold = 150.0f; //tested threshold at 35 cm
 
 	std::cout << "we have the highground\n"; //debugging
 
 	//wait for pause
-	for (int i = 0; i < numSamples*2; i++) {
+	for (int i = 0; i < numSamples + numSamples/2; i++) {
 		tailBuffer();
 	}
 
 	int k = 0;
+	std::cout << "Check nipple\n";
 	// check nibble size on incomming frame
 	while (k < 2) {
 		for (int i = 0; i < numSamples; i++) {
@@ -399,7 +400,7 @@ std::vector<int> PhysicalLayer::listenToSound() {
 		mag = goertzel_mag(numSamples, freq[0], SAMPLE_RATE_LISTEN, samples);
 		mag1 = goertzel_mag(numSamples, freq[1], SAMPLE_RATE_LISTEN, samples);
 
-		if (mag > threshold&& mag1 > threshold) {
+		if (mag > threshold && mag1 > threshold) {
 			freqToNipples(freq, results);
 
 			if (k == 0) {
@@ -416,15 +417,18 @@ std::vector<int> PhysicalLayer::listenToSound() {
 				}
 			}
 			k++;
-			mag = 0;
-			mag1 = 0;
+			mag = 0.0f;
+			mag1 = 0.0f;
 		}
 	}
 
+	if(nippleLength > 36){
+		nippleLength = 36;
+	}
 
 	std::cout << "frame length in nipples: " << nippleLength << "\n"; //debugging
 
-	for (int j = 0; j < nippleLength + 1; j++) {
+	for (int j = 0; j < nippleLength ; j++) {
 		//update buffer
 		for (int i = 0; i < numSamples; i++) {
 			samples[i] = tailBuffer();
