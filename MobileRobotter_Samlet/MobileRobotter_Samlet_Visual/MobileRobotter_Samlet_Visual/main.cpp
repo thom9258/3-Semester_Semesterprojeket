@@ -20,7 +20,7 @@ void APPToPhysical(std::string input)
 		p1.divider();
 		Binary FullFrame(p1.numberingSender());
 
-		       //std::cout << p1.getFS() << std::endl;
+				//std::cout << p1.getFS() << std::endl;
 		        //std::cout << p1.getF16() << std::endl;
 		        //std::cout << p1.numberingSender() << std::endl;
 		        //std::cout << p1.getFramecounter() << std::endl;
@@ -118,7 +118,6 @@ int main()
 	std::cin >> input;
 
 	while (true) {
-
 		if (input == "R") {
 			PhysicalLayer phy;
 			phy.listenStartBit();
@@ -130,7 +129,7 @@ int main()
 			//app.receiver("hdgSHdd"); // Protocol use here!! 
 			input = "S";
 		}
-		else if (input == "S") 
+		else if (input == "S")
 		{
 			app.setState(0);
 			std::cout << "Waiting to send..." << std::endl;
@@ -143,8 +142,6 @@ int main()
 			std::cout << "Wrong input! Press [S] to send, or [R] to receive" << std::endl;
 			std::cin >> input;
 		}
-	
 	}
 	return 0;
 }
-
