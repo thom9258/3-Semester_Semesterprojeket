@@ -7,6 +7,11 @@
 #include "Binary.h"
 
 std::vector<int> previousmessage;
+std::vector<int> previousControlFrame = {1,0,0,0,1,1,1,0,1,0,0,0};
+
+void setPreviousControlFrame(std::vector<int> input){
+    previousControlFrame = input;
+}
 
 void setPrevious(std::vector<int> input){
     previousmessage = input;
@@ -261,6 +266,7 @@ public:
                 result = result + currBin.BinToChar();
             }
         }
+        std::replace(result.begin(), result.end(),'_', ' ');
         return result;
     }
     
