@@ -228,8 +228,10 @@ void PhysicalLayer::sendStartBit(int startBit, int count, float BPM) {
 	std::vector<std::array<double, 2>> TUNES;
 	nipplesToFreq(k, arr);
 	TUNES.push_back(arr);
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < count; i++) {
 		playTune(TUNES, BPM);
+		sf::sleep(sf::seconds(1 / BPM));
+	}
 
 	TUNES.clear();
 	k = 0b0001;
