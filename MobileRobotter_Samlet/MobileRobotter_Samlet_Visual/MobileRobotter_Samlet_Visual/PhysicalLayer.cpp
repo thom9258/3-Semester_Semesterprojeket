@@ -16,6 +16,7 @@
 //-------------------------------------constructors-------------------------------------
 //--------------------------------------------------------------------------------------
 PhysicalLayer::PhysicalLayer() {
+	start();
 	buffersize = 0xFFFF;
 	setProcessingInterval(sf::milliseconds(100));//default is 100
 	tail = 0;

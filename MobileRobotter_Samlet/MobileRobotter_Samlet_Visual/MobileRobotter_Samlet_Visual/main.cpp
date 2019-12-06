@@ -120,11 +120,12 @@ int main()
 	while (true) {
 
 		if (input == "R") {
+			std::cout << "Waiting to receive..." << std::endl;
 			PhysicalLayer phy;
 			phy.listenStartBit();
+			std::cout << "hej" << std::endl;
 			PhysicalToAPP(phy.listenToSound());
 			app.setState(1);
-			std::cout << "Waiting to receive..." << std::endl;
 
 			app.hasReceived = false;
 			//app.receiver("hdgSHdd"); // Protocol use here!! 
