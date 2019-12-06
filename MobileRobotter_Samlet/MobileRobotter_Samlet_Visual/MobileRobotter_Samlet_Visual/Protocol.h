@@ -248,7 +248,7 @@ public:
 	}
 
 	void incframecounter() {
-		framecounterReceiver++
+		framecounterReceiver++;
 	}
 
 	std::vector<int> databytesDetermine()
