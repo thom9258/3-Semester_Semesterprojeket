@@ -320,7 +320,7 @@ public:
 	}
 	
     
-    
+    //hej
   
 private:
     //FOR STRING FUNCTION
