@@ -32,10 +32,10 @@
     <ClInclude Include="..\..\..\Datalinklayer\Datalinklayer\Binary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Datalinklayer\Datalinklayer\Protocol.h">
+    <ClInclude Include="PhysicalLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicalLayer.h">
+    <ClInclude Include="Protocol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
