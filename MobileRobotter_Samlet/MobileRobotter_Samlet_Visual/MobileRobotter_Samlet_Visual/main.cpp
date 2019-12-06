@@ -74,8 +74,6 @@ void PhysicalToAPP(std::vector<int> input)
 			p2.databytesDetermine();
 
 
-			std::string fullMessage;
-
 			if (p2.getsfReceiver() == 1)
 			{
 				addToFullMessage(p2.returnMessage());
