@@ -84,6 +84,7 @@ void PhysicalToAPP(std::vector<int> input)
 				//USE THEIR FUNCTION HERE return ACK;
 				PhysicalLayer::sendBitString(p2.ACK);
 				setPreviousControlFrame(p2.ACK);
+				p2.getframecounter();
 			}
 			else
 			{
@@ -91,6 +92,7 @@ void PhysicalToAPP(std::vector<int> input)
 				//USE THEIR FUNCTION HERE return ACK;
 				PhysicalLayer::sendBitString(p2.ACK);
 				setPreviousControlFrame(p2.ACK);
+				p2.getframecounter();
 			}
 		}
 	}
