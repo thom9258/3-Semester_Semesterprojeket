@@ -6,6 +6,10 @@
 #include <iostream>
 #include "Binary.h"
 
+std::vector<int> ACK = { 1,1,1,1,1,0,1,1,1,0,1,1 };
+std::vector<int> NACK = { 1,0,0,0,1,1,1,0,1,0,0,0 };
+std::vector<int> ACKReq = { 1,0,1,0,1,1,0,1,0,0,1,0 };
+
 std::vector<int> previousmessage;
 std::vector<int> previousControlFrame = {1,0,0,0,1,1,1,0,1,0,0,0};
 
@@ -271,51 +275,53 @@ public:
     }
     
     
-    bool errorCheck(Protokol p2)
-    {
-        bool final = true;
-        if ( p2.CheckCRC() == true )
-        {
-            std::cout << "CRC check is true" << std::endl;
-            // if true, keep going
-        }
-        else
-        {
-            std::cout << "CRC check is false" << std::endl;
-            return final = false;
-        }
-        int a = p2.numberingReceiver(p2.getData());
-        int b = p2.databytesDetermine().size();
-        if (a*8 == b) {
-            std::cout << "Number of bytes is correct" << std::endl;
-        }
-        else
-        {
-            std::cout << "Number of bytes is incorrect" << std::endl;
-            return final = false;
-        }
-        
-        if (p2.getframecounter() % 2 == p2.getulReceiver() ) {
-            std::cout << "Correct even/odd frame received" << std::endl;
-        }
-        else {
-            std::cout << "Not the even/odd frame I expected" << std::endl;
-            return final = false;
-        }
-        return final;
-    }
+	//Function that checks every frame for errors. 
+	bool errorCheck(Protokol p2)
+	{
+		bool final = true;
+		if ((p2.getData() == ACK) || (p2.getData() == NACK) || (p2.getData() == ACKReq)) {
+			if (p2.CheckCRC() == true) {
+				std::cout << "CRC check is true" << std::endl;
+				// if true, keep going
+			}
+			else {
+				return final = false;
+			}
+		}
+		else {
+			if (p2.CheckCRC() == true) {
+				std::cout << "CRC check is true" << std::endl;
+				// if true, keep going
+			}
+			else {
+				std::cout << "CRC check is false" << std::endl;
+				return final = false;
+			}
+			int a = p2.numberingReceiver(p2.getData());
+			int b = p2.databytesDetermine().size();
+			if (a * 8 == b) {
+				std::cout << "Number of bytes is correct" << std::endl;
+			}
+			else {
+				std::cout << "Number of bytes is incorrect" << std::endl;
+				return final = false;
+			}
+
+			if (p2.getframecounter() % 2 == p2.getulReceiver()) {
+				std::cout << "Correct even/odd frame received" << std::endl;
+			}
+			else {
+				std::cout << "Not the even/odd frame I expected" << std::endl;
+				return final = false;
+			}
+			return final;
+		}
+		return final;
+	}
+	
     
     
-    
-    
-    
-    
-    
-    std::vector<int> ACK = {1,1,1,1,1,0,1,1,1,0,1,1};
-    std::vector<int> NACK = {1,0,0,0,1,1,1,0,1,0,0,0};
-    std::vector<int> ACKReq = {1,0,1,0,1,1,0,1,0,0,1,0};
-    
-    
+  
 private:
     //FOR STRING FUNCTION
     std::string fullsentence;
@@ -333,6 +339,8 @@ private:
     int numbering;
     int sfReceiver = 0, ulReceiver = 0;
     int framecounterReceiver = 0;
+
+
 };
 
 
