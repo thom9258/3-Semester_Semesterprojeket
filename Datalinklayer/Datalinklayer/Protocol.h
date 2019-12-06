@@ -171,7 +171,7 @@ public:
         }
     
     void flagdetermineReceiver(){
-        if (FullFrame.at(6) == 1) {
+        if (FullFrame.at(7) == 1) {
             ulReceiver = 1;
         }
         
@@ -179,7 +179,7 @@ public:
             ulReceiver = 0;
         }
         
-        if (FullFrame.at(7) == 1) {
+        if (FullFrame.at(8) == 1) {
             sfReceiver = 1;
         }
         
