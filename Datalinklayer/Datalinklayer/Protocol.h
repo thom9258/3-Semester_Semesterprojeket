@@ -306,8 +306,8 @@ public:
 				std::cout << "Number of bytes is incorrect" << std::endl;
 				return final = false;
 			}
-
-			if (p2.getframecounter() % 2 == p2.getulReceiver()) {
+			
+			if (p2.getframecounter() % 2 != p2.getulReceiver()) {
 				std::cout << "Correct even/odd frame received" << std::endl;
 			}
 			else {
