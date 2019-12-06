@@ -6,6 +6,8 @@
 #include <iostream>
 #include "Binary.h"
 
+int framecounterReceiver = 0;
+
 std::vector<int> ACK = { 1,1,1,1,1,0,1,1,1,0,1,1 };
 std::vector<int> NACK = { 1,0,0,0,1,1,1,0,1,0,0,0 };
 std::vector<int> ACKReq = { 1,0,1,0,1,1,0,1,0,0,1,0 };
@@ -13,7 +15,7 @@ std::vector<int> ACKReq = { 1,0,1,0,1,1,0,1,0,0,1,0 };
 std::vector<int> previousmessage;
 std::vector<int> previousControlFrame = {1,0,0,0,1,1,1,0,1,0,0,0};
 
-void setPreviousControlFrame(std::vector<int> input){
+void setPreviousControl(std::vector<int> input){
     previousControlFrame = input;
 }
 
@@ -73,15 +75,15 @@ public:
     };
     
     int numberingSender()
-       {
-           NumOfChar = first_16.length();
-           return NumOfChar;
-       };
+    {
+        NumOfChar = first_16.length();
+        return NumOfChar;
+    }
        
-       void getNumbering()
-       {
-           std::cout << NumOfChar;
-       }
+    void getNumbering()
+    {
+        std::cout << NumOfChar;
+	}
     
     void flagDetermineSender()
     {
@@ -141,7 +143,7 @@ public:
         return final;
     }
     
-    
+	
     
     
     
@@ -168,7 +170,7 @@ public:
 
 
         return numbering+1;
-        }
+	}
     
     void flagdetermineReceiver(){
         if (FullFrame[6] == 1) {
@@ -241,7 +243,6 @@ public:
     }
     
     int getframecounter(){
-        framecounterReceiver++;
         return framecounterReceiver;
     }
     
@@ -338,7 +339,7 @@ private:
     std::vector<int> FullFrame;
     int numbering;
     int sfReceiver = 0, ulReceiver = 0;
-    int framecounterReceiver = 1;
+    int framecounterReceiver = 0;
 
 
 };

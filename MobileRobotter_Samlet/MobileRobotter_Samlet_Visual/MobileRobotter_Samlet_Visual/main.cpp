@@ -73,6 +73,7 @@ void PhysicalToAPP(std::vector<int> input)
 			p2.flagdetermineReceiver();
 			p2.databytesDetermine();
 
+
 			std::string fullMessage;
 
 			if (p2.getsfReceiver() == 1)
@@ -84,7 +85,7 @@ void PhysicalToAPP(std::vector<int> input)
 				//USE THEIR FUNCTION HERE return ACK;
 				PhysicalLayer::sendBitString(p2.ACK);
 				setPreviousControlFrame(p2.ACK);
-				p2.getframecounter();
+				p2.incframecounter();
 			}
 			else
 			{
@@ -92,7 +93,7 @@ void PhysicalToAPP(std::vector<int> input)
 				//USE THEIR FUNCTION HERE return ACK;
 				PhysicalLayer::sendBitString(p2.ACK);
 				setPreviousControlFrame(p2.ACK);
-				p2.getframecounter();
+				p2.incframecounter();
 			}
 		}
 	}

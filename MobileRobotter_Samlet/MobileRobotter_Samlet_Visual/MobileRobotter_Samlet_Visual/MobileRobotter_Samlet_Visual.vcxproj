@@ -136,9 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Datalinklayer\Datalinklayer\Binary.h" />
-    <ClInclude Include="..\..\..\Datalinklayer\Datalinklayer\Protocol.h" />
     <ClInclude Include="application.h" />
     <ClInclude Include="PhysicalLayer.h" />
+    <ClInclude Include="Protocol.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
