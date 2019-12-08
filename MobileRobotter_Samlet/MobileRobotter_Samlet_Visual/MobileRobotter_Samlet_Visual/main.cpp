@@ -7,50 +7,71 @@
 #include "Protocol.h"
 #include "PhysicalLayer.h"
 
+// instantiate app
 application app;
 
+
+// dataLink layer, converting input from app into output given to physical
 void APPToPhysical(std::string input)
 {
-
+	// make sure there are no spaces in the transmitted message
 	std::replace(input.begin(), input.end(), ' ', '_');
+
+	// instantiate protocol object
 	Protokol p1(input);
 	int sf = 0;
 	int ul;
 	while (sf != 1) {
+
+		// is a return function and might not be needed here?
 		p1.divider();
+
 		Binary FullFrame(p1.numberingSender());
 
-				//std::cout << p1.getFS() << std::endl;
-		        //std::cout << p1.getF16() << std::endl;
-		        //std::cout << p1.numberingSender() << std::endl;
-		        //std::cout << p1.getFramecounter() << std::endl;
+		// debug
+		//std::cout << p1.getFS() << std::endl;
+		//std::cout << p1.getF16() << std::endl;
+        //std::cout << p1.numberingSender() << std::endl
+		//std::cout << p1.getFramecounter() << std::endl;
+
+		// determine the flag nibble
 		p1.flagDetermineSender();
 		sf = p1.getSF();
 		ul = p1.getUL();
 		Binary flag({ 0,0,ul,sf });
+
+		// append numbering onto data length
 		FullFrame = FullFrame.BinaryAppend(FullFrame, flag);
+
+		// convert the 16 first char's in the string into binary and append
 		for (int i = 0; i < p1.getF16().length(); i++)
 		{
 			Binary singleChar(p1.getF16()[i]);
 			FullFrame = FullFrame.BinaryAppend(FullFrame, singleChar);
 		}
+
+		//  create crc rest and append onto frame
 		std::string stringFrame = FullFrame.returnString();
-
-		
-
 		Binary FullFrame2(p1.SenderCRC(stringFrame));
+
+		// remember the sent frame in a buffer
 		setPrevious(FullFrame2.GetData());
 
-		std::cout << FullFrame2 << std::endl;
-		// giving
+		// debug
+		//std::cout << FullFrame2 << std::endl;
+
+		// give the string to the physical layer
 		PhysicalLayer::sendBitString(FullFrame2.GetData());
 
 	}
 };
 
+// dataLink layer, converting input from physical into output given to the app
 void PhysicalToAPP(std::vector<int> input)
 {
+	// object instantiation
 	Protokol p2(input);
+	// check if the recieved frame is readable
 	if (p2.errorCheck(p2))
 	{
 		if (input == p2.ACK)
@@ -59,76 +80,80 @@ void PhysicalToAPP(std::vector<int> input)
 		}
 		else if (input == p2.NACK)
 		{
-			// USE THEIR FUNCTION HERE return previousmessage;
+			// resend frame from buffer
 			PhysicalLayer::sendBitString(previousmessage);
 		}
 		else if (input == p2.ACKReq)
 		{
-			// USE THEIR FUNCTION HERE return previousControlFrame;
+			// resend control frame from buffer
 			PhysicalLayer::sendBitString(previousControlFrame);
 		}
-		else
+		else // if the incoming message is a recieved data frame
 		{
+			// determine the amount of data in the recieved frame
 			p2.numberingReceiver(p2.getData());
 			p2.flagdetermineReceiver();
 			p2.databytesDetermine();
 
-
+			// determine if the recieved message is the last
 			if (p2.getsfReceiver() == 1)
 			{
 				addToFullMessage(p2.returnMessage());
-				//USE THEIR FUNCTION HERE return fullMessageString;
+				// delive the full message to app
 				app.receiver(fullMessageString);
 				resetFullMessage();
-				//USE THEIR FUNCTION HERE return ACK;
+				//send ack
 				PhysicalLayer::sendBitString(p2.ACK);
 				setPreviousControlFrame(p2.ACK);
 				p2.incframecounter();
 			}
 			else
 			{
+				// save the recieved data
 				addToFullMessage(p2.returnMessage());
-				//USE THEIR FUNCTION HERE return ACK;
+				// send ack
 				PhysicalLayer::sendBitString(p2.ACK);
 				setPreviousControlFrame(p2.ACK);
 				p2.incframecounter();
 			}
 		}
 	}
-
-	else 
+	else // if the recieved frame is unreadable
 	{
-		//USE THEIR FUNCTION HERE return NACK;
+		//send a NACK
 		PhysicalLayer::sendBitString(p2.NACK);
 		setPreviousControlFrame(p2.NACK);
 	}
 }
 
-
-
-
-
+// application layer
 int main()
 {
+	// do we use this?
 	std::thread dataLink;
 	
 	std::string input;
 
-
 	std::cout << "Press [S] to send, or [R] to receive" << std::endl;
 	std::cin >> input;
 
+	// always run this code
 	while (true) {
+		// check if the user wants to start as reciever or sender
 		if (input == "R") {
 			std::cout << "Waiting to receive..." << std::endl;
+			// start listening
 			PhysicalLayer phy;
 			phy.listenStartBit();
-			std::cout << "hej" << std::endl;
+
+			// debug
+			//std::cout << "listening has started" << std::endl;
+
 			PhysicalToAPP(phy.listenToSound());
 			app.setState(1);
 
 			app.hasReceived = false;
-			//app.receiver("hdgSHdd"); // Protocol use here!! 
+			 
 			input = "S";
 		}
 		else if (input == "S")
