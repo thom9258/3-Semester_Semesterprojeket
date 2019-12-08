@@ -151,17 +151,18 @@ int main()
 
 			PhysicalToAPP(phy.listenToSound());
 			app.setState(1);
-
 			app.hasReceived = false;
 			 
+			// change state to sender
 			input = "S";
 		}
 		else if (input == "S")
 		{
+
 			app.setState(0);
 			std::cout << "Waiting to send..." << std::endl;
-			//std::cout << app.sender() << std::endl;
-			APPToPhysical(app.sender());// Protocol get from here!!
+			// deliver message to datalink layer
+			APPToPhysical(app.sender());
 			input = "R";
 		}
 		else 
