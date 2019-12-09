@@ -17,30 +17,31 @@ int application::getState()
 
 string application::sender()
 {
-	string j, q, w, d;
-	cin >> j;
-	q = j;
-	getline(cin, j);
-	w = j;
-	d = q + w;
-	if (state == 0) {
-		setState(1);
+	if (state == 1) {
+		string j, q, w, d;
+		cin >> j;
+		q = j;
+		getline(cin, j);
+		w = j;
+		d = q + w;
 		return d;
+	}
+
+	else if (state == 0) {
+		cout << "Du kan ikke sende";
 	}
 }
 
 string application::receiver(string y)
 {
-	hasReceived = true;
-
-	if (state == 1) {
-		setState(0);
+	if (state == 0) {
+		setState(1);
 		cout << y << endl;
 		return y;
 	}
-	else if (state == 0) {
-		setState(0);
+	else if (state == 1) {
+		cout << "Du kan ikke modtage";
 
-		return "You can't receive!";
+
 	}
 }
