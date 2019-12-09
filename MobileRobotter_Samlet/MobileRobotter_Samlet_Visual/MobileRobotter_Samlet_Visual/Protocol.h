@@ -31,6 +31,12 @@ void resetFullMessage(void) {
 }
 
 
+bool canSendFrame = true;
+
+void updateFrameDelay(bool inp) {
+	canSendFrame = inp;
+}
+
 
 
 class Protokol {

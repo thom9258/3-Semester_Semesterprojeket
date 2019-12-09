@@ -14,6 +14,8 @@ application app;
 // dataLink layer, converting input from app into output given to physical
 void APPToPhysical(std::string input)
 {
+	while (canSendFrame == false) {}
+
 	// make sure there are no spaces in the transmitted message
 	std::replace(input.begin(), input.end(), ' ', '_');
 
@@ -62,7 +64,7 @@ void APPToPhysical(std::string input)
 
 		// give the string to the physical layer
 		PhysicalLayer::sendBitString(FullFrame2.GetData());
-
+		updateFrameDelay(false);
 	}
 };
 
@@ -76,6 +78,7 @@ void PhysicalToAPP(std::vector<int> input)
 	{
 		if (input == p2.ACK)
 		{
+			updateFrameDelay(true);
 			//End function
 		}
 		else if (input == p2.NACK)
@@ -130,7 +133,7 @@ void PhysicalToAPP(std::vector<int> input)
 int main()
 {
 	// do we use this?
-	std::thread dataLink;
+	//std::thread dataLink;
 	
 	std::string input;
 
@@ -163,6 +166,7 @@ int main()
 			std::cout << "Waiting to send..." << std::endl;
 			// deliver message to datalink layer
 			APPToPhysical(app.sender());
+			// change state to reciever
 			input = "R";
 		}
 		else 
