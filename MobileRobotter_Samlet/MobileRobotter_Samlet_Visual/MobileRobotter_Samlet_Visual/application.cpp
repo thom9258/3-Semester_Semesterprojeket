@@ -31,16 +31,16 @@ string application::sender()
 		entireSentence = firstWord + restOfWords;
 		return entireSentence;
 		setState(0);
-		cout << "State er nu 0 (modtager mode)";
+		cout << "State er nu 0 (modtager mode)" << endl;
 
 	}
 
 	else if (state == 0) {
 		// check state to see if the user is allowed to send data.
 		// If the state is 0 the user is not allowed to send.
-		cout << "Du kan ikke sende";
+		cout << "Du kan ikke sende" << endl;;
 		setState(0);
-		cout << "State er nu 0 (modtager mode)";
+		cout << "State er nu 0 (modtager mode)"<< endl;
 
 	}
 
@@ -57,10 +57,10 @@ void application::receiver(string y)
 	else if (state == 1) {
 		// check state to see if the user is allowed to send data.
 		// If the state is 1 the user is not allowed to receive.
-		cout << "Du kan ikke modtage";
+		cout << "Du kan ikke modtage"<<endl;
 
 
 	}
 	setState(1);
-	cout << "State er nu 1 (sender mode)";
+	cout << "State er nu 1 (sender mode)"<<endl;
 }
