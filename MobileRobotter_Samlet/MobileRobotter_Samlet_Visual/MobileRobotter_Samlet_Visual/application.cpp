@@ -30,15 +30,19 @@ string application::sender()
 		// Putting all the words together and saves them in d.
 		entireSentence = firstWord + restOfWords;
 		return entireSentence;
+		setState(0);
+		cout << "State er nu 0 (modtager mode)";
+
 	}
 
 	else if (state == 0) {
 		// check state to see if the user is allowed to send data.
 		// If the state is 0 the user is not allowed to send.
 		cout << "Du kan ikke sende";
+		setState(0);
+		cout << "State er nu 0 (modtager mode)";
+
 	}
-	setState(0);
-	cout << "State er nu 0 (modtager mode)";
 
 }
 
