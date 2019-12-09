@@ -147,6 +147,8 @@ public:
 
 			}
 		}
+		char p = result;
+		cout << p << endl;
 		return result;
 	}
 
