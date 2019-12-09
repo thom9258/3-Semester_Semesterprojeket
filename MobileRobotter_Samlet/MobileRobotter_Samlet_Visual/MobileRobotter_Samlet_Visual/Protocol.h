@@ -263,6 +263,9 @@ public:
 
 		FullFrame.erase(FullFrame.end() - 8, FullFrame.end());
 
+		for(int i = 0; i < FullFrame.size(); i++){ std::cout << FullFrame[i] << std::endl; }
+
+
 		return FullFrame;
 	}
 
