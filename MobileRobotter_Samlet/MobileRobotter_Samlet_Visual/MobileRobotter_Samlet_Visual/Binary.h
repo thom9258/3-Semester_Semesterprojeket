@@ -132,22 +132,39 @@ public:
 
 
 	// returning a char
-	char BinToChar(void)
+	string BinToChar(void)
 	{
-		int result = 0;
+		//vector<int> data = { 0,1,1,0, 1,0,0,0,		0,1,1,0, 0,1,0,1,		0,1,1,0, 1,0,1,0 }; // hej
+
+		string result;
 
 		vector<int> binData = data;
-		reverse(binData.begin(), binData.end());
 
-		for (int i = 0; i < binData.size(); i++)
+		int charAmount = binData.size() / 8;
+		cout << "charAmount " << charAmount << endl;
+
+		for (int i = 0; i < charAmount; i++)
 		{
-			if (binData[i] == 1)
+			cout << "new char" << endl;
+
+			vector<int> byteData;
+
+			for (int l = 0; l < 8; l++) { byteData.push_back(binData[l]); }
+			reverse(byteData.begin(), byteData.end());
+
+			int intRes = 0;
+			for (int j = 0; j < byteData.size(); j++)
 			{
-				result += pow((binData[i] * 2), i);
+				if (byteData[j] == 1)
+				{
+					intRes += pow((byteData[j] * 2), j);
+				}
 			}
+			binData.erase(binData.begin(), binData.begin() + 8);
+
+			char charRes = char(intRes);
+			result += charRes;
 		}
-		char p = result;
-		cout << p << endl;
 		return result;
 	}
 
