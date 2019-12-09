@@ -38,8 +38,6 @@ string application::sender()
 		cout << "Du kan ikke sende";
 	}
 	setState(0);
-	cout << "State er nu 0 (modtager mode)";
-
 }
 
 void application::receiver(string y)
@@ -58,5 +56,4 @@ void application::receiver(string y)
 
 	}
 	setState(1);
-	cout << "State er nu 1 (sender mode)";
 }
