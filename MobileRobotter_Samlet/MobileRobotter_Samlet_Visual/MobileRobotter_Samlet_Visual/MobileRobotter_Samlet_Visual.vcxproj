@@ -135,8 +135,8 @@
     <ClCompile Include="PhysicalLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Datalinklayer\Datalinklayer\Binary.h" />
     <ClInclude Include="application.h" />
+    <ClInclude Include="Binary.h" />
     <ClInclude Include="PhysicalLayer.h" />
     <ClInclude Include="Protocol.h" />
   </ItemGroup>

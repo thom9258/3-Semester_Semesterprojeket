@@ -29,13 +29,13 @@
     <ClInclude Include="application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Datalinklayer\Datalinklayer\Binary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicalLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Protocol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Binary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
