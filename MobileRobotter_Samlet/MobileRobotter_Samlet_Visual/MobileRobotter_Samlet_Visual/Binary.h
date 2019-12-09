@@ -144,7 +144,6 @@ public:
 			if (binData[i] == 1)
 			{
 				result += pow((binData[i] * 2), i);
-
 			}
 		}
 		char p = result;
