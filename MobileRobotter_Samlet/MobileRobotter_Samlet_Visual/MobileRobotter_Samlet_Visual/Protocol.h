@@ -278,13 +278,10 @@ public:
 
 		while (ff.size() != 0)
 		{
-			for (int i = 0; i < 8; i++)
-			{
 				currFrame.push_back(ff.at(0));
 				ff.erase(ff.begin());
 				Binary currBin(currFrame);
 				result = currBin.BinToChar();
-			}
 		}
 		std::replace(result.begin(), result.end(), '_', ' ');
 		return result;
