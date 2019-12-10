@@ -141,11 +141,11 @@ public:
 		vector<int> binData = data;
 
 		int charAmount = binData.size() / 8;
-		cout << "charAmount " << charAmount << endl;
+		//cout << "charAmount " << charAmount << endl;
 
 		for (int i = 0; i < charAmount; i++)
 		{
-			cout << "new char" << endl;
+			//cout << "new char" << endl;
 
 			vector<int> byteData;
 
