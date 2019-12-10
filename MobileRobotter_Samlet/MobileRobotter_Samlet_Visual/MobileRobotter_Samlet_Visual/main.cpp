@@ -129,6 +129,7 @@ void PhysicalToAPP(std::vector<int> input)
 		PhysicalLayer::sendBitString(p2.NACK);
 		setPreviousControlFrame(p2.NACK);
 	}
+
 }
 
 // application layer
@@ -141,11 +142,17 @@ int main()
 
 	std::cout << "Press [S] to send, or [R] to receive" << std::endl;
 	std::cin >> input;
-
+	if (input == "S") {
+		app.setState(1);
+	}
+	else if(input=="R"){
+		app.setState(0);
+	}
 	// always run this code
 	while (true) {
 		// check if the user wants to start as reciever or sender
 		if (input == "R") {
+			
 			std::cout << "Waiting to receive..." << std::endl;
 			// start listening
 			PhysicalLayer phy;
@@ -153,22 +160,17 @@ int main()
 
 			// debug
 			//std::cout << "listening has started" << std::endl;
-
-			PhysicalToAPP(phy.listenToSound());
-			app.setState(1);
-			app.hasReceived = false;
-			 
-			// change state to sender
+			 PhysicalToAPP(phy.listenToSound());
+			
+	
 			input = "S";
 		}
 		else if (input == "S")
 		{
-
-			app.setState(0);
 			std::cout << "Waiting to send..." << std::endl;
 			// deliver message to datalink layer
 			APPToPhysical(app.sender());
-			// change state to reciever
+			
 			input = "R";
 		}
 		else 

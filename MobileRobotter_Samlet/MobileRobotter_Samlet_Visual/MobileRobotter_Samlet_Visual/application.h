@@ -15,9 +15,11 @@ public:
 	string sender();
 
 	// outputs string to terminal
-	string receiver(string h);
+	void receiver(string h);
 
 
-	bool state = 0;
-	bool hasReceived = false;
+	bool state;
+	// State determine whether the sender and receiver function can receive or send. 
+	// If state is 0 then the user can only receive data while if the state is 1 the user can only send data
+
 };

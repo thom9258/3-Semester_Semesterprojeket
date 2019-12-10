@@ -173,7 +173,7 @@ public:
 			firstfour.push_back(input[i]);
 		}
 
-		numbering = firstfour.at(0) * 8 + firstfour.at(1) * 4 + firstfour.at(2) * 2 + firstfour.at(3) * 1;
+		int numbering = firstfour.at(0) * 8 + firstfour.at(1) * 4 + firstfour.at(2) * 2 + firstfour.at(3) * 1;
 
 
 		return numbering + 1;
@@ -259,9 +259,13 @@ public:
 
 	std::vector<int> databytesDetermine()
 	{
+
 		FullFrame.erase(FullFrame.begin(), FullFrame.begin() + 8);
 
 		FullFrame.erase(FullFrame.end() - 8, FullFrame.end());
+
+		for(int i = 0; i < FullFrame.size(); i++){ std::cout << FullFrame[i] << std::endl; }
+
 
 		return FullFrame;
 	}
@@ -274,13 +278,10 @@ public:
 
 		while (ff.size() != 0)
 		{
-			for (int i = 0; i < 8; i++)
-			{
 				currFrame.push_back(ff.at(0));
 				ff.erase(ff.begin());
 				Binary currBin(currFrame);
-				result = result + currBin.BinToChar();
-			}
+				result = currBin.BinToChar();
 		}
 		std::replace(result.begin(), result.end(), '_', ' ');
 		return result;

@@ -17,30 +17,50 @@ int application::getState()
 
 string application::sender()
 {
-	string j, q, w, d;
-	cin >> j;
-	q = j;
-	getline(cin, j);
-	w = j;
-	d = q + w;
-	if (state == 0) {
-		setState(1);
-		return d;
+	if (state == 1) {
+		// check state to see if the user is allowed to send data .
+		// If state is 1 the function continue.
+		string input, firstWord, restOfWords, entireSentence;
+		cin >> input;
+		firstWord = input;
+		//takes the first word and saves it in q.
+		getline(cin, input);
+		//takes the rest of the words and saves them in w.
+		restOfWords = input;
+		// Putting all the words together and saves them in d.
+		entireSentence = firstWord + restOfWords;
+		return entireSentence;
+		setState(0);
+		cout << "State er nu 0 (modtager mode)" << endl;
+
 	}
+
+	else if (state == 0) {
+		// check state to see if the user is allowed to send data.
+		// If the state is 0 the user is not allowed to send.
+		cout << "Du kan ikke sende" << endl;;
+		setState(0);
+		cout << "State er nu 0 (modtager mode)"<< endl;
+
+	}
+
 }
 
-string application::receiver(string y)
+void application::receiver(string y)
 {
-	hasReceived = true;
-
-	if (state == 1) {
-		setState(0);
+	if (state == 0) {
+		// check state to see if the user is allowed to send data.
+		// If the state is 0 the user is  allowed to receive.
 		cout << y << endl;
-		return y;
+	
 	}
-	else if (state == 0) {
-		setState(0);
+	else if (state == 1) {
+		// check state to see if the user is allowed to send data.
+		// If the state is 1 the user is not allowed to receive.
+		cout << "Du kan ikke modtage"<<endl;
 
-		return "You can't receive!";
+
 	}
+	setState(1);
+	cout << "State er nu 1 (sender mode)"<<endl;
 }
