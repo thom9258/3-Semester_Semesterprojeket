@@ -140,7 +140,7 @@ void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned 
 			//double window = asin(sin(i*M_PI / (slut - start)));																//triangular source:Claus
 			//double window = 0.5 * (1 - cos(2 * M_PI*i / (slut-start)));														//Hann window function source:https://stackoverflow.com/questions/3555318/implement-hann-window
 			//double window = 0.42 - 0.5*cos(2 * M_PI*i / ((slut - start) - 1)) + 0.08*cos(4 * M_PI*i / ((slut - start) - 1));	//blackman source matlab
-			double window = 0.5 * (1 - cos(2 * M_PI * i / (slut - start)));														//hamming window function
+			double window = 0.5 * (1 - cos(2 * M_PI * i / (slut - start)));													//hamming window function
 			raw[i] = window * (AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI));
 			x += TUNES[j][0] / SAMPLE_RATE;
 			y += TUNES[j][1] / SAMPLE_RATE;
@@ -194,21 +194,22 @@ void PhysicalLayer::sendNippleCount(std::vector<int> bitString, float BPS) {
 }
 
 void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
-	
-	//send nibble count
-	unsigned short nippleCount;
-	nippleCount = bitString.size() / 4;
-
 	std::array<double, 2> arr;
 	std::vector<std::array<double, 2>> TUNES;
 
-	for (int i = 0; i < 2; i++) {
-		nipplesToFreq(nippleCount, arr);
-		TUNES.push_back(arr);
-		nippleCount = nippleCount >> 4;
-	}
-	//output sound
-	std::reverse(TUNES.begin(), TUNES.end());
+	//send nibble count
+	//unsigned short nippleCount;
+	//nippleCount = bitString.size() / 4;
+
+
+
+	//for (int i = 0; i < 2; i++) {
+	//	nipplesToFreq(nippleCount, arr);
+	//	TUNES.push_back(arr);
+	//	nippleCount = nippleCount >> 4;
+	//}
+	////output sound
+	//std::reverse(TUNES.begin(), TUNES.end());
 
 	//send data
 	std::reverse(bitString.begin(), bitString.end());
