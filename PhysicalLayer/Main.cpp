@@ -50,12 +50,12 @@ int main() {
 	// Usage
 	PhysicalLayer cat;
 	cat.start();
-	cat.debug();
+	//cat.debug();
 	//cat.sendStartBit();
 	//PhysicalLayer::sendNippleCount(fuckmikkelogthomas, 4);
 	//PhysicalLayer::sendBitString(fuckmikkelogthomas, 4);
-	//cat.listenStartBit();
-	//cat.listenToSound();
+	cat.listenStartBit();
+	cat.listenToSound();
 	//sf::sleep(sf::seconds(2));
 	return 0;
 }
