@@ -131,28 +131,25 @@ public:
 	};
 
 
-	// returning a char
+	// returning a string of char based on the data vector
 	string BinToChar(void)
 	{
-		//vector<int> data = { 0,1,1,0, 1,0,0,0,		0,1,1,0, 0,1,0,1,		0,1,1,0, 1,0,1,0 }; // hej
-
 		string result;
 
 		vector<int> binData = data;
 
 		int charAmount = binData.size() / 8;
-		//cout << "charAmount " << charAmount << endl;
 
 		for (int i = 0; i < charAmount; i++)
 		{
-			//cout << "new char" << endl;
-
+			// data of a single char
 			vector<int> byteData;
 
 			for (int l = 0; l < 8; l++) { byteData.push_back(binData[l]); }
 			reverse(byteData.begin(), byteData.end());
 
 			int intRes = 0;
+			// bin polynomial algorithm
 			for (int j = 0; j < byteData.size(); j++)
 			{
 				if (byteData[j] == 1)
