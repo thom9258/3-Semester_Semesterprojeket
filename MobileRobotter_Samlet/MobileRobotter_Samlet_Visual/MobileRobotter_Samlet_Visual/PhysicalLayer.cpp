@@ -307,7 +307,7 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 	int numSamples = 44100 / 2; // expected tone time in samples. here we send 1 tone and 1 pause per second
 	int wait = (SAMPLE_RATE_LISTEN / 4) + (SAMPLE_RATE_LISTEN / 2); // used to synchronize after peak found. we wait 1/4 of a tone + the pause 
 	int windowRotate = 100; // how much we move our window 
-	float threshold = 300.0f; // tested threshold for our goertzel magnitudes. tested at 35 cm distance
+	float threshold = 200.0f; // tested threshold for our goertzel magnitudes. tested at 35 cm distance
 
 	while (true) {
 		//here we wait by updating our tail
@@ -398,7 +398,7 @@ std::vector<int> PhysicalLayer::listenToSound() {
 
 	unsigned short nippleLength;
 
-	float threshold = 150.0f; //tested threshold at 35 cm
+	float threshold = 100.0f; //tested threshold at 35 cm
 
 	std::cout << "we have the highground\n"; //debugging
 
