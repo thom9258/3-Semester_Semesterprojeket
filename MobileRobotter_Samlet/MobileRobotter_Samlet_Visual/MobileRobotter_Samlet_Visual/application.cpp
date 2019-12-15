@@ -29,8 +29,9 @@ string application::sender()
 		restOfWords = input;
 		// Putting all the words together and saves them in d.
 		entireSentence = firstWord + restOfWords;
-		return entireSentence;
 		setState(0);
+		return entireSentence;
+
 		cout << "State er nu 0 (modtager mode)" << endl;
 
 	}
