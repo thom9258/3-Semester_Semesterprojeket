@@ -169,9 +169,8 @@ int main()
 		{
 			std::cout << "Waiting to send..." << std::endl;
 			// deliver message to datalink layer
-			std::string nytInput;
-			std::cin >> nytInput;
-			APPToPhysical(app.sender(nytInput));
+
+			APPToPhysical(app.sender());
 			
 			input = "R";
 		}
