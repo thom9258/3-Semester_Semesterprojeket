@@ -43,17 +43,18 @@ int main() {
 	//std::vector<int> fuckmikkelogthomas = binaryToVector(0b1101'1101'0101'1111'0000'1000'1000'1001'0001'0010, 40);
 	//std::vector<int> fuckmikkelogthomas = { 0,1,0,1,1,1,0,0,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,1,1,0,0,0,1,1,0,0,1,0,1,0,0,1,1,0,1,0,1,0,0,0,1,1,0,0,1,0,0,0,1,1,1,0,0,0,1,0,1,0,1,0,1,1 };
 	//std::vector<int> fuckmikkelogthomas = binaryToVector(0b0000'0001'0000'0001'0000'0001'0000'0001'0001, 28);
-	//std::vector<int> fuckmikkelogthomas = { 1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
+	std::vector<int> fuckmikkelogthomas = { 0,1,1,0,0,1,1,0, 0,1,1,1,0,1,0,1, 0,1,1,0,0,0,1,1, 0,1,1,0,1,0,1,1, 0,1,0,0,0,1,0,0, 0,1,1,0,0,1,0,1, 0,1,1,1,0,1,0,0, 0,1,1,1,0,1,0,0, 0,1,1,0,0,1,0,1, 0,1,0,1,0,0,0,0, 0,1,1,1,0,0,1,0,0,1,1,0,1,1,1,1, 0,1,1,0,1,0,1,0, 0,1,1,0,0,1,0,1, 0,1,1,0,1,0,1,1, 0,1,1,1,0,1,0,0 };
+
 	//std::vector<int> fuckmikkelogthomas = { 0,0,0,0 };
 	//while(true)
 
 	// Usage
 	PhysicalLayer cat;
-	cat.start();
-	cat.debug();
-	//cat.sendStartBit();
+	//cat.start();
+	//cat.debug();
+	cat.sendStartBit();
 	//PhysicalLayer::sendNippleCount(fuckmikkelogthomas, 4);
-	//PhysicalLayer::sendBitString(fuckmikkelogthomas, 4);
+	PhysicalLayer::sendBitString(fuckmikkelogthomas, 4);
 	//cat.listenStartBit();
 	//cat.listenToSound();
 	//sf::sleep(sf::seconds(2));

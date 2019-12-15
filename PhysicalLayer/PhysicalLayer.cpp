@@ -198,18 +198,18 @@ void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	std::vector<std::array<double, 2>> TUNES;
 
 	//send nibble count
-	//unsigned short nippleCount;
-	//nippleCount = bitString.size() / 4;
+	unsigned short nippleCount;
+	nippleCount = bitString.size() / 4;
 
 
 
-	//for (int i = 0; i < 2; i++) {
-	//	nipplesToFreq(nippleCount, arr);
-	//	TUNES.push_back(arr);
-	//	nippleCount = nippleCount >> 4;
-	//}
-	////output sound
-	//std::reverse(TUNES.begin(), TUNES.end());
+	for (int i = 0; i < 2; i++) {
+		nipplesToFreq(nippleCount, arr);
+		TUNES.push_back(arr);
+		nippleCount = nippleCount >> 4;
+	}
+	//output sound
+	std::reverse(TUNES.begin(), TUNES.end());
 
 	//send data
 	std::reverse(bitString.begin(), bitString.end());
