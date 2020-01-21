@@ -20,12 +20,13 @@ void APPToPhysical(std::string input)
 
 	// make sure there are no spaces in the transmitted message
 	std::replace(input.begin(), input.end(), ' ', '_');
-
+	cout << "Du we fánget uí et while kloop\n";
 	// instantiate protocol object
 	Protokol p1(input);
 	int sf = 0;
 	int ul;
 	while (sf != 1) {
+		cout << "Du we fánget uí et while loop 2\n";
 
 		// is a return function and might not be needed here?
 		p1.divider();

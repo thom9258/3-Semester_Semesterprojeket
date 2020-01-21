@@ -52,6 +52,7 @@ void application::receiver(string y)
 		// check state to see if the user is allowed to send data.
 		// If the state is 0 the user is  allowed to receive.
 		cout << y << endl;
+		cout << "Du er i modtager mode\n";
 	
 	}
 	else if (state == 1) {
