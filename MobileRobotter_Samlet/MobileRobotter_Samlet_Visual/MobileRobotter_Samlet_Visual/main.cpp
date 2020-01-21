@@ -139,6 +139,7 @@ int main()
 	//std::thread dataLink;
 	
 	std::string input;
+	PhysicalLayer phy;
 
 	std::cout << "Press [S] to send, or [R] to receive" << std::endl;
 	std::cin >> input;
@@ -151,11 +152,11 @@ int main()
 	// always run this code
 	while (true) {
 		// check if the user wants to start as reciever or sender
-		if (input == "R") {
+		if (app.state == 0) {
 			
 			std::cout << "Waiting to receive..." << std::endl;
 			// start listening
-			PhysicalLayer phy;
+			
 			phy.listenStartBit();
 
 			// debug
@@ -165,7 +166,7 @@ int main()
 	
 			input = "S";
 		}
-		else if (input == "S")
+		else if (app.state == 1)
 		{
 			std::cout << "Waiting to send..." << std::endl;
 			// deliver message to datalink layer
