@@ -482,6 +482,9 @@ std::vector<int> PhysicalLayer::listenToSound() {
 	}
 	std::cout << std::endl;
 
+	if (nippleLength == 0) {
+		notBool = { 0 };
+	}
 	return notBool;
 }
 
