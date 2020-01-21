@@ -140,8 +140,8 @@ void playTune(std::vector<std::array<double, 2>> TUNES, float BPS = 1, unsigned 
 			//double window = sin(i*M_PI/(slut-start));																			//sine window funktion source:Claus
 			//double window = asin(sin(i*M_PI / (slut - start)));																//triangular source:Claus
 			//double window = 0.5 * (1 - cos(2 * M_PI*i / (slut-start)));														//Hann window function source:https://stackoverflow.com/questions/3555318/implement-hann-window
-			double window = 0.42 - 0.5*cos(2 * M_PI*i / ((slut - start) - 1)) + 0.08*cos(4 * M_PI*i / ((slut - start) - 1));	//blackman source matlab
-			//double window = 0.5 * (1 - cos(2 * M_PI * i / (slut - start)));														//hamming window function
+			//double window = 0.42 - 0.5*cos(2 * M_PI*i / ((slut - start) - 1)) + 0.08*cos(4 * M_PI*i / ((slut - start) - 1));	//blackman source matlab
+			double window = 0.5 * (1 - cos(2 * M_PI * i / (slut - start)));														//hamming window function
 			raw[i] = window * (AMPLITUDE * sin(x * TWO_PI) + AMPLITUDE * sin(y * TWO_PI));
 			x += TUNES[j][0] / SAMPLE_RATE;
 			y += TUNES[j][1] / SAMPLE_RATE;
@@ -197,7 +197,6 @@ void PhysicalLayer::sendNippleCount(std::vector<int> bitString, float BPS) {
 void PhysicalLayer::sendBitString(std::vector<int> bitString, float BPS) {
 	//send startbit
 	sendStartBit();
-
 	//send nibble count
 	unsigned short nippleCount;
 	nippleCount = bitString.size() / 4;
@@ -308,7 +307,7 @@ bool PhysicalLayer::listenStartBit(int sleepTime) {
 	int numSamples = 44100 / 2; // expected tone time in samples. here we send 1 tone and 1 pause per second
 	int wait = (SAMPLE_RATE_LISTEN / 4) + (SAMPLE_RATE_LISTEN / 2); // used to synchronize after peak found. we wait 1/4 of a tone + the pause 
 	int windowRotate = 100; // how much we move our window 
-	float threshold = 200.0f; // tested threshold for our goertzel magnitudes. tested at 35 cm distance
+	float threshold = 300.0f; // tested threshold for our goertzel magnitudes. tested at 35 cm distance
 
 	while (true) {
 		//here we wait by updating our tail
@@ -399,7 +398,7 @@ std::vector<int> PhysicalLayer::listenToSound() {
 
 	unsigned short nippleLength;
 
-	float threshold = 100.0f; //tested threshold at 35 cm
+	float threshold = 150.0f; //tested threshold at 35 cm
 
 	std::cout << "we have the highground\n"; //debugging
 

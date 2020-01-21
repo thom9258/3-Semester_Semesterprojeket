@@ -29,9 +29,8 @@ string application::sender()
 		restOfWords = input;
 		// Putting all the words together and saves them in d.
 		entireSentence = firstWord + restOfWords;
-		setState(0);
 		return entireSentence;
-
+		setState(0);
 		cout << "State er nu 0 (modtager mode)" << endl;
 
 	}
@@ -42,13 +41,10 @@ string application::sender()
 		cout << "Du kan ikke sende" << endl;;
 		setState(0);
 		cout << "State er nu 0 (modtager mode)"<< endl;
-		throw "mistake";
 
 	}
 
 }
-
-
 
 void application::receiver(string y)
 {
@@ -62,7 +58,6 @@ void application::receiver(string y)
 		// check state to see if the user is allowed to send data.
 		// If the state is 1 the user is not allowed to receive.
 		cout << "Du kan ikke modtage"<<endl;
-		throw "mistake";
 
 
 	}

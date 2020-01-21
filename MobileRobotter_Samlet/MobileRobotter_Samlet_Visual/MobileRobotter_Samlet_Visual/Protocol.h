@@ -47,6 +47,8 @@ public:
 	std::vector<int> NACK = { 1,0,0,0,1,1,1,0,1,0,0,0 };
 	std::vector<int> ACKReq = { 1,0,1,0,1,1,0,1,0,0,1,0 };
 
+    
+    //Constructor for the dataframe.
 	Protokol(std::string input) : fullsentence(input) {};
 
 	//Get the first 16 letters
@@ -80,7 +82,8 @@ public:
 
 		}
 	};
-
+    
+    //Determines the amount of characrters in the frame.
 	int numberingSender()
 	{
 		NumOfChar = first_16.length();
@@ -92,6 +95,7 @@ public:
 		std::cout << NumOfChar;
 	}
 
+    //Determines the flags (Even/odd flag and last frame flag)
 	void flagDetermineSender()
 	{
 		//Slut flag tjek
@@ -125,6 +129,7 @@ public:
 		return ulSender;
 	}
 
+    //Sending side CRC-check.
 	std::string SenderCRC(std::string message)
 	{
 
@@ -163,6 +168,7 @@ public:
 
 	Protokol(std::vector<int> input) : FullFrame(input) {};
 
+    //Determines the amount of characters in received frame
 	int numberingReceiver(std::vector<int> input)
 	{
 		input = FullFrame;
@@ -179,6 +185,7 @@ public:
 		return numbering + 1;
 	}
 
+    //Flag determine on the receiver side
 	void flagdetermineReceiver() {
 		if (FullFrame[6] == 1) {
 			ulReceiver = 1;
@@ -257,6 +264,7 @@ public:
 		framecounterReceiver++;
 	}
 
+    //Deletes all overhead, so that only databytes are left behind
 	std::vector<int> databytesDetermine()
 	{
 
@@ -331,9 +339,6 @@ public:
 		}
 		return final;
 	}
-
-
-	//hej
 
 private:
 	//FOR STRING FUNCTION

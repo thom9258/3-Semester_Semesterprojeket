@@ -16,7 +16,7 @@ public:
 
 	// outputs string to terminal
 	void receiver(string h);
-	string sender(string input);
+
 
 	bool state;
 	// State determine whether the sender and receiver function can receive or send. 
